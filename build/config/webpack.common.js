@@ -27,6 +27,10 @@ module.exports = {
         use: loaders(['css', 'postcss'])
       },
       {
+        test: /\.s(a|c)ss$/,
+        use: loaders(['css', 'postcss', 'sass'])
+      },
+      {
         test: /\.ts(x)?$/,
         use: [
           'babel-loader',
