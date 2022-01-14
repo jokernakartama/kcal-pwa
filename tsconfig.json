@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "sourceMap": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
+  },
+  "include": ["src/**/*.d.ts", "src/**/*.ts"],
+  "exclude": ["**/*.js", "node_modules"],
+  "files": ["src/index.tsx"]
+}

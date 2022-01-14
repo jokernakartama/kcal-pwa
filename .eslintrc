@@ -1,0 +1,44 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "standard",
+    "standard-with-typescript",
+    "@solid/eslint-config-base"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "project": "jsconfig.json",
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": 0,
+    "no-default-export": 0,
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "indent": ["error", 2],
+    "no-irregular-whitespace": 2,
+    "no-trailing-spaces": 0,
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+    "eol-last": ["error", "always"],
+    "arrow-parens": 0,
+    "no-multi-spaces": 2,
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+    "generator-star-spacing": 0,
+    "array-bracket-spacing": ["error", "never"],
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/consistent-type-imports": 0,
+    "@typescript-eslint/naming-convention": 0
+  }
+}
