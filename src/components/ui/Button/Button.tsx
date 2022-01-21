@@ -8,7 +8,7 @@ type ButtonComponent = Component<JSX.IntrinsicElements['button']>
  * Renders a button
  */
 export const Button: ButtonComponent = props => {
-  const [local, ...rest] = splitProps(props, ['children', 'className'])
+  const [local, rest] = splitProps(props, ['children', 'className'])
 
   return (
     <button className={classNames(styles.wrapper, local.className)} {...rest}>
