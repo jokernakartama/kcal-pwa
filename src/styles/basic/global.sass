@@ -1,0 +1,34 @@
+@use "./colors" as colors
+@use "../themes/light" as theme-light
+@use "../themes/dark" as theme-dark
+@use "./fonts"
+@use "./utils"
+
+:root
+  @media (prefers-color-scheme: light)
+    @include utils.generate-vars(module-variables(theme-light))
+
+  @media (prefers-color-scheme: dark)
+    @include utils.generate-vars(module-variables(theme-dark))
+
+  @include utils.generate-vars(module-variables(colors))
+
+
+html
+  background-color: var(--color-bg)
+
+body
+  background-color: var(--color-bg)
+  color: var(--color-text)
+  margin: 0
+  overflow-x: hidden
+  overscroll-behavior: none
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+  [data-theme="light"]
+    @include utils.generate-vars(module-variables(theme-light))
+
+  [data-theme="dark"]
+    @include utils.generate-vars(module-variables(theme-dark))
