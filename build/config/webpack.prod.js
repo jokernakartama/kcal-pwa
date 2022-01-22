@@ -26,7 +26,7 @@ module.exports = merge(config, {
       description: 'An app that helps you keep track of your daily nutrients.',
       background_color: '#ffffff',
       display: 'standalone',
-      theme_color: '#333333',
+      theme_color: '#31363B',
       orientation: 'portrait',
       icons: [
         {
