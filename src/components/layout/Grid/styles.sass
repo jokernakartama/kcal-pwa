@@ -1,0 +1,33 @@
+@use "../../../styles/basic/variables" as vars
+
+.container
+  padding-left: vars.$grid-gutter
+  padding-right: vars.$grid-gutter
+
+.row
+  display: flex
+  flex-wrap: wrap
+  flex-direction: row
+  align-items: flex-start
+  margin-left: -#{vars.$grid-gutter}
+  margin-right: -#{vars.$grid-gutter}
+
+.col
+  padding-left: vars.$grid-gutter
+  padding-right: vars.$grid-gutter
+
+  @for $i from 1 through 12
+    &.col-m-#{$i}
+      width: #{100 / 12 * $i +'%'}
+
+  &.col-m-0
+    display: none
+
+  @media screen and (min-width: vars.$layout-breakpoint)
+    @for $i from 1 through 12
+      &.col-d-#{$i}
+        width: #{100 / 12 * $i +'%'}
+
+    &.col-d-0
+      display: none
+
