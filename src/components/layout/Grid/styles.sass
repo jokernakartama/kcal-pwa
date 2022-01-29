@@ -1,3 +1,4 @@
+@use "sass:math"
 @use "../../../styles/basic/variables" as vars
 
 .container
@@ -18,7 +19,7 @@
 
   @for $i from 1 through 12
     &.col-m-#{$i}
-      width: #{100 / 12 * $i +'%'}
+      width: #{math.div(100, 12) * $i +'%'}
 
   &.col-m-0
     display: none
@@ -26,7 +27,7 @@
   @media screen and (min-width: vars.$layout-breakpoint)
     @for $i from 1 through 12
       &.col-d-#{$i}
-        width: #{100 / 12 * $i +'%'}
+        width: #{math.div(100, 12) * $i +'%'}
 
     &.col-d-0
       display: none

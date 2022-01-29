@@ -1,7 +1,8 @@
-@use "./colors" as colors
+@use "./colors"
+@use "./variables" as vars
 @use "../themes/light" as theme-light
 @use "../themes/dark" as theme-dark
-@use "./fonts"
+// @use "./fonts"
 @use "./utils"
 
 :root
@@ -20,6 +21,8 @@ html
 body
   background-color: var(--color-bg)
   color: var(--color-text)
+  font-family: Source Sans Pro, Ubuntu, 'Open Sans', sans-serif
+  font-size: vars.$font-size-14
   margin: 0
   overflow-x: hidden
   overscroll-behavior: none

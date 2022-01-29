@@ -1,2 +1,46 @@
+@use "../../../styles/basic/variables" as vars
+
 .wrapper
-  display: block
+  background-color: var(--color-bg)
+  font-family: inherit
+  border-radius: vars.$border-radius
+  border-style: solid
+  border-width: 1px
+  border-color: transparent
+  box-shadow: vars.$shadow-basic
+  color: var(--color-button-text)
+  display: inline-block
+  font-size: vars.$font-size-16
+  font-weight: 600
+  padding: 0 1.25em
+  min-height: vars.$input-height
+  transition: 0.1s
+
+  &:active
+    // box-shadow: var(--shadow-inner)
+    transform: translateY(1px)
+
+  &.color
+    @each $color in ('primary', 'accent', 'warning', 'danger')
+      &-#{$color}
+        background-color: var(--color-#{$color})
+        border-color: var(--color-#{$color})
+        &.outline
+          color: var(--color-#{$color})
+
+    &-secondary
+      color: var(--color-text)
+      box-shadow: none
+
+
+  &.outline
+    background-color: transparent
+
+
+  &.block
+    display: block
+    width: 100%
+
+  &[disabled]
+    // text-shadow: 1px -1px 1px rgba(0, 0, 0, 0.2), -1px -1px 1px rgba(0, 0, 0, 0.2)
+    pointer-events: none

@@ -1,2 +1,12 @@
+@use "../../../styles/common/input"
+
 .wrapper
-  display: block
+  @include input.input-wrapper
+
+  input
+    &[type="date"]::-webkit-inner-spin-button,
+    &[type="date"]::-webkit-calendar-picker-indicator
+      display: none
+      -webkit-appearance: none
+      -moz-appearance: none
+      appearance: none

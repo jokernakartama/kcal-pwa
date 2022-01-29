@@ -1,2 +1,25 @@
+@use "../../../styles/common/input"
+
 .wrapper
-  display: block
+  @include input.input-wrapper
+
+  select
+    appearance: none
+    padding-right: 2em
+
+  &:after
+    content: ""
+    display: inline-block
+    position: absolute
+    top: 2em
+    right: 1em
+    width: 0.8em
+    height: 0.5em
+    background-color: var(--color-text)
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%)
+
+    option
+      appearance: none
+      padding: 1em 1.25em
+
+

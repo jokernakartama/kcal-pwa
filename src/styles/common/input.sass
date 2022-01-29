@@ -1,0 +1,79 @@
+@use "sass:string"
+@use "../basic/variables" as vars
+
+@mixin input-wrapper
+  display: block
+  position: relative
+  padding-top: calc(vars.$font-size-12 / 2 + 0px)
+
+  .placeholder
+    position: absolute
+    font-size: vars.$font-size-12
+    top: calc(vars.$font-size-12 - 1em)
+    background-color: var(--color-bg)
+    left: 1.25em
+    color: var(--color-input-border-accent)
+    transition: .2s
+    line-height: 1em
+    white-space: nowrap
+
+  input,
+  select
+    background-color: var(--color-bg)
+    border-radius: vars.$border-radius
+    border-style: solid
+    border-width: 1px
+    border-color: var(--color-input-border)
+    color: var(--color-text)
+    font-size: vars.$font-size-16
+    font-weight: 500
+    padding: 0 1.25em
+    box-shadow: vars.$shadow-basic
+    height: vars.$input-height
+    outline: none
+    display: inline-flex
+    align-items: center
+    width: 100%
+    min-width: 100%
+    transition: all .2s, opacity .5s
+
+    &:focus
+      border-color: var(--color-input-border-accent)
+
+      & + .placeholder
+        color: var(--color-input-border-accent)
+
+    &:invalid
+      border-color: var(--color-red)
+
+      & + .placeholder
+        color: var(--color-red)
+
+    &::placeholder
+      color: var(--color-input-border)
+
+    &:placeholder-shown + .placeholder
+        opacity: 0
+        background-color: transparent
+        font-size: vars.$font-size-16
+        top: 1.25em
+
+  .icon
+    position: absolute
+    font-size: 1.25em
+    top: 1em
+    left: 1.25em
+
+    & + input,
+    & + select
+      padding-left: 3em
+
+      &:placeholder-shown + .placeholder
+        left: 3em
+
+    & + select
+      & option
+        & > i
+          font-style: none
+          margin-left: -2em
+          transform: translateX(-2em)
