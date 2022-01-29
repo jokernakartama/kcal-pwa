@@ -1,2 +1,15 @@
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/common/input"
+
 .wrapper
-  display: block
+  @include input.checkbox-wrapper
+
+  .switch
+    border-radius: 50%
+
+    &::after
+      border-radius: 50%
+      top: 4px
+      left: 4px
+      width: calc(100% - 8px)
+      height: calc(100% - 8px)

@@ -1,0 +1,38 @@
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/common/input"
+
+.wrapper
+  @include input.checkbox-wrapper
+
+  .switch
+    border-radius: 1em
+    width: 2em
+    transition: .3s
+
+    &::after
+      display: block
+      background-color: var(--color-input-border-accent)
+      border-radius: 50%
+      top: 4px
+      left: 4px
+      width: calc(1.25em - 10px)
+      height: calc(100% - 8px)
+      transition: .3s
+
+  input
+    &:checked + .switch
+      background-color: var(--color-green)
+      border-color: var(--color-green)
+
+      &::after
+        left: calc(100% - 1.25em + 6px)
+        background-color: var(--color-white)
+
+  // &:hover
+  //   .switch
+  //     border-color: var(--color-input-border-accent)
+
+  //   input
+  //     &:checked + .switch
+  //       border-color: var(--color-input-border-accent)
+
