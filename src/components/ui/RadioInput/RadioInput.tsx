@@ -35,7 +35,11 @@ export const RadioInput: RadioInputComponent = props => {
   return (
     <For each={local.options}>
       {o => (
-        <label className={classNames(styles.wrapper, local.className)}>
+        <label
+          className={classNames(styles.wrapper, local.className, {
+            [styles.disabled]: o.disabled
+          })}
+        >
           <input
             type="radio"
             checked={isSelected(o.value)}

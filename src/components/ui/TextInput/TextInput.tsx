@@ -17,7 +17,11 @@ export const TextInput: TextInputComponent = props => {
   const [local, rest] = splitProps(props, ['className', 'icon'])
 
   return (
-    <label className={classNames(styles.wrapper, local.className)}>
+    <label
+      className={classNames(styles.wrapper, local.className, {
+        [styles.disabled]: rest.disabled
+      })}
+    >
       {local.icon !== undefined && (
         <div className={styles.icon}>{local.icon}</div>
       )}

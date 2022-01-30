@@ -13,7 +13,11 @@ export const CheckboxInput: CheckboxInputComponent = props => {
   const [local, rest] = splitProps(props, ['className', 'children'])
 
   return (
-    <label className={classNames(styles.wrapper, local.className)}>
+    <label
+      className={classNames(styles.wrapper, local.className, {
+        [styles.disabled]: rest.disabled
+      })}
+    >
       <input type="checkbox" {...rest} />
       <div className={styles.switch}></div>
       <span className={styles.label}>{local.children}</span>

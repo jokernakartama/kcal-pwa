@@ -6,6 +6,9 @@
   position: relative
   padding-top: calc(vars.$font-size-12 / 2 + 0px)
 
+  &.disabled
+    opacity: .5
+
   .placeholder
     user-select: none
     position: absolute
@@ -51,9 +54,6 @@
       & + .placeholder
         color: var(--color-red)
 
-    &:disabled
-      color: var(--color-input-border-accent)
-
     &::placeholder
       color: var(--color-input-border)
 
@@ -87,6 +87,10 @@
   display: inline-block
   font-size: vars.$font-size-16
   user-select: none
+
+  &.disabled
+    opacity: .5
+    pointer-events: none
 
   .switch
     background-color: var(--color-bg)
@@ -124,12 +128,3 @@
       &::after
         display: block
 
-    &:disabled + .switch
-      pointer-events: none
-      border-color: var(--color-input-border)
-
-      &::after
-        background-color: var(--color-input-border)
-
-      & + .label
-        color: var(--color-input-border-accent)
