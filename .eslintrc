@@ -32,6 +32,7 @@
   "rules": {
     "prettier/prettier": 0,
     "no-default-export": 0,
+    "no-continue": 0,
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "indent": ["error", 2],
@@ -45,6 +46,7 @@
     "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "generator-star-spacing": 0,
     "array-bracket-spacing": ["error", "never"],
+    "no-restricted-globals": [0, "self"],
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/consistent-type-imports": 0,
