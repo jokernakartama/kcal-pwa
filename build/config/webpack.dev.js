@@ -1,6 +1,5 @@
 const { merge } = require('webpack-merge')
 const config = require('./webpack.common')
-const { buildPath } = require('./constants')
 
 module.exports = merge(config, {
   devtool: 'cheap-module-source-map',
@@ -10,19 +9,10 @@ module.exports = merge(config, {
     client: {
       overlay: true
     },
-    static: {
-      directory: buildPath,
-      publicPath: '/',
-      serveIndex: false
-    },
-    // contentBase: buildPath,
+    static: ['static'],
     historyApiFallback: true,
     hot: true,
-    // quiet: false,
-    // stats: 'minimal',
-    // injectClient: true,
-    // inline: true,
     compress: true,
-    watchFiles: [ 'src/**/*.(ts|js|svg|html)' ]
+    watchFiles: ['src/**/*.(ts|js|svg|html)']
   }
 })

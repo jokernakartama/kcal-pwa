@@ -1,5 +1,6 @@
 const path = require('path')
 const merge = require('webpack-merge').default
+const CopyPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
@@ -15,6 +16,11 @@ module.exports = merge(config, {
 
   plugins: [
     new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: 'static', to: '' }
+      ]
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[chunkhash].css'
     }),
@@ -22,7 +28,7 @@ module.exports = merge(config, {
       publicPath: '.',
       start_url: 'index.html?version=pwa',
       name: '\ud83c\udf57\ud83e\udd51\ud83c\udf5a\ud83e\udd66',
-      short_name: 'KCal',
+      short_name: 'Kcal',
       description: 'An app that helps you keep track of your daily nutrients.',
       background_color: '#ffffff',
       display: 'standalone',

@@ -1,0 +1,11 @@
+{
+  "profile": {
+    "name": "Your name",
+    "weight": "Weight, kg",
+    "height": "Height, cm",
+    "birthday": "Birth date",
+    "sex": "Sex",
+    "male": "Male",
+    "female": "Female"
+  }
+}
