@@ -1,3 +1,5 @@
+import { FormSubmitEvent, FormValues } from './types'
+
 /**
  * Parses the numeric value from an input
  * @param {HTMLInputElement} input
@@ -30,11 +32,11 @@ function getInputDateValue(input: HTMLInputElement) {
  * @param {SubmitEvent} e
  * @returns {Object}
  */
-export function getFormValues<T extends Record<string, never>>(
-  e: Event & { currentTarget?: HTMLFormElement }
-): Partial<T> | undefined {
+export function getFormValues<T extends FormValues<T>>(
+  e: FormSubmitEvent
+): FormValues<T> | undefined {
   const { elements } = e.currentTarget
-  const data: Partial<T> = {}
+  const data: Partial<FormValues<T>> = {}
 
   if (elements === undefined) return undefined
 
@@ -62,5 +64,5 @@ export function getFormValues<T extends Record<string, never>>(
     data[fieldName as keyof T] = value
   }
 
-  return data
+  return data as FormValues<T>
 }
