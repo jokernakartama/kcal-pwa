@@ -8,15 +8,12 @@ import {
   splitProps
 } from 'solid-js'
 import styles from './styles.sass'
+import { SelectOption } from './types'
 
 type SelectInputComponent = Component<
   JSX.IntrinsicElements['select'] & {
     placeholder?: string
-    options: Array<{
-      value?: string | number
-      label: string
-      disabled?: boolean
-    }>
+    options: Array<SelectOption<string | number>>
     icon?: string
   }
 >
