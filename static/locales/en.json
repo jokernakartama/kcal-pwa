@@ -6,6 +6,21 @@
     "birthday": "Birth date",
     "sex": "Sex",
     "male": "Male",
-    "female": "Female"
+    "female": "Femail",
+    "activity": "Activity",
+    "activity_min": "Minimal",
+    "activity_low": "Low",
+    "activity_avg": "Average",
+    "activity_intense": "Intense",
+    "activity_high": "Higher than average",
+    "activity_veryhigh": "High",
+    "activity_max": "Very hight",
+    "goal": "Goal",
+    "lose": "To lose",
+    "keep": "To keep",
+    "gain": "To gain"
+  },
+  "button": {
+    "continue": "Продолжить"
   }
 }
