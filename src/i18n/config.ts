@@ -19,7 +19,7 @@ export const i18n = i18next
         backends: [HttpBackend],
         backendOptions: [
           {
-            loadPath: '/locales/{{lng}}.json'
+            loadPath: 'locales/{{lng}}.json'
           }
         ]
       }
