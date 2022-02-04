@@ -4,9 +4,13 @@
   @include input.input-wrapper
 
   input
-    &[type="date"]::-webkit-inner-spin-button,
-    &[type="date"]::-webkit-calendar-picker-indicator
-      display: none
-      -webkit-appearance: none
-      -moz-appearance: none
+    &[type="date"]
       appearance: none
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-calendar-picker-indicator
+        opacity: 0
+        display: none
+        -webkit-appearance: none
+        -moz-appearance: none
+        appearance: none

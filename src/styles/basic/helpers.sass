@@ -1,0 +1,22 @@
+@use "./variables" as vars
+
+@for $i from 0 through 12
+  :global(.m-mt-#{$i})
+    margin-top: #{$i * vars.$grid-gutter}
+  :global(.m-mb-#{$i})
+    margin-bottom: #{$i * vars.$grid-gutter}
+  :global(.m-mr-#{$i})
+    margin-right: #{$i * vars.$grid-gutter}
+  :global(.m-ml-#{$i})
+    margin-left: #{$i * vars.$grid-gutter}
+
+@media screen and (min-width: vars.$layout-breakpoint)
+  @for $i from 1 through 12
+    :global(.d-mt-#{$i})
+      margin-top: #{$i * vars.$grid-gutter}
+    :global(.d-mb-#{$i})
+      margin-bottom: #{$i * vars.$grid-gutter}
+    :global(.d-mr-#{$i})
+      margin-right: #{$i * vars.$grid-gutter}
+    :global(.d-ml-#{$i})
+      margin-left: #{$i * vars.$grid-gutter}

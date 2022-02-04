@@ -80,7 +80,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
   return (
     <Form onSubmit={handleSubmit}>
       <Row>
-        <Col desktop="4">
+        <Col desktop="4" className="m-mb-2">
           <TextInput
             type="text"
             placeholder={t('profile.name')}
@@ -88,7 +88,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
             name="name"
           />
         </Col>
-        <Col mobile="6" desktop="4">
+        <Col mobile="6" desktop="4" className="m-mb-2">
           <TextInput
             type="date"
             icon={'\uD83C\uDF82 '}
@@ -96,7 +96,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
             name="birthDate"
           />
         </Col>
-        <Col mobile="6" desktop="4">
+        <Col mobile="6" desktop="4" className="m-mb-2">
           <SelectInput
             name="sex"
             // icon={'\uD83D\uDC95 '}
@@ -108,7 +108,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
       </Row>
 
       <Row>
-        <Col desktop="6">
+        <Col mobile="6" className="m-mb-2">
           <TextInput
             required
             pattern="^1$"
@@ -118,7 +118,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
             name="weight"
           />
         </Col>
-        <Col desktop="6">
+        <Col mobile="6" className="m-mb-2">
           <TextInput
             type="number"
             icon={'\uD83D\uDCCF'}
@@ -127,8 +127,8 @@ export const UserInfoForm: UserInfoFormComponent = props => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col desktop="6">
+      <Row className="m-mb-6">
+        <Col desktop="6" className="m-mb-2">
           <SelectInput
             name="activity"
             placeholder={t('profile.activity')}
@@ -136,7 +136,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
             options={activityOptions()}
           />
         </Col>
-        <Col desktop="6">
+        <Col desktop="6" className="m-mb-2">
           <SelectInput
             name="goal"
             placeholder={t('profile.goal')}
