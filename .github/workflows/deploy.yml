@@ -24,7 +24,7 @@ jobs:
       - name: Get the app version from tags
         id: global_env
         run: |
-          echo "::set-output name=APP_VERSION::$(git describe --abbrev=0)"
+          echo "::set-output name=APP_VERSION::$(git tag --sort=taggerdate | tail -1)"
 
       - name: Use Node.js
         uses: actions/setup-node@v2
