@@ -116,6 +116,8 @@ export const UserInfoForm: UserInfoFormComponent = props => {
             icon={'\u2696 '}
             placeholder={t('profile.weight')}
             name="weight"
+            min="30"
+            max="200"
           />
         </Col>
         <Col mobile="6" className="m-mb-2">
@@ -124,6 +126,8 @@ export const UserInfoForm: UserInfoFormComponent = props => {
             icon={'\uD83D\uDCCF'}
             placeholder={t('profile.height')}
             name="height"
+            min="50"
+            max="300"
           />
         </Col>
       </Row>
