@@ -46,7 +46,13 @@
     "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "generator-star-spacing": 0,
     "array-bracket-spacing": ["error", "never"],
+    "space-before-function-paren": ["error", {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
     "no-restricted-globals": [0, "self"],
+    "@typescript-eslint/promise-function-async": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/consistent-type-imports": 0,
