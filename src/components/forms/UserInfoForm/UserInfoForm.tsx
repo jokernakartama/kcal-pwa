@@ -64,7 +64,7 @@ export const UserInfoForm: UserInfoFormComponent = props => {
         label: `${emoji.pinchingHand.string} ${t('profile.lose')}`,
         value: -0.15
       },
-      { label: `${emoji.like.string} ${t('profile.keep')}`, value: 0 },
+      { label: `${emoji.like.string} ${t('profile.maintain')}`, value: 0 },
       {
         label: `${emoji.flexedBiceps.string} ${t('profile.gain')}`,
         value: 0.15
