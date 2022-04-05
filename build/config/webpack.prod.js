@@ -36,12 +36,12 @@ module.exports = merge(config, {
       orientation: 'portrait',
       icons: [
         {
-          src: path.join(rootDir, 'src/icons/icon.svg'),
-          sizes: [96, 128, 192, 256, 384, 512]
+          src: path.join(rootDir, 'src/icons/icon.png'),
+          sizes: [96, 128, 192, 256, 384, 512, 1024]
         },
         {
-          src: path.join(rootDir, 'src/icons/icon_maskable.svg'),
-          size: '1024x1024',
+          src: path.join(rootDir, 'src/icons/icon_maskable.png'),
+          size: [96, 128, 192],
           purpose: 'maskable'
         }
       ]
