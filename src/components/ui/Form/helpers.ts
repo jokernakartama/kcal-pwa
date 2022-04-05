@@ -61,6 +61,16 @@ export function getFormValues<T extends FormValues<T>>(
 
     if (input.type === 'radio' && !input.checked) continue
 
+    if (input.tagName === 'SELECT') {
+      try {
+        value = JSON.parse(input.value) as T[keyof T]
+      } catch (error) {
+        if (typeof error === 'object') {
+          // do nothing
+        }
+      }
+    }
+
     data[fieldName as keyof T] = value
   }
 

@@ -30,6 +30,9 @@ export const SelectInput: SelectInputComponent = props => {
   ])
   const selected = createMemo(() => local.value)
   const isSelected = createSelector(selected)
+  const options = createMemo(
+    () => local.options.map(o => ({ ...o, value: JSON.stringify(o.value) }))
+  )
 
   return (
     <label
@@ -41,7 +44,7 @@ export const SelectInput: SelectInputComponent = props => {
         <div className={styles.icon}>{local.icon}</div>
       )}
       <select {...rest}>
-        <For each={local.options}>
+        <For each={options()}>
           {o => (
             <option
               value={o.value}
