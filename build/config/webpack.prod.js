@@ -36,7 +36,7 @@ module.exports = merge(config, {
       orientation: 'portrait',
       icons: [
         {
-          src: path.join(rootDir, 'src/icons/icon.png'),
+          src: path.join(rootDir, 'src/icons/icon.svg'),
           sizes: [96, 128, 192, 256, 384, 512]
         },
         {
