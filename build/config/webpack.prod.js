@@ -30,7 +30,7 @@ module.exports = merge(config, {
       name: '\ud83c\udf57\ud83e\udd51\ud83c\udf5a\ud83e\udd66',
       short_name: 'Kcal',
       description: 'An app that helps you keep track of your daily nutrients.',
-      background_color: '#ffffff',
+      background_color: '#241C1C',
       display: 'standalone',
       theme_color: '#31363B',
       orientation: 'portrait',
@@ -41,7 +41,7 @@ module.exports = merge(config, {
         },
         {
           src: path.join(rootDir, 'src/icons/icon_maskable.png'),
-          size: [96, 128, 192],
+          size: [96, 128, 192, 256, 384, 512],
           purpose: 'maskable'
         }
       ]
