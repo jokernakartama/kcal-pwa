@@ -39,11 +39,11 @@ module.exports = merge(config, {
           src: path.join(rootDir, 'src/icons/icon.png'),
           sizes: [96, 128, 192, 256, 384, 512, 1024]
         },
-        // {
-        //   src: path.join(rootDir, 'src/icons/icon_maskable.png'),
-        //   size: [96, 128, 192, 256, 384, 512],
-        //   purpose: 'maskable'
-        // }
+        {
+          src: path.join(rootDir, 'src/icons/icon_maskable.png'),
+          size: [96, 128, 192, 256, 384, 512, 1024],
+          purpose: 'maskable'
+        }
       ]
     }),
     new WorkboxPlugin.GenerateSW({
