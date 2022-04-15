@@ -2,15 +2,7 @@ import { DeepReadonly, SetStoreFunction } from 'solid-js/store'
 
 export interface AppStoreState {
   journal: DataModel.JournalRecord[]
-  user?: {
-    name: string
-    sex: 'male' | 'female'
-    birthDate: string
-    weight: number
-    height: number
-    activity: number
-    goal: number
-  }
+  user?: UserModel.Info
 }
 
 export type AppStore = [
