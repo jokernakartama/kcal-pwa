@@ -4,7 +4,7 @@ function reply<T>(action: string, data: T) {
   self.postMessage(
     {
       queryActionListener: action,
-      queryActionArguments: data
+      queryActionResult: data
     }
   )
 }

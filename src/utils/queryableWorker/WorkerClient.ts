@@ -30,13 +30,10 @@ export class WorkerClient<
     const handler = (e: MessageEvent) => {
       const data = e.data as Record<string, any> | undefined
 
-      if (
-        data instanceof Object &&
-        data?.queryActionArguments !== undefined
-      ) {
+      if (data instanceof Object && data?.queryActionListener !== undefined) {
         if (action === data.queryActionListener) {
           this.worker.removeEventListener('message', handler)
-          cb.call(this, data.queryActionArguments)
+          cb.call(this, data.queryActionResult)
         }
 
         return
