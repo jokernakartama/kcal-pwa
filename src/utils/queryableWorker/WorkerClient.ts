@@ -53,7 +53,7 @@ export class WorkerClient<
   }
 
   public dispatch<A extends keyof R>(action: A, ...args: Parameters<R[A]>) {
-    const actionPromise = new Promise<ReturnType<R[A]>>((resolve, reject) => {
+    const actionPromise = new Promise<Awaited<ReturnType<R[A]>>>((resolve, reject) => {
       if (typeof action !== 'string') {
         reject(
           new TypeError(

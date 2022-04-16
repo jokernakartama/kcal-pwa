@@ -13,7 +13,7 @@ export interface WorkerClientInstance<
   dispatch: <A extends keyof R>(
     action: A,
     ...args: Parameters<R[A]>
-  ) => Promise<ReturnType<R[A]>>
+  ) => Promise<Awaited<ReturnType<R[A]>>>
 
   /**
    * Just the ordinary way to post a message
