@@ -3,6 +3,7 @@ declare namespace UserModel {
   export type WeightGoal = -0.15 | 0 | 0.15
 
   export interface Info {
+    id: number
     /**
      * The user's name
      */

@@ -1,1 +1,1 @@
-export * from './DBWorkerProvider'
+export * from './db'

@@ -17,7 +17,8 @@ declare namespace DataModel {
 
   export interface Recipe {
     id: string
-    products: { id: Product['id']; mass: Mass }
+    name: string
+    products: Array<{ id: Product['id']; mass: Mass }>
   }
 
   export interface Meal {
