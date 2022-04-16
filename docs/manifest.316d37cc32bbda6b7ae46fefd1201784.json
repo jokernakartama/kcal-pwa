@@ -1,6 +1,48 @@
 {
   "icons": [
     {
+      "src": "./icon_1024x1024.c8fc7d6fe21359ba4f70e62e10fa1faa.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon_512x512.6909d4081a3778c91967b7b5e622406b.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon_384x384.a230cb60846a7dadaf13fd027b4a40c5.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon_256x256.c348e1ab07eaf190edc743383e0ae17b.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon_192x192.80b900e542a524417b7b160d72620af0.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon_128x128.e7c99d28fde0421b5ec066ee0606aca1.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon_96x96.f08e56fbbb0b24ae7ba5110ced490640.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "./icon_1024x1024.7e02c13918fc61cad49d8f29a1a6ff8d.png",
       "sizes": "1024x1024",
       "type": "image/png"
