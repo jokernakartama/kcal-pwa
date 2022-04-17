@@ -66,5 +66,21 @@ export const emoji = {
   weightLifter: {
     string: '\uD83C\uDFCB ',
     html: <>&#x1F3CB;</>
+  },
+  highVoltage: {
+    string: '\u26A1',
+    html: <>&#x26A1;</>
+  },
+  cookedRice: {
+    string: '\uD83C\uDF5A',
+    html: <>&#x1F35A;</>
+  },
+  poultryLeg: {
+    string: '\uD83C\uDF57',
+    html: <>&#x1F357;</>
+  },
+  avocado: {
+    string: '\uD83E\uDD51',
+    html: <>&#x1F951;</>
   }
 }
