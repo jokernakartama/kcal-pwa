@@ -30,6 +30,8 @@ declare namespace DataModel {
 
   export interface JournalRecord {
     date: string
+    // Possibly useful for the particular daily activity
+    activity?: UserModel.Activity
     meal: Meal[]
   }
 }

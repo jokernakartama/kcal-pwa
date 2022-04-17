@@ -45,7 +45,7 @@ declare namespace UserModel {
   }
 
   export interface Goals {
-    calories: number
+    kcalories: number
     proteins: number
     fats: number
     carbohydrates: number
