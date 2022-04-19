@@ -45,6 +45,7 @@ declare namespace UserModel {
   }
 
   export interface Goals {
+    userId: Info['id']
     kcalories: number
     proteins: number
     fats: number
