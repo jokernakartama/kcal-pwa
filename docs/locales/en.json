@@ -20,7 +20,17 @@
     "maintain": "To maintain",
     "gain": "To gain"
   },
+  "nutrients": {
+    "proteins": "Proteins",
+    "fats": "Fats",
+    "carbohydrates": "Carbohydrates",
+    "kcalories": "Calories"
+  },
+  "unit": {
+    "gram": "g",
+    "kcal": "kcal"
+  },
   "button": {
-    "continue": "Продолжить"
+    "continue": "Continue"
   }
 }
