@@ -1,14 +1,12 @@
 import { DB } from '../../../db'
-import { WithOptional } from '../../../utils/utilityTypes'
+import { WithOptional } from '../../../types/utils'
 import { DEFAULT_LIST_PARAMS } from '../constants'
-import { handlePaginationParams, handleSortParams } from '../helpers'
+import { getPaginatedResponse, handleSortParams } from '../helpers'
 import { ListParams } from '../types'
 
 export const journalActions = {
-/**
+  /**
    * Returns the user's journal records
-   * @param {number} userId
-   * @param {Object} [filter] - "From" and "to" dates
    * @param {ListParams} params
    * @returns {Promise<(DataModel.JournalRecord[])>}
    */
@@ -22,8 +20,8 @@ export const journalActions = {
       .where(['userId', 'date'])
       .between([userId, dateFrom], [userId, dateTo], true, true)
 
-    return handleSortParams(
-      handlePaginationParams(collection, params),
+    return getPaginatedResponse(
+      handleSortParams(collection, params),
       params
     )
   },
@@ -42,14 +40,14 @@ export const journalActions = {
 
   /**
  * Returns corresponding meals
- * @param {string} id - Journal record id
+ * @param {string} recordId - Journal record id
  * @returns {Promise<(DataModel.Meal[])>}
  */
-  'GET journal/{id}/meals': (
-    id: DataModel.JournalRecord['id'],
+  'GET journal/{recordId}/meals': (
+    recordId: DataModel.JournalRecord['id'],
   ) => {
     return DB.meals
-      .where('dayId').equals(id)
+      .where('dayId').equals(recordId)
       .toArray()
   }
 }

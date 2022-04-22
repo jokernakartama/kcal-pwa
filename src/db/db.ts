@@ -5,15 +5,15 @@ import Dexie from 'dexie'
  */
 export const DB_VER = 2
 
-export const DB_NAME = 'db_test_1'
+export const DB_NAME = 'db_test_2'
 
 export const DB_STORES = {
   users: '++id',
   goals: 'userId',
-  journal: '&id,userId,date',
+  journal: '++id,userId,date',
   meals: 'dayId',
-  recipes: '&id,userId,name,*productId',
-  products: '&id,userId,name,proteins,fats,carbohydrates,kcalories'
+  recipes: '++id,userId,name,*products.id',
+  products: '++id,userId,name,proteins,fats,carbohydrates,kcalories'
 }
 
 class AppDB extends Dexie {
@@ -21,13 +21,13 @@ class AppDB extends Dexie {
 
   goals!: Dexie.Table<UserModel.Goals, number>
 
-  journal!: Dexie.Table<DataModel.JournalRecord, string>
+  journal!: Dexie.Table<DataModel.JournalRecord, number>
 
-  meals!: Dexie.Table<DataModel.Meal, string>
+  meals!: Dexie.Table<DataModel.Meal, number>
 
-  recipes!: Dexie.Table<DataModel.Recipe, string>
+  recipes!: Dexie.Table<DataModel.Recipe, number>
 
-  products!: Dexie.Table<DataModel.Product, string>
+  products!: Dexie.Table<DataModel.Product, number>
 
   constructor() {
     super(DB_NAME)

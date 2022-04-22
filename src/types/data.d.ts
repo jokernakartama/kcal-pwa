@@ -10,18 +10,21 @@ declare namespace DataModel {
   }
 
   export interface Product extends Nutrition {
-    id: string
+    userId: UserModel.Info['id']
+    id: number
     name: string
   }
 
   export interface Recipe {
-    id: string
+    userId: UserModel.Info['id']
+    id: number
     name: string
     products: Array<{ id: Product['id']; mass: Mass }>
     description?: string
   }
 
   export interface Meal {
+    dayId: DataModel.JournalRecord['id']
     date: string
     recipeId?: Product['id']
     productId?: Recipe['id']
@@ -29,7 +32,8 @@ declare namespace DataModel {
   }
 
   export interface JournalRecord {
-    id: string
+    userId: UserModel.Info['id']
+    id: number
     date: Date
     meal: Meal[]
   }

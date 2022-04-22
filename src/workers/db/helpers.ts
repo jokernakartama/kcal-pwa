@@ -1,13 +1,22 @@
 import { Collection } from 'dexie'
-import { ListPagination, ListSorting } from './types'
+import { PaginationResponse, PaginationParams } from '../../types/pagination'
+import { ExtractCollectionDataType } from '../../types/utils'
+import { SortingParams } from './types'
 
-export function handlePaginationParams<
+/**
+ * Counts the total records amount and applies pagination
+ * params to the collection
+ * @param {Collection} collection
+ * @param {PaginationParams} params
+ * @returns {Promise<PaginationResponse>}
+ */
+export function getPaginatedResponse<
   C extends Collection,
-  P extends ListPagination
+  P extends PaginationParams
 >(
   collection: C,
   params?: P
-): C {
+): Promise<PaginationResponse<ExtractCollectionDataType<C>>> {
   let nextCollection = collection.clone()
 
   if (params?.offset !== undefined) {
@@ -18,25 +27,33 @@ export function handlePaginationParams<
     nextCollection = nextCollection.limit(params.limit)
   }
 
-  return nextCollection as Awaited<C>
+  return Promise.all([
+    collection.count(),
+    (nextCollection as Awaited<C>).toArray()
+  ])
+    .then(([total, items]) => {
+      return { total, items }
+    })
 }
 
+/**
+ * Reverses the collection if it is required
+ * @param {Collection} collection
+ * @param {SortingParams} params
+ * @returns {Collection}
+ */
 export function handleSortParams<
   C extends Collection,
-  P extends ListSorting<any>
+  P extends SortingParams<any>
 >(
   collection: C,
   params?: P
-) {
-  let nextCollection = collection.clone()
+): C {
+  let nextCollection: Collection = collection.clone()
 
-  if (params?.order === 'desc') {
+  if (params?.dir === 'desc') {
     nextCollection = nextCollection.reverse()
   }
 
-  if (params?.sort !== undefined && typeof params.sort === 'string') {
-    return nextCollection.sortBy(params.sort)
-  }
-
-  return nextCollection.toArray()
+  return nextCollection as Awaited<C>
 }

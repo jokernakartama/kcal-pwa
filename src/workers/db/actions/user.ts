@@ -1,5 +1,5 @@
 import { DB } from '../../../db'
-import { WithOptional } from '../../../utils/utilityTypes'
+import { WithOptional } from '../../../types/utils'
 
 export const userActions = {
   /**
@@ -7,9 +7,9 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<(UserModel.Info | undefined)>}
    */
-  'GET user/{id}': (id: UserModel.Info['id']) => {
+  'GET user/{userId}': (userId: UserModel.Info['id']) => {
     return DB.users
-      .get(id)
+      .get(userId)
   },
 
   /**
@@ -28,9 +28,9 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<void>}
    */
-  'DELETE user/{id}': (id: UserModel.Info['id']) => {
+  'DELETE user/{userId}': (userId: UserModel.Info['id']) => {
     return DB.users
-      .delete(id)
+      .delete(userId)
   },
 
   /**
@@ -44,22 +44,21 @@ export const userActions = {
 
   /**
    * Returns the user's goals from the "goals" table
-   * @param {number} userId
+   * @param {number} id
    * @returns {Promise<(UserModel.Goals | undefined)>}
    */
-  'GET user/{id}/goals': (id: UserModel.Info['id']) => {
-    return DB.goals.get({ userId: id })
+  'GET user/{userId}/goals': (userId: UserModel.Info['id']) => {
+    return DB.goals.get({ userId })
   },
 
   /**
    * Updates the user's goals
-   * @param {number} userId
+   * @param {UserModel.Goals} goals
    * @returns {Promise<(UserModel.Goals | undefined)>}
    */
-  'PUT user/{id}/goals': (
-    userId: UserModel.Info['id'],
-    goals: WithOptional<UserModel.Goals, 'userId'>
+  'PUT goals/{goals}': (
+    goals: UserModel.Goals
   ) => {
-    return DB.goals.put({ ...goals, userId })
-  },
+    return DB.goals.put(goals)
+  }
 }
