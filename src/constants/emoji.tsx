@@ -82,5 +82,13 @@ export const emoji = {
   avocado: {
     string: '\uD83E\uDD51',
     html: <>&#x1F951;</>
+  },
+  barChart: {
+    string: '\uD83D\uDCCA',
+    html: <>&#x1F4CA;</>
+  },
+  forkAndKnife: {
+    string: '\uD83C\uDF74',
+    html: <>&#x1F374;</>
   }
 }
