@@ -7,9 +7,8 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<(UserModel.Info | undefined)>}
    */
-  'GET user/{userId}': (userId: UserModel.Info['id']) => {
-    return DB.users
-      .get(userId)
+  'GET users/{userId}': async (userId: UserModel.Info['id']) => {
+    return await DB.users.get(userId)
   },
 
   /**
@@ -18,9 +17,11 @@ export const userActions = {
    * @param {UserModel.Info} user
    * @returns {Promise<number>}
    */
-  'PUT user/{user}': (user: WithOptional<UserModel.Info, 'id'>) => {
-    return DB.users
-      .put(user as UserModel.Info)
+  'PUT users/{user}': async (user: WithOptional<UserModel.Info, 'id'>) => {
+    const id = await DB.users.put(user as UserModel.Info)
+    const result: UserModel.Info = { ...user, id }
+
+    return result
   },
 
   /**
@@ -28,18 +29,16 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<void>}
    */
-  'DELETE user/{userId}': (userId: UserModel.Info['id']) => {
-    return DB.users
-      .delete(userId)
+  'DELETE users/{userId}': async (userId: UserModel.Info['id']) => {
+    return await DB.users.delete(userId)
   },
 
   /**
    * Returns a list of users from the "users" table
    * @returns {Promise<UserModel.Info[]>}
    */
-  'GET users': () => {
-    return DB.users
-      .toArray() as Promise<UserModel.Info[]>
+  'GET users': async () => {
+    return await DB.users.toArray()
   },
 
   /**
@@ -47,8 +46,8 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<(UserModel.Goals | undefined)>}
    */
-  'GET user/{userId}/goals': (userId: UserModel.Info['id']) => {
-    return DB.goals.get({ userId })
+  'GET users/{userId}/goals': async (userId: UserModel.Info['id']) => {
+    return await DB.goals.get({ userId })
   },
 
   /**
@@ -56,9 +55,9 @@ export const userActions = {
    * @param {UserModel.Goals} goals
    * @returns {Promise<(UserModel.Goals | undefined)>}
    */
-  'PUT goals/{goals}': (
-    goals: UserModel.Goals
-  ) => {
-    return DB.goals.put(goals)
+  'PUT goals/{goals}': async (goals: UserModel.Goals) => {
+    await DB.goals.put(goals)
+
+    return goals
   }
 }

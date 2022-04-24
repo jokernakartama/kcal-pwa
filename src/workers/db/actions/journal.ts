@@ -1,53 +1,120 @@
+import Dexie from 'dexie'
 import { DB } from '../../../db'
+import { PaginationParams } from '../../../types/pagination'
 import { WithOptional } from '../../../types/utils'
-import { DEFAULT_LIST_PARAMS } from '../constants'
+import { normalizeDate } from '../../../utils/format'
 import { getPaginatedResponse, handleSortParams } from '../helpers'
-import { ListParams } from '../types'
+import { SortingParams } from '../types'
 
 export const journalActions = {
   /**
-   * Returns the user's journal records
+   * Returns the user's journal record by date
+   * @param {number} userId
    * @param {ListParams} params
    * @returns {Promise<(DataModel.JournalRecord[])>}
    */
-  'GET user/{userId}/journal': (
+  'GET users/{userId}/journal': async (
     userId: UserModel.Info['id'],
-    params: ListParams<DataModel.JournalRecord> = DEFAULT_LIST_PARAMS
+    date: DataModel.JournalRecord['date']
   ) => {
-    const dateFrom = params?.from !== undefined ? new Date(params.from) : undefined
-    const dateTo = params?.to !== undefined ? new Date(params.to) : undefined
-    const collection = DB.journal
-      .where(['userId', 'date'])
-      .between([userId, dateFrom], [userId, dateTo], true, true)
+    return await DB.journal
+      .where('[userId+date]')
+      .equals([userId, date])
+      .first()
+  },
 
-    return getPaginatedResponse(
+  /**
+   * Clears the user's journal
+   * @param {number} userId
+   * @returns {Promise<undefined>}
+   */
+  'DELETE users/{userId}/journal': async (
+    userId: UserModel.Info['id']
+  ) => {
+    try {
+      await DB.journal
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.meals
+        .where('userId')
+        .equals(userId)
+        .delete()
+    } catch (e) {
+      // Ignore errors of removing non existed meals
+      if (!(e instanceof Dexie.ModifyError)) {
+        throw e
+      }
+    }
+  },
+
+  /**
+   * Returns corresponding meals
+   * @param {number} recordId
+   * @returns {Promise<DataModel.Meal[]>}
+   */
+  'GET journal/{recordId}/meals': async (
+    recordId: DataModel.JournalRecord['id'],
+    params?: PaginationParams & SortingParams<DataModel.Meal>
+  ) => {
+    const collection = DB.meals
+      .where('recordId')
+      .equals(recordId)
+
+    return await getPaginatedResponse(
       handleSortParams(collection, params),
       params
     )
   },
 
   /**
- * Updates or creates a journal record
- * @param {DataModel.JournalRecord} record
- * @returns {Promise<number>}
- */
-  'PUT journal/{record}': (
-    record: WithOptional<DataModel.JournalRecord, 'id'>
+   * Adds a meal to a journal record
+   * @param {DataModel.Meal} meal
+   * @returns {Promise<(number | undefined)>}
+   */
+  'PUT meals/{meal}': async (
+    meal: WithOptional<DataModel.Meal, 'recordId' | 'id'>
   ) => {
-    return DB.journal
-      .put(record as DataModel.JournalRecord)
+    const record = meal.recordId === undefined
+      ? undefined
+      : await DB.journal.get(meal.recordId)
+    let recordId = record?.id
+
+    if (record === undefined || record.date !== normalizeDate(meal.time)) {
+      recordId = await DB.journal.put(
+        {
+          userId: meal.userId,
+          date: normalizeDate(meal.time)
+        } as const as DataModel.JournalRecord
+      )
+    }
+
+    if (recordId !== undefined) {
+      const id = await DB.meals
+        .put(
+          {
+            ...meal as DataModel.Meal,
+            recordId
+          }
+        )
+      const result: DataModel.Meal = { ...meal, id, recordId }
+
+      return result
+    }
+
+    throw new Dexie.NotFoundError()
   },
 
   /**
- * Returns corresponding meals
- * @param {string} recordId - Journal record id
- * @returns {Promise<(DataModel.Meal[])>}
- */
-  'GET journal/{recordId}/meals': (
-    recordId: DataModel.JournalRecord['id'],
+   * Removes the meal
+   * @param {number} mealId
+   * @returns {Promise<(number | undefined)>}
+   */
+  'DELETE meals/{mealId}': async (
+    mealId: DataModel.Meal['id']
   ) => {
-    return DB.meals
-      .where('dayId').equals(recordId)
-      .toArray()
+    return await DB.meals
+      .delete(mealId)
   }
 }

@@ -1,7 +1,7 @@
-import { Collection } from 'dexie'
+import Dexie, { Collection } from 'dexie'
 import { DB } from '../../../db'
 import { WithOptional } from '../../../types/utils'
-import { normalizeString } from '../../../utils/normalize'
+import { normalizeString } from '../../../utils/format'
 import { getPaginatedResponse, handleSortParams } from '../helpers'
 import { ListParams } from '../types'
 
@@ -11,8 +11,8 @@ export const productsActions = {
    * @param {string} productId
    * @returns {Promise<DataModel.Product | undefined>}
    */
-  'GET product/{productId}': (productId: DataModel.Product['id']) => {
-    return DB.products.get(productId)
+  'GET products/{productId}': async (productId: DataModel.Product['id']) => {
+    return await DB.products.get(productId)
   },
 
   /**
@@ -20,9 +20,14 @@ export const productsActions = {
    * @param {DataModel.Product} product
    * @returns {Promise<number>}
    */
-  'PUT product/{product}': (product: WithOptional<DataModel.Product, 'id'>) => {
-    return DB.products
+  'PUT products/{product}': async (
+    product: WithOptional<DataModel.Product, 'id'>
+  ) => {
+    const id = await DB.products
       .put(product as DataModel.Product)
+    const result: DataModel.Product = { ...product, id }
+
+    return result
   },
 
   /**
@@ -30,7 +35,7 @@ export const productsActions = {
    * @param {ListParams} params
    * @returns {Promise<(DataModel.Product[])>}
    */
-  'GET user/{userId}/products': (
+  'GET users/{userId}/products': async (
     userId: UserModel.Info['id'],
     params?: ListParams<DataModel.Product>
   ) => {
@@ -65,9 +70,43 @@ export const productsActions = {
         )
     }
 
-    return getPaginatedResponse(
+    return await getPaginatedResponse(
       handleSortParams(collection, params),
       params
     )
+  },
+
+  /**
+   * Removes a product
+   * @param {number} productId
+   * @returns {Promise<(number | undefined)>}
+   */
+  'DELETE products/{productId}': async (
+    productId: DataModel.Product['id']
+  ) => {
+    try {
+      await DB.products
+        .delete(productId)
+
+      await DB.recipes
+        .where('products.id')
+        .equals(productId)
+        .modify(recipe => {
+          recipe.products = recipe.products.map(product => ({
+            ...product,
+            isArchived: product.id === productId
+          }))
+        })
+
+      await DB.meals
+        .where('product.id')
+        .equals(productId)
+        .modify({ isArchived: true })
+    } catch (e) {
+      // Ignore errors of modifying non existed entities
+      if (!(e instanceof Dexie.ModifyError)) {
+        throw e
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
-import { Collection } from 'dexie'
+import Dexie, { Collection } from 'dexie'
 import { DB } from '../../../db'
 import { WithOptional } from '../../../types/utils'
-import { normalizeString } from '../../../utils/normalize'
+import { normalizeString } from '../../../utils/format'
 import { getPaginatedResponse, handleSortParams } from '../helpers'
 import { ListParams } from '../types'
 
@@ -11,8 +11,8 @@ export const recipesActions = {
    * @param {string} recipeId
    * @returns {Promise<DataModel.Recipe | undefined>}
    */
-  'GET recipe/{recipeId}': (recipeId: DataModel.Recipe['id']) => {
-    return DB.recipes.get(recipeId)
+  'GET recipes/{recipeId}': async (recipeId: DataModel.Recipe['id']) => {
+    return await DB.recipes.get(recipeId)
   },
 
   /**
@@ -20,17 +20,21 @@ export const recipesActions = {
    * @param {DataModel.Recipe} recipe
    * @returns {Promise<number>}
    */
-  'PUT recipe/{recipe}': (recipe: WithOptional<DataModel.Recipe, 'id'>) => {
-    return DB.recipes
+  'PUT recipes/{recipe}': async (recipe: WithOptional<DataModel.Recipe, 'id'>) => {
+    const id = await DB.recipes
       .put(recipe as DataModel.Recipe)
+    const result: DataModel.Recipe = { ...recipe, id }
+
+    return result
   },
 
   /**
    * Returns a list of recipes
+   * @param {number} userId
    * @param {ListParams} params
    * @returns {Promise<(DataModel.Recipe[])>}
    */
-  'GET user/{userId}/recipes': (
+  'GET users/{userId}/recipes': async (
     userId: UserModel.Info['id'],
     params?: ListParams<DataModel.Recipe>
   ) => {
@@ -48,7 +52,7 @@ export const recipesActions = {
 
     if (typeof params?.id !== 'undefined') {
       collection = collection
-        .and(recipe => {
+        .filter(recipe => {
           if (Array.isArray(params.id)){
             return params?.id.includes(recipe.id)
           }
@@ -59,7 +63,7 @@ export const recipesActions = {
     if (params?.products !== undefined) {
       const productIds = params.products
       collection = collection
-        .and(recipe => {
+        .filter(recipe => {
           return recipe.products
             .some(
               product => {
@@ -72,14 +76,39 @@ export const recipesActions = {
     if (typeof params?.name === 'string') {
       const filteredName = normalizeString(params.name)
 
-      collection = collection.and(
-        product => normalizeString(product.name).startsWith(filteredName)
-      )
+      collection = collection
+        .filter(
+          product => normalizeString(product.name).startsWith(filteredName)
+        )
     }
 
-    return getPaginatedResponse(
+    return await getPaginatedResponse(
       handleSortParams(collection, params),
       params
     )
+  },
+
+  /**
+   * Removes a recipe
+   * @param {number} recipeId
+   * @returns {Promise<(number | undefined)>}
+   */
+  'DELETE recipes/{recipeId}': async (
+    recipeId: DataModel.Recipe['id']
+  ) => {
+    try {
+      await DB.recipes
+        .delete(recipeId)
+
+      await DB.meals
+        .where('product.id')
+        .equals(recipeId)
+        .modify({ isArchived: true })
+    } catch (e) {
+      // Ignore errors of modifying non existed entities
+      if (!(e instanceof Dexie.ModifyError)) {
+        throw e
+      }
+    }
   }
 }

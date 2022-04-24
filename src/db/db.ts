@@ -3,17 +3,17 @@ import Dexie from 'dexie'
 /**
  * Don't forget to change DB version if there were any changes!
  */
-export const DB_VER = 2
+export const DB_VER = 1
 
-export const DB_NAME = 'db_test_2'
+export const DB_NAME = 'db_test_3'
 
 export const DB_STORES = {
   users: '++id',
   goals: 'userId',
-  journal: '++id,userId,date',
-  meals: 'dayId',
-  recipes: '++id,userId,name,*products.id',
-  products: '++id,userId,name,proteins,fats,carbohydrates,kcalories'
+  journal: '++id, [userId+date]',
+  meals: '++id, recordId, userId, product.id, recipe.id',
+  recipes: '++id, userId, name, *products.id',
+  products: '++id, userId, name, proteins, fats, carbohydrates, kcalories'
 }
 
 class AppDB extends Dexie {
