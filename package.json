@@ -32,6 +32,7 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-export-namespace-from": "^7.16.7",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.7",
     "@solid/eslint-config-base": "^0.5.0",
     "@typescript-eslint/eslint-plugin": "^5.9.1",

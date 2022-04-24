@@ -13,6 +13,7 @@ module.exports = (api) => {
       'solid'
     ],
     plugins: [
+      '@babel/plugin-transform-runtime',
       '@babel/plugin-proposal-export-namespace-from',
       '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-proposal-class-properties'
