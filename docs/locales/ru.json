@@ -20,6 +20,16 @@
     "maintain": "Поддерживать норму",
     "gain": "Набрать вес"
   },
+  "nutrients": {
+    "proteins": " Белки",
+    "fats": "Жиры",
+    "carbohydrates": "Углеводы",
+    "kcalories": "Энерг. ценность"
+  },
+  "unit": {
+    "gram": "г",
+    "kcal": "ккал"
+  },
   "button": {
     "continue": "Продолжить"
   }
