@@ -1,0 +1,23 @@
+@mixin breakpoint-mobile
+  @media (max-width: 480px)
+    @content
+
+@mixin breakpoint-tablet
+  @media (min-width: 481px) and (max-width: 1024px)
+    @content
+
+@mixin breakpoint-desktop
+  @media (min-width: 1025px) and (max-width: 1200px)
+    @content
+
+@mixin breakpoint-hd
+  @media (min-width: 1201px)
+    @content
+
+@mixin breakpoint-landscape
+  @media (orientation: landscape)
+    @content
+
+@mixin breakpoint-portrait
+  @media (orientation: portrait)
+    @content
