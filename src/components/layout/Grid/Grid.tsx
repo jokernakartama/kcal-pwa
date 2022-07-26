@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Component } from 'solid-js'
+import { ParentComponent } from 'solid-js'
 import styles from './styles.sass'
 
 type ColWidth =
@@ -16,17 +16,17 @@ type ColWidth =
   | '10'
   | '12'
 
-type ContainerComponent = Component<{ className?: string }>
-type RowComponent = Component<{ className?: string }>
-type ColComponent = Component<{
-  className?: string
+type ContainerComponent = ParentComponent<{ class?: string }>
+type RowComponent = ParentComponent<{ class?: string }>
+type ColComponent = ParentComponent<{
+  class?: string
   mobile?: ColWidth
   desktop?: ColWidth
 }>
 
 export const Container: ContainerComponent = props => {
   return (
-    <div className={classNames(styles.container, props.className)}>
+    <div class={classNames(styles.container, props.class)}>
       {props.children}
     </div>
   )
@@ -34,7 +34,7 @@ export const Container: ContainerComponent = props => {
 
 export const Row: RowComponent = props => {
   return (
-    <div className={classNames(styles.row, props.className)}>
+    <div class={classNames(styles.row, props.class)}>
       {props.children}
     </div>
   )
@@ -43,7 +43,7 @@ export const Row: RowComponent = props => {
 export const Col: ColComponent = props => {
   return (
     <div
-      className={classNames(styles.col, props.className, {
+      class={classNames(styles.col, props.class, {
         [styles[`col-m-${props.mobile as string}`]]: props.mobile !== undefined,
         [styles[`col-d-${props.desktop as string}`]]:
           props.desktop !== undefined

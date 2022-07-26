@@ -16,7 +16,7 @@ type ButtonComponent = Component<
 export const Button: ButtonComponent = props => {
   const [local, rest] = splitProps(props, [
     'children',
-    'className',
+    'class',
     'color',
     'block',
     'outline'
@@ -24,9 +24,9 @@ export const Button: ButtonComponent = props => {
 
   return (
     <button
-      className={classNames(
+      class={classNames(
         styles.wrapper,
-        local.className,
+        local.class,
         styles[`color-${local.color}`],
         {
           [styles.block]: local.block === true,

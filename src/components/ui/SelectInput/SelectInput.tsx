@@ -23,7 +23,7 @@ type SelectInputComponent = Component<
  */
 export const SelectInput: SelectInputComponent = props => {
   const [local, rest] = splitProps(props, [
-    'className',
+    'class',
     'options',
     'icon',
     'value'
@@ -36,12 +36,12 @@ export const SelectInput: SelectInputComponent = props => {
 
   return (
     <label
-      className={classNames(styles.wrapper, local.className, {
+      class={classNames(styles.wrapper, local.class, {
         [styles.disabled]: rest.disabled
       })}
     >
       {local.icon !== undefined && (
-        <div className={styles.icon}>{local.icon}</div>
+        <div class={styles.icon}>{local.icon}</div>
       )}
       <select {...rest}>
         <For each={options()}>
@@ -56,7 +56,7 @@ export const SelectInput: SelectInputComponent = props => {
           )}
         </For>
       </select>
-      <div className={styles.placeholder}>{rest.placeholder}</div>
+      <div class={styles.placeholder}>{rest.placeholder}</div>
     </label>
   )
 }

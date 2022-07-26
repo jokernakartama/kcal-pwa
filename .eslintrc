@@ -16,7 +16,6 @@
   },
   "plugins": ["@typescript-eslint"],
   "extends": [
-    "standard",
     "standard-with-typescript",
     "@solid/eslint-config-base"
   ],
@@ -50,12 +49,14 @@
     "object-curly-spacing": ["error", "always"],
     "keyword-spacing": 2,
     "space-infix-ops": 0,
+    "no-use-before-define": ["error", { "functions": false }],
     "space-before-function-paren": ["error", {
       "anonymous": "never",
       "named": "never",
       "asyncArrow": "always"
     }],
     "no-restricted-globals": [0, "self"],
+    "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/space-infix-ops": 2,
     "@typescript-eslint/type-annotation-spacing": [
       2,

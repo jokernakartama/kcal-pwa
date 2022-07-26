@@ -10,11 +10,11 @@ type FormComponent = Component<
  * Renders a form component
  */
 export const Form: FormComponent = props => {
-  const [local, rest] = splitProps(props, ['className', 'children', 'disabled'])
+  const [local, rest] = splitProps(props, ['class', 'children', 'disabled'])
 
   return (
     <form
-      className={classNames(styles.wrapper, local.className, {
+      class={classNames(styles.wrapper, local.class, {
         [styles.disabled]: local.disabled
       })}
       {...rest}

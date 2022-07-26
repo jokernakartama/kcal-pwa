@@ -1,16 +1,16 @@
 import classNames from 'classnames'
-import { Component } from 'solid-js'
+import { ParentComponent } from 'solid-js'
 import styles from './styles.sass'
 
-type PanelComponent = Component<{ className?: string }>
+type PanelComponent = ParentComponent<{ class?: string }>
 
 /**
  * Renders a panel
  */
-export const Panel: PanelComponent = ({ children, className }) => {
+export const Panel: PanelComponent = (props) => {
   return (
-    <div className={classNames(styles.wrapper, className)}>
-      Panel: {children}
+    <div class={classNames(styles.wrapper, props.class)}>
+      Panel: {props.children}
     </div>
   )
 }

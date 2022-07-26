@@ -24,7 +24,7 @@ type RadioInputComponent = Component<
  */
 export const RadioInput: RadioInputComponent = props => {
   const [local, rest] = splitProps(props, [
-    'className',
+    'class',
     'children',
     'options',
     'value'
@@ -36,7 +36,7 @@ export const RadioInput: RadioInputComponent = props => {
     <For each={local.options}>
       {o => (
         <label
-          className={classNames(styles.wrapper, local.className, {
+          class={classNames(styles.wrapper, local.class, {
             [styles.disabled]: o.disabled
           })}
         >
@@ -47,8 +47,8 @@ export const RadioInput: RadioInputComponent = props => {
             disabled={o.disabled}
             {...rest}
           />
-          <div className={styles.switch}></div>
-          <span className={styles.label}>{o.label}</span>
+          <div class={styles.switch}></div>
+          <span class={styles.label}>{o.label}</span>
         </label>
       )}
     </For>

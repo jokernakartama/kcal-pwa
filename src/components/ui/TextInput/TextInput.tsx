@@ -14,19 +14,19 @@ type TextInputComponent = Component<
  * Renders various input fields
  */
 export const TextInput: TextInputComponent = props => {
-  const [local, rest] = splitProps(props, ['className', 'icon'])
+  const [local, rest] = splitProps(props, ['class', 'icon'])
 
   return (
     <label
-      className={classNames(styles.wrapper, local.className, {
+      class={classNames(styles.wrapper, local.class, {
         [styles.disabled]: rest.disabled
       })}
     >
       {local.icon !== undefined && (
-        <div className={styles.icon}>{local.icon}</div>
+        <div class={styles.icon}>{local.icon}</div>
       )}
       <input {...rest} />
-      <div className={styles.placeholder}>{rest.placeholder}</div>
+      <div class={styles.placeholder}>{rest.placeholder}</div>
     </label>
   )
 }

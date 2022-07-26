@@ -1,5 +1,5 @@
 import i18next, { i18n, StringMap, TOptions } from 'i18next'
-import { Component, createContext, useContext } from 'solid-js'
+import { Component, createContext, ParentComponent, useContext } from 'solid-js'
 
 type TFunction = <TInterpolationMap extends object = StringMap>(
   /**
@@ -35,7 +35,7 @@ export const useT = (): TFunction => {
 /**
  * A component that provides i18n context
  */
-export const I18nProvider: Component = props => {
+export const I18nProvider: ParentComponent = props => {
   return (
     <I18nContext.Provider value={i18next}>
       {props.children}
