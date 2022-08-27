@@ -9,10 +9,6 @@ export class WorkerClient<
 > implements WorkerClientInstance<R> {
   private readonly worker: Worker
 
-  private readonly listeners: Map<
-    keyof R, (data: ReturnType<R[keyof R]>) => void
-  > = new Map()
-
   constructor(
     worker: Worker,
     onError?: (err: ErrorEvent) => void

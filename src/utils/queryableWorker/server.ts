@@ -14,7 +14,7 @@ function reply<T>(action: string, data: T) {
  * @param {Object<string, Function>} actions - Map of actions
  */
 export const initWorkerServer = <
-  A extends Record<string,((...args: any[]) => any)>
+  A extends Record<string, ((...args: any[]) => any)>
 >(actions: A) => {
   self.onmessage = (e: MessageEvent) => {
     const data = e.data as Record<string, any> | undefined

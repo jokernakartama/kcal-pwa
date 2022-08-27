@@ -30,6 +30,7 @@
   },
   "rules": {
     "prettier/prettier": 0,
+    "comma-spacing": ["error", { "before": false, "after": true }],
     "no-param-reassign": ["error", { "props": false }],
     "no-default-export": 0,
     "no-continue": 0,
@@ -57,6 +58,7 @@
     }],
     "no-restricted-globals": [0, "self"],
     "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-unused-vars": 2,
     "@typescript-eslint/space-infix-ops": 2,
     "@typescript-eslint/type-annotation-spacing": [
       2,

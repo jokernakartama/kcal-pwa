@@ -1,4 +1,4 @@
-import { Component, createContext, ParentComponent, useContext } from 'solid-js'
+import { createContext, ParentComponent, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { initialState } from './constants'
 import { AppStore } from './types'

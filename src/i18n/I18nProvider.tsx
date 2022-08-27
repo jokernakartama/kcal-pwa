@@ -1,5 +1,5 @@
 import i18next, { i18n, StringMap, TOptions } from 'i18next'
-import { Component, createContext, ParentComponent, useContext } from 'solid-js'
+import { createContext, ParentComponent, useContext } from 'solid-js'
 
 type TFunction = <TInterpolationMap extends object = StringMap>(
   /**
