@@ -3,9 +3,10 @@ import {
   Component,
   createResource,
   createSignal,
+  For,
   Show
 } from 'solid-js'
-import { getProducts, getRecipes, setProduct } from '../../../api'
+import { getProducts, getRecipes, removeProduct, setProduct } from '../../../api'
 import { useStore } from '../../../store'
 import { ProductForm } from '../../forms/ProductForm'
 import { FilterPanel } from '../../layout/FilterPanel'
@@ -20,7 +21,7 @@ type CookBookComponent = Component<{
 export const CookBook: CookBookComponent = (props) => {
   const [store] = useStore()
   const [isOpen, setIsOpen] = createSignal<boolean>(false)
-  const [products] = createResource(
+  const [products, { refetch }] = createResource(
     () => {
       return store.user !== undefined
     },
@@ -41,14 +42,21 @@ export const CookBook: CookBookComponent = (props) => {
     return getRecipes(store.user!.id)
   }
 
-  function handleSubmit(values: DataModel.Product) {
+  function handleSubmit(values: Omit<DataModel.Product, 'id' | 'userId'>) {
     setProduct({
       ...values,
       userId: store.user!.id
     })
       .then(() => {
         setIsOpen(false)
-        fetchProducts()
+        refetch()
+      })
+  }
+
+  function removeProd (id: DataModel.Product['id']) {
+    removeProduct(id)
+      .then(() => {
+        refetch()
       })
   }
 
@@ -63,9 +71,25 @@ export const CookBook: CookBookComponent = (props) => {
           <Button color="accent" onClick={() => setIsOpen(true)} >
             Add a product
           </Button>
-          <pre>
-            {JSON.stringify(products(), null, '  ')}
-          </pre>
+
+          <For each={products()?.items} fallback={<div>Загрузка...</div>}>
+            {item => (
+              <div class={styles.product}>
+                <div class={styles.title}>
+                  {item.name}
+                  <button onClick={() => removeProd(item.id)}>X</button>
+                </div>
+                <div>
+                  <small>
+                    E: {item.kcalories} kkal
+                    P: {item.proteins} g
+                    F: {item.fats} g
+                    C: {item.carbohydrates} g
+                  </small>
+                </div>
+              </div>
+            )}
+          </For>
           <pre>
             {JSON.stringify(recipes(), null, '  ')}
           </pre>
@@ -78,8 +102,6 @@ export const CookBook: CookBookComponent = (props) => {
         </Show>
 
       </div>
-
-
     </>
   )
 }
