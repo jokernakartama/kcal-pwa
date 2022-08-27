@@ -103,7 +103,7 @@ export const recipesActions = {
       await DB.meals
         .where('product.id')
         .equals(recipeId)
-        .modify({ isArchived: true })
+        .modify({ isArchieved: true })
     } catch (e) {
       // Ignore errors of modifying non existed entities
       if (!(e instanceof Dexie.ModifyError)) {

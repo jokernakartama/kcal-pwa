@@ -1,5 +1,5 @@
 import { Component, createSignal } from 'solid-js'
-import { setUser, setUserGoals } from '../../../api/api'
+import { setUser, setUserGoals } from '../../../api'
 import { useStore } from '../../../store'
 import { getBasalMetabolicRate, getEnergy, getNutrientMassValue } from '../../../utils/calculations'
 import { UserInfoForm } from '../../forms/UserInfoForm'

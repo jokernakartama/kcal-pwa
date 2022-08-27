@@ -42,7 +42,7 @@ declare namespace DataModel {
         /** The mass of the product */
         mass: Mass
         /** Whether the product has been removed */
-        isArchived?: boolean
+        isArchieved?: boolean
       }
     >
     /** A short description of the recipe */
@@ -65,7 +65,7 @@ declare namespace DataModel {
     /** Bound product object */
     product?: Product
     /** Whether the bound entity has been removed */
-    isAchived?: boolean
+    isArchieved?: boolean
     /**
      * Resulting mass of the product or meal by recipe. If it's a recipe,
      * calculated mass of the meal should be used by default.
