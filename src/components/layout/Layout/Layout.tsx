@@ -2,6 +2,7 @@ import { Component, createEffect, createSignal, onMount, Show } from 'solid-js'
 import { getUserGoals, getUsers } from '../../../api'
 import { i18n } from '../../../i18n/config'
 import { useStore } from '../../../store'
+import { GettingStarted } from '../../views/GettingStarted'
 import { AppSections } from '../AppSections'
 import styles from './styles.sass'
 
@@ -58,7 +59,12 @@ export const Layout: Component = () => {
   return (
     <div class={styles.wrapper}>
       <Show when={isReady()} fallback={<h1>LOadiNg...</h1>}>
-        <AppSections />
+        <Show
+          when={store.user !== undefined}
+          fallback={<GettingStarted />}
+        >
+          <AppSections />
+        </Show>
       </Show>
     </div>
   )
