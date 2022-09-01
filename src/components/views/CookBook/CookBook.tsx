@@ -1,15 +1,17 @@
 import classNames from 'classnames'
 import {
   Component,
+  createMemo,
   createResource,
   createSignal,
   For,
   Show
 } from 'solid-js'
-import { getProducts, getRecipes, removeProduct, setProduct } from '../../../api'
+import { addMeal, getProducts, getRecipes, removeProduct, setProduct } from '../../../api'
 import { useStore } from '../../../store'
+import { MealForm } from '../../forms/MealForm'
 import { ProductForm } from '../../forms/ProductForm'
-import { FilterPanel } from '../../layout/FilterPanel'
+// import { FilterPanel } from '../../layout/FilterPanel'
 import { Button } from '../../ui/Button'
 import { Panel } from '../../ui/Panel'
 import styles from './styles.sass'
@@ -21,6 +23,7 @@ type CookBookComponent = Component<{
 export const CookBook: CookBookComponent = (props) => {
   const [store] = useStore()
   const [isOpen, setIsOpen] = createSignal<boolean>(false)
+  const [openProduct, setOpenProduct] = createSignal<DataModel.Product | undefined>()
   const [products, { refetch }] = createResource(
     () => {
       return store.user !== undefined
@@ -33,6 +36,26 @@ export const CookBook: CookBookComponent = (props) => {
     },
     fetchRecipes
   )
+
+  const mealForm = createMemo(() => {
+    const product = openProduct()
+
+    if (product !== undefined) {
+      return <MealForm product={product} onSubmit={logMeal}/>
+    }
+    return null
+  })
+
+  const productForm = createMemo(() => {
+    if (isOpen()) {
+      return <ProductForm onSubmit={handleSubmit}/>
+    }
+    return null
+  })
+
+  function showProductDialog(product: DataModel.Product) {
+    setOpenProduct(product)
+  }
 
   function fetchProducts() {
     return getProducts(store.user!.id)
@@ -49,32 +72,54 @@ export const CookBook: CookBookComponent = (props) => {
     })
       .then(() => {
         setIsOpen(false)
-        refetch()
+        return refetch()
+      })
+      .catch(e => {
+        console.error(e)
       })
   }
 
-  function removeProd (id: DataModel.Product['id']) {
+  function removeProd(id: DataModel.Product['id']) {
     removeProduct(id)
       .then(() => {
-        refetch()
+        return refetch()
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+
+  function logMeal(values: Pick<DataModel.Meal, 'mass'>) {
+    addMeal({
+      ...values,
+      time: (new Date()),
+      product: openProduct(),
+      userId: store.user!.id
+    })
+      .then(() => {
+        setOpenProduct()
+        return refetch()
+      })
+      .catch(e => {
+        console.error(e)
       })
   }
 
   return (
     <>
-      <FilterPanel>
+      {/* <FilterPanel>
         some filters
-      </FilterPanel>
+      </FilterPanel> */}
 
       <div class={classNames(props.class, styles.wrapper)}>
-        <Show when={!isOpen()}>
+        <Show when={!isOpen() && openProduct() === undefined}>
           <Button color="accent" onClick={() => setIsOpen(true)} >
             Add a product
           </Button>
 
           <For each={products()?.items} fallback={<div>Загрузка...</div>}>
             {item => (
-              <div class={styles.product}>
+              <div class={styles.product} onClick={() => showProductDialog(item)}>
                 <div class={styles.title}>
                   {item.name}
                   <button onClick={() => removeProd(item.id)}>X</button>
@@ -97,7 +142,13 @@ export const CookBook: CookBookComponent = (props) => {
 
         <Show when={isOpen()}>
           <Panel>
-            <ProductForm onSubmit={handleSubmit}/>
+            {productForm()}
+          </Panel>
+        </Show>
+
+        <Show when={openProduct !== undefined}>
+          <Panel>
+            {mealForm()}
           </Panel>
         </Show>
 

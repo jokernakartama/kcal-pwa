@@ -76,12 +76,18 @@ export const journalActions = {
   'PUT meals/{meal}': async (
     meal: WithOptional<DataModel.Meal, 'recordId' | 'id'>
   ) => {
-    const record = meal.recordId === undefined
-      ? undefined
-      : await DB.journal.get(meal.recordId)
+    const date = normalizeDate(meal.time)
+    // const record = meal.recordId === undefined
+    //   ? undefined
+    //   : await DB.journal.get(meal.recordId)
+    // let recordId = record?.id
+    const record = await DB.journal
+      .where('[userId+date]')
+      .equals([meal.userId, date])
+      .first()
     let recordId = record?.id
 
-    if (record === undefined || record.date !== normalizeDate(meal.time)) {
+    if (record === undefined /* || record.date !== date */) {
       recordId = await DB.journal.put(
         {
           userId: meal.userId,

@@ -62,3 +62,13 @@ export function getNutrientMassValue(
   const nutrientRatio = ratio ?? DEFAULT_NUTRIENTS_RATIO[nutrient]
   return totalEnergy * nutrientRatio / NutrientEnergy[nutrient]
 }
+
+/**
+ * Calculates nutrient amount (in grams or kcal)
+ * @param {number} nutrientAmount - Nutrient amount in 100g
+ * @param {number} productMass - Mass of the product
+ * @returns {number}
+ */
+export function getNutrientAmount(nutrientAmount: number, productMass: number) {
+  return nutrientAmount * productMass / 100
+}
