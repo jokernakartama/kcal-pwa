@@ -10,6 +10,7 @@ import { getJournal, getMeals } from '../../../api'
 import { emoji } from '../../../constants/emoji'
 import { useStore } from '../../../store'
 import { WithOptional } from '../../../types/utils'
+import { getNutrientAmount } from '../../../utils/calculations'
 import { normalizeDate } from '../../../utils/format'
 // import { FilterPanel } from '../../layout/FilterPanel'
 // import { TextInput } from '../../ui/TextInput'
@@ -44,10 +45,10 @@ export const Dashboard: DashboardComponent = (props) => {
 
     if (typeof dayMeals !== 'undefined') {
       dayMeals.forEach(meal => {
-        totalValues.kcalories += meal.product?.kcalories ?? 0
-        totalValues.proteins += meal.product?.proteins ?? 0
-        totalValues.fats += meal.product?.fats ?? 0
-        totalValues.carbohydrates += meal.product?.carbohydrates ?? 0
+        totalValues.kcalories += meal.product !== undefined ? getNutrientAmount(meal.product.kcalories, meal.mass) : 0
+        totalValues.proteins += meal.product !== undefined ? getNutrientAmount(meal.product.proteins, meal.mass) : 0
+        totalValues.fats += meal.product !== undefined ? getNutrientAmount(meal.product.fats, meal.mass) : 0
+        totalValues.carbohydrates += meal.product !== undefined ? getNutrientAmount(meal.product.carbohydrates, meal.mass) : 0
       })
     }
 
