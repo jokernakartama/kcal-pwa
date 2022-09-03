@@ -72,7 +72,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(rootDir, 'src/index.html'),
       publicPath: './',
-      filename: path.join(rootDir, 'docs/index.html')
+      filename: path.join(rootDir, 'dist/index.html')
     })
   ]
 }

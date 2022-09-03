@@ -6,7 +6,6 @@ on:
     branches:
       - master
     paths-ignore:
-      - "docs/**"
       - "**.md"
       - "**/__tests__/**"
       - ".prettierrc"
@@ -16,34 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Fetch tags and changes
-        run: git fetch --prune --unshallow --tags
-
-      - name: Get the app version from tags
-        id: global_env
+      - name: Get app version
         run: |
+          git fetch --prune --unshallow --tags
           echo "::set-output name=APP_VERSION::$(git tag --sort=taggerdate | tail -1)"
 
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-
-      - name: Install npm packages
-        run: npm ci
-
-      - name: Build assets
-        run: npm run build
-
-      - name: Setup git config
+      - name: Trigger building the app
+        env:
+          VERSION: ${{steps.global_env.outputs.APP_VERSION}}
         run: |
-          git config user.name "GitHub Actions Builder"
-          git config user.email "<>"
-
-      - name: Commit the changes
-        run: |
-          git add docs
-          git commit -m "BUILDER: Application build ${{steps.global_env.outputs.APP_VERSION}}"
-          git push origin master
+          curl -X POST -u "${{ secrets.USERNAME }}:${{ secrets.PAT }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/jokernakartama/kcal-pwa-app/dispatches --data '{"event_type": "build_application", "client_payload": {"version": $VERSION}}'
