@@ -26,4 +26,5 @@ jobs:
         env:
           VERSION: ${{steps.global_env.outputs.APP_VERSION}}
         run: |
-          curl -X POST -u "${{ secrets.USERNAME }}:${{ secrets.PAT }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/jokernakartama/kcal-pwa-app/dispatches --data '{"event_type": "build_application", "client_payload": {"version": $VERSION}}'
+          echo "Trigger building app $VERSION"
+          curl -X POST -u "${{ secrets.USERNAME }}:${{ secrets.PAT }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/jokernakartama/kcal-pwa-app/dispatches --data '{"event_type": "build_application", "client_payload": {"version": "$VERSION"}}'
