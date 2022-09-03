@@ -73,7 +73,7 @@ declare namespace DataModel {
     mass: Mass
   }
 
-  export interface JournalRecord {
+  export interface JournalRecord extends Partial<UserModel.Goals> {
     id: number
     /** Bound user's id */
     userId: UserModel.Info['id']

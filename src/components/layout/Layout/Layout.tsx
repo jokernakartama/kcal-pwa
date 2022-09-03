@@ -1,7 +1,8 @@
 import { Component, createEffect, createSignal, onMount, Show } from 'solid-js'
-import { getUserGoals, getUsers } from '../../../api'
+import { getJournal, getUserGoals, getUsers } from '../../../api'
 import { i18n } from '../../../i18n/config'
 import { useStore } from '../../../store'
+import { normalizeDate } from '../../../utils/format'
 import { GettingStarted } from '../../views/GettingStarted'
 import { AppSections } from '../AppSections'
 import styles from './styles.sass'
@@ -21,6 +22,18 @@ export const Layout: Component = () => {
         if (users.length > 0) {
           setStore({ user: users[0] })
         }
+      })
+  }
+
+  function fetchJournalRecord(userId: UserModel.Info['id']) {
+    getJournal(userId, normalizeDate(new Date()))
+      .then(record => {
+        if (typeof record !== 'undefined') {
+          setStore({ journal: record })
+        }
+      })
+      .catch(e => {
+        console.error('Journal fetching error: ', e)
       })
   }
 
@@ -53,6 +66,7 @@ export const Layout: Component = () => {
   createEffect(() => {
     if (store.user !== undefined) {
       fetchUserGoals(store.user.id)
+      fetchJournalRecord(store.user.id)
     }
   })
 

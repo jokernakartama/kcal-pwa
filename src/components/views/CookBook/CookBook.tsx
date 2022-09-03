@@ -8,7 +8,9 @@ import {
   Show
 } from 'solid-js'
 import { addMeal, getProducts, getRecipes, removeProduct, setProduct } from '../../../api'
+import { useT } from '../../../i18n'
 import { useStore } from '../../../store'
+import { normalizeDate } from '../../../utils/format'
 import { MealForm } from '../../forms/MealForm'
 import { ProductForm } from '../../forms/ProductForm'
 // import { FilterPanel } from '../../layout/FilterPanel'
@@ -21,7 +23,8 @@ type CookBookComponent = Component<{
 }>
 
 export const CookBook: CookBookComponent = (props) => {
-  const [store] = useStore()
+  const t = useT()
+  const [store, setStore] = useStore()
   const [isOpen, setIsOpen] = createSignal<boolean>(false)
   const [openProduct, setOpenProduct] = createSignal<DataModel.Product | undefined>()
   const [products, { refetch }] = createResource(
@@ -92,17 +95,32 @@ export const CookBook: CookBookComponent = (props) => {
   function logMeal(values: Pick<DataModel.Meal, 'mass'>) {
     addMeal({
       ...values,
+      recordId: store.journal?.id,
       time: (new Date()),
       product: openProduct(),
       userId: store.user!.id
     })
-      .then(() => {
+      .then((meal) => {
+        if (typeof store.journal !== 'undefined') {
+          setStoreJournalRecord(meal)
+        }
+
         setOpenProduct()
-        return refetch()
+
       })
       .catch(e => {
         console.error(e)
       })
+  }
+
+  function setStoreJournalRecord(meal: DataModel.Meal) {
+    setStore({
+      journal: {
+        id: meal.recordId,
+        userId: meal.userId,
+        date: normalizeDate(meal.time)
+      }
+    })
   }
 
   return (
@@ -126,10 +144,10 @@ export const CookBook: CookBookComponent = (props) => {
                 </div>
                 <div>
                   <small>
-                    E: {item.kcalories} kkal
-                    P: {item.proteins} g
-                    F: {item.fats} g
-                    C: {item.carbohydrates} g
+                    {t('nutrients.E')}: {item.kcalories} {t('unit.kcal')}{' | '}
+                    {t('nutrients.P')}: {item.proteins} {t('unit.gram')}{' | '}
+                    {t('nutrients.F')}: {item.fats} {t('unit.gram')}{' | '}
+                    {t('nutrients.C')}: {item.carbohydrates} {t('unit.gram')}
                   </small>
                 </div>
               </div>

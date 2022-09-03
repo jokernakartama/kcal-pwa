@@ -21,16 +21,22 @@
     "gain": "To gain"
   },
   "nutrients": {
+    "mass": "Mass",
     "proteins": "Proteins",
     "fats": "Fats",
     "carbohydrates": "Carbohydrates",
-    "kcalories": "Calories"
+    "kcalories": "Calories",
+    "E": "E",
+    "P": "P",
+    "F": "F",
+    "C": "C"
   },
   "unit": {
     "gram": "g",
     "kcal": "kcal"
   },
   "button": {
-    "continue": "Continue"
+    "continue": "Continue",
+    "remove": "Remove"
   }
 }

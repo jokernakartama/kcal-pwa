@@ -6,8 +6,9 @@ import {
   createSignal,
   For
 } from 'solid-js'
-import { getJournal, getMeals } from '../../../api'
+import { getJournal, getMeals, removeMeal } from '../../../api'
 import { emoji } from '../../../constants/emoji'
+import { useT } from '../../../i18n'
 import { useStore } from '../../../store'
 import { WithOptional } from '../../../types/utils'
 import { getNutrientAmount } from '../../../utils/calculations'
@@ -22,6 +23,7 @@ type DashboardComponent = Component<{
 }>
 
 export const Dashboard: DashboardComponent = (props) => {
+  const t = useT()
   const [store] = useStore()
   const [date] = createSignal(normalizeDate(new Date()))
 
@@ -33,7 +35,7 @@ export const Dashboard: DashboardComponent = (props) => {
   }))
   const [journal] = createResource(store.user, fetchJournal)
   const journalId = createMemo(() => journal()?.id)
-  const [meals] = createResource(journalId, fetchMeals)
+  const [meals, { refetch }] = createResource(journalId, fetchMeals)
   const totals = createMemo(() => {
     const dayMeals = meals()?.items
     const totalValues = {
@@ -67,6 +69,14 @@ export const Dashboard: DashboardComponent = (props) => {
       })
   }
 
+  function deleteMeal(mealId: DataModel.Meal['id']) {
+    removeMeal(mealId)
+      .then(() => {
+        return refetch()
+      })
+      .catch(console.error)
+  }
+
   // function handleDateChange(e: TextInputChangeEvent) {
   //   if (e.currentTarget.value !== undefined) {
   //     setDate(e.currentTarget.value)
@@ -84,17 +94,14 @@ export const Dashboard: DashboardComponent = (props) => {
       </FilterPanel> */}
 
       <div class={classNames(props.class, styles.wrapper)}>
-        {/* JOURNAL RECORD
-        <pre>
-          {JSON.stringify(journal(), null, '  ')}
-        </pre> */}
+
         TODAY'S GOALS
 
         <div>
-          {emoji.highVoltage.html}: {totals().kcalories} / {store.goals?.kcalories} kkal<br />
-          {emoji.poultryLeg.html}: {totals().proteins} / {store.goals?.proteins} g<br />
-          {emoji.avocado.html}: {totals().fats} / {store.goals?.fats} g<br />
-          {emoji.cookedRice.html}: {totals().carbohydrates} / {store.goals?.carbohydrates} g
+          {emoji.highVoltage.html}: {Math.round(totals().kcalories)} / {store.goals?.kcalories} kkal<br />
+          {emoji.poultryLeg.html}: {Math.round(totals().proteins)} / {store.goals?.proteins} g<br />
+          {emoji.avocado.html}: {Math.round(totals().fats)} / {store.goals?.fats} g<br />
+          {emoji.cookedRice.html}: {Math.round(totals().carbohydrates)} / {store.goals?.carbohydrates} g
         </div>
         <br /><br />
 
@@ -103,16 +110,25 @@ export const Dashboard: DashboardComponent = (props) => {
         <For each={meals()?.items} fallback={<div>Loading...</div>}>
           {item => (
             <div class={styles.meal}>
-              <div>
+              <div class={styles.title}>
                 {item.product?.name ?? item.recipe?.name}{' - '}
                 <b>{item.mass} g</b>
+                <button onClick={() => deleteMeal(item.id)}> X </button>
               </div>
               <div>
                 <small>
-                  E: {item.product?.kcalories} kkal
-                  P: {item.product?.proteins} g
-                  F: {item.product?.fats} g
-                  C: {item.product?.carbohydrates} g
+                  {t('nutrients.E')}:{' '}
+                  {getNutrientAmount(item.product?.kcalories ?? 0, item.mass)}{' '}
+                  {t('unit.kcal')}{' | '}
+                  {t('nutrients.P')}:{' '}
+                  {getNutrientAmount(item.product?.proteins ?? 0, item.mass)}{' '}
+                  {t('unit.gram')}{' | '}
+                  {t('nutrients.F')}:{' '}
+                  {getNutrientAmount(item.product?.fats ?? 0, item.mass)}{' '}
+                  {t('unit.gram')}{' | '}
+                  {t('nutrients.C')}:{' '}
+                  {getNutrientAmount(item.product?.carbohydrates ?? 0, item.mass)}{' '}
+                  {t('unit.gram')}
                 </small>
               </div>
             </div>

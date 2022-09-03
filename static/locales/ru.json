@@ -21,16 +21,22 @@
     "gain": "Набрать вес"
   },
   "nutrients": {
+    "mass": "Масса",
     "proteins": " Белки",
     "fats": "Жиры",
     "carbohydrates": "Углеводы",
-    "kcalories": "Энерг. ценность"
+    "kcalories": "Энерг. ценность",
+    "E": "К",
+    "P": "Б",
+    "F": "Ж",
+    "C": "У"
   },
   "unit": {
     "gram": "г",
     "kcal": "ккал"
   },
   "button": {
-    "continue": "Продолжить"
+    "continue": "Продолжить",
+    "remove": "Удалить"
   }
 }
