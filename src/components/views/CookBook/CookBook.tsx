@@ -44,14 +44,24 @@ export const CookBook: CookBookComponent = (props) => {
     const product = openProduct()
 
     if (product !== undefined) {
-      return <MealForm product={product} onSubmit={logMeal}/>
+      return <>
+        <MealForm product={product} onSubmit={logMeal}/>
+        <Button color="secondary" onClick={() => setOpenProduct()}>
+          {t('button.cancel')}
+        </Button>
+      </>
     }
     return null
   })
 
   const productForm = createMemo(() => {
     if (isOpen()) {
-      return <ProductForm onSubmit={handleSubmit}/>
+      return <>
+        <ProductForm onSubmit={handleSubmit}/>
+        <Button color="secondary" onClick={() => setIsOpen(false)}>
+          {t('button.cancel')}
+        </Button>
+      </>
     }
     return null
   })
@@ -82,7 +92,9 @@ export const CookBook: CookBookComponent = (props) => {
       })
   }
 
-  function removeProd(id: DataModel.Product['id']) {
+  function removeProd(ev: MouseEvent, id: DataModel.Product['id']) {
+    ev.stopPropagation()
+
     removeProduct(id)
       .then(() => {
         return refetch()
@@ -101,7 +113,7 @@ export const CookBook: CookBookComponent = (props) => {
       userId: store.user!.id
     })
       .then((meal) => {
-        if (typeof store.journal !== 'undefined') {
+        if (typeof store.journal === 'undefined') {
           setStoreJournalRecord(meal)
         }
 
@@ -140,7 +152,7 @@ export const CookBook: CookBookComponent = (props) => {
               <div class={styles.product} onClick={() => showProductDialog(item)}>
                 <div class={styles.title}>
                   {item.name}
-                  <button onClick={() => removeProd(item.id)}>X</button>
+                  <button onClick={(e) => removeProd(e, item.id)}>X</button>
                 </div>
                 <div>
                   <small>
