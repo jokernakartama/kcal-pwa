@@ -4,8 +4,7 @@ import {
   createMemo,
   createResource,
   createSignal,
-  For,
-  Show
+  For
 } from 'solid-js'
 import { addMeal, getProducts, getRecipes, removeProduct, setProduct } from '../../../api'
 import { useT } from '../../../i18n'
@@ -142,45 +141,39 @@ export const CookBook: CookBookComponent = (props) => {
       </FilterPanel> */}
 
       <div class={classNames(props.class, styles.wrapper)}>
-        <Show when={!isOpen() && openProduct() === undefined}>
-          <Button color="accent" onClick={() => setIsOpen(true)} >
+        <Button color="accent" onClick={() => setIsOpen(true)} >
             Add a product
-          </Button>
+        </Button>
 
-          <For each={products()?.items} fallback={<div>Загрузка...</div>}>
-            {item => (
-              <div class={styles.product} onClick={() => showProductDialog(item)}>
-                <div class={styles.title}>
-                  {item.name}
-                  <button onClick={(e) => removeProd(e, item.id)}>X</button>
-                </div>
-                <div>
-                  <small>
-                    {t('nutrients.E')}: {item.kcalories} {t('unit.kcal')}{' | '}
-                    {t('nutrients.P')}: {item.proteins} {t('unit.gram')}{' | '}
-                    {t('nutrients.F')}: {item.fats} {t('unit.gram')}{' | '}
-                    {t('nutrients.C')}: {item.carbohydrates} {t('unit.gram')}
-                  </small>
-                </div>
+        <For each={products()?.items} fallback={<div>Загрузка...</div>}>
+          {item => (
+            <div class={styles.product} onClick={() => showProductDialog(item)}>
+              <div class={styles.title}>
+                {item.name}
+                <button onClick={(e) => removeProd(e, item.id)}>X</button>
               </div>
-            )}
-          </For>
-          <pre>
-            {JSON.stringify(recipes(), null, '  ')}
-          </pre>
-        </Show>
+              <div>
+                <small>
+                  {t('nutrients.E')}: {item.kcalories} {t('unit.kcal')}{' | '}
+                  {t('nutrients.P')}: {item.proteins} {t('unit.gram')}{' | '}
+                  {t('nutrients.F')}: {item.fats} {t('unit.gram')}{' | '}
+                  {t('nutrients.C')}: {item.carbohydrates} {t('unit.gram')}
+                </small>
+              </div>
+            </div>
+          )}
+        </For>
+        <pre>
+          {JSON.stringify(recipes(), null, '  ')}
+        </pre>
 
-        <Show when={isOpen()}>
-          <Panel>
-            {productForm()}
-          </Panel>
-        </Show>
+        <Panel when={isOpen()}>
+          {productForm()}
+        </Panel>
 
-        <Show when={openProduct !== undefined}>
-          <Panel>
-            {mealForm()}
-          </Panel>
-        </Show>
+        <Panel when={!!openProduct()}>
+          {mealForm()}
+        </Panel>
 
       </div>
     </>

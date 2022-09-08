@@ -23,6 +23,7 @@ $border-width: 3px
   background-color: transparent
   box-sizing: border-box
   cursor: pointer
+  text-shadow: 0 0 0 var(--color-blue)
 
   @include breakpoints.breakpoint-portrait
     border-bottom: $border-width solid transparent
@@ -36,3 +37,4 @@ $border-width: 3px
 
   &_active
     border-color: var(--color-blue)
+    text-shadow: 0 0 2px var(--color-blue)

@@ -57,6 +57,9 @@
       "asyncArrow": "always"
     }],
     "no-restricted-globals": [0, "self"],
+    "@typescript-eslint/strict-boolean-expressions": [0, {
+      "allowNullableObject": true
+    }],
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-unused-vars": 2,
     "@typescript-eslint/space-infix-ops": 2,
