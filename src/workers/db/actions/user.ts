@@ -26,6 +26,7 @@ export const userActions = {
 
   /**
    * Removes a user by id from the "users" table
+   * @todo Remove user's journal records, meals, products, recipes and goals
    * @param {number} id
    * @returns {Promise<void>}
    */
