@@ -31,6 +31,10 @@
     "F": "F",
     "C": "C"
   },
+  "product": {
+    "name": "Product title",
+    "mass": "Mass"
+  },
   "unit": {
     "gram": "g",
     "kcal": "kcal"

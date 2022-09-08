@@ -49,7 +49,7 @@ export const MealForm: MealFormComponent = props => {
           <TextInput
             type="number"
             icon={emoji.scales.string}
-            placeholder={`${t('mass')}, ${t('unit.gram')}`}
+            placeholder={`${t('product.mass')}, ${t('unit.gram')}`}
             name="mass"
             min="0"
             value={mass()}
