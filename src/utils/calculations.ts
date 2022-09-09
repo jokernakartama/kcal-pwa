@@ -13,8 +13,8 @@ export const NutrientEnergy = {
 export const DEFAULT_NUTRIENTS_RATIO: Record<
   keyof typeof NutrientEnergy, number
 > = {
-  proteins: 0.35,
-  fats: 0.25,
+  proteins: 0.3,
+  fats: 0.3,
   carbohydrates: 0.4
 }
 
