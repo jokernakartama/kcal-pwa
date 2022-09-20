@@ -1,8 +1,28 @@
 declare namespace UserModel {
   export type Activity = 1.2 | 1.375 | 1.46 | 1.55 | 1.64 | 1.72 | 1.9
   export type WeightGoal = -0.15 | 0 | 0.15
+  export type NutritionType = 'normal' | 'cut' | 'bulk' | 'custom'
 
   export interface Info {
+    id: number
+    name: string
+    sex: 'male' | 'female'
+    birthDate: string
+    weight: number
+    height: number
+    activity: Activity
+    goal: WeightGoal
+  }
+
+  export interface Goals {
+    userId: Info['id']
+    kcalories: number
+    proteins: number
+    fats: number
+    carbohydrates: number
+  }
+
+  export interface Personal {
     id: number
     /**
      * The user's name
@@ -17,13 +37,17 @@ declare namespace UserModel {
      */
     birthDate: string
     /**
-     * Value of the user's weight in kilograms
-     */
-    weight: number
-    /**
      * The user's height in centimeters
      */
     height: number
+  }
+
+  export interface Status {
+    userId: Info['id']
+    /**
+     * Value of the user's weight in kilograms
+     */
+    weight: number
     /**
      * Value of the user's activity:
      * - 1.2 – minimal activity (lack of physical activity, sedentary work)
@@ -42,13 +66,13 @@ declare namespace UserModel {
      * - 0.15 - to gain weight
      */
     goal: WeightGoal
-  }
+    /**
+     * - Normal 0.3 0.3 0.4
+     * - To cut 0.4 0.25 0.35 (0.4 0.2-0.25 0.35-0.4)
+     * - To bulk 0.3 0.2 0.5 (0.3-0.4 0.2-0.25 0.4-0.5)
+     */
+    nutritionType: NutritionType
 
-  export interface Goals {
-    userId: Info['id']
-    kcalories: number
-    proteins: number
-    fats: number
-    carbohydrates: number
+    customNutrition?: [number, number, number]
   }
 }
