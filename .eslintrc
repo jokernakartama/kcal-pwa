@@ -57,8 +57,12 @@
       "asyncArrow": "always"
     }],
     "no-restricted-globals": [0, "self"],
+    "no-nested-ternary": 0,
     "@typescript-eslint/strict-boolean-expressions": [0, {
       "allowNullableObject": true
+    }],
+    "@typescript-eslint/restrict-template-expressions": [2, {
+      "allowNumber": true
     }],
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-unused-vars": 2,
