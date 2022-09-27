@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js'
+import { Component } from 'solid-js'
 import { setUser, setUserGoals } from '../../../api'
 import { useStore } from '../../../store'
 import { getBasalMetabolicRate, getEnergy, getNutrientMassValue } from '../../../utils/calculations'
@@ -24,7 +24,7 @@ export const GettingStarted: Component = () => {
           user.sex === 'male'
         )
         const energy = getEnergy(user.activity, bmr, user.goal)
-        setUserGoals({
+        return setUserGoals({
           userId: user.id,
           kcalories: Math.round(energy),
           proteins: Math.round(getNutrientMassValue('proteins', energy)),
