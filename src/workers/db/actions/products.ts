@@ -31,7 +31,7 @@ export const productsActions = {
   },
 
   /**
-   * Returns a list of products
+   * Returns a list of products. Filters items by id and name.
    * @param {ListParams} params
    * @returns {Promise<(DataModel.Product[])>}
    */

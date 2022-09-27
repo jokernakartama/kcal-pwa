@@ -9,7 +9,7 @@ export const recipesActions = {
   /**
    * Returns a recipe by id from the "recipes" table
    * @param {string} recipeId
-   * @returns {Promise<DataModel.Recipe | undefined>}
+   * @returns {Promise<(DataModel.Recipe | undefined)>}
    */
   'GET recipes/{recipeId}': async (recipeId: DataModel.Recipe['id']) => {
     return await DB.recipes.get(recipeId)
@@ -29,10 +29,11 @@ export const recipesActions = {
   },
 
   /**
-   * Returns a list of recipes
+   * Returns a list of recipes. Filters items
+   * by id, name and included product ids.
    * @param {number} userId
    * @param {ListParams} params
-   * @returns {Promise<(DataModel.Recipe[])>}
+   * @returns {Promise<DataModel.Recipe[]>}
    */
   'GET users/{userId}/recipes': async (
     userId: UserModel.Info['id'],
