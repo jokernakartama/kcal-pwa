@@ -21,7 +21,9 @@ type RowComponent = ParentComponent<{ class?: string }>
 type ColComponent = ParentComponent<{
   class?: string
   mobile?: ColWidth
+  tablet?: ColWidth
   desktop?: ColWidth
+  hd?: ColWidth
 }>
 
 export const Container: ContainerComponent = props => {
@@ -44,9 +46,13 @@ export const Col: ColComponent = props => {
   return (
     <div
       class={classNames(styles.col, props.class, {
-        [styles[`col-m-${props.mobile as string}`]]: props.mobile !== undefined,
-        [styles[`col-d-${props.desktop as string}`]]:
-          props.desktop !== undefined
+        [styles[`col-mobile-${props.mobile as string}`]]: props.mobile !== undefined,
+        [styles[`col-tablet-${props.tablet as string}`]]:
+          props.tablet !== undefined,
+        [styles[`col-desktop-${props.desktop as string}`]]:
+          props.desktop !== undefined,
+        [styles[`col-hd-${props.hd as string}`]]:
+          props.hd !== undefined,
       })}
     >
       {props.children}
