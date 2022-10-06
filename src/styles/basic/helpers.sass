@@ -1,4 +1,5 @@
 @use "./variables" as vars
+@use "./breakpoints"
 
 @for $i from 0 through 12
   :global(.m-mt-#{$i})
@@ -10,7 +11,36 @@
   :global(.m-ml-#{$i})
     margin-left: #{$i * vars.$grid-gutter}
 
-@media screen and (min-width: vars.$layout-breakpoint)
+:global(.m-mt-a)
+  margin-top: auto
+:global(.m-mb-a)
+  margin-bottom: auto
+:global(.m-mr-a)
+  margin-right: auto
+:global(.m-ml-a)
+  margin-left: auto
+
+@include breakpoints.breakpoint-tablet
+  @for $i from 1 through 12
+    :global(.t-mt-#{$i})
+      margin-top: #{$i * vars.$grid-gutter}
+    :global(.t-mb-#{$i})
+      margin-bottom: #{$i * vars.$grid-gutter}
+    :global(.t-mr-#{$i})
+      margin-right: #{$i * vars.$grid-gutter}
+    :global(.t-ml-#{$i})
+      margin-left: #{$i * vars.$grid-gutter}
+
+  :global(.t-mt-a)
+    margin-top: auto
+  :global(.t-mb-a)
+    margin-bottom: auto
+  :global(.t-mr-a)
+    margin-right: auto
+  :global(.t-ml-a)
+    margin-left: auto
+
+@include breakpoints.breakpoint-desktop
   @for $i from 1 through 12
     :global(.d-mt-#{$i})
       margin-top: #{$i * vars.$grid-gutter}
@@ -20,3 +50,32 @@
       margin-right: #{$i * vars.$grid-gutter}
     :global(.d-ml-#{$i})
       margin-left: #{$i * vars.$grid-gutter}
+
+  :global(.d-mt-a)
+    margin-top: auto
+  :global(.d-mb-a)
+    margin-bottom: auto
+  :global(.d-mr-a)
+    margin-right: auto
+  :global(.d-ml-a)
+    margin-left: auto
+
+@include breakpoints.breakpoint-hd
+  @for $i from 1 through 12
+    :global(.h-mt-#{$i})
+      margin-top: #{$i * vars.$grid-gutter}
+    :global(.h-mb-#{$i})
+      margin-bottom: #{$i * vars.$grid-gutter}
+    :global(.h-mr-#{$i})
+      margin-right: #{$i * vars.$grid-gutter}
+    :global(.h-ml-#{$i})
+      margin-left: #{$i * vars.$grid-gutter}
+
+  :global(.h-mt-a)
+    margin-top: auto
+  :global(.h-mb-a)
+    margin-bottom: auto
+  :global(.h-mr-a)
+    margin-right: auto
+  :global(.h-ml-a)
+    margin-left: auto
