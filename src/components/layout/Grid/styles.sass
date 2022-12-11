@@ -21,8 +21,8 @@
 
   @for $i from 1 through 12
     &.col-mobile-#{$i}
-      width: #{math.div(100, 12) * $i +'%'}
-      flex-basis: #{math.div(100, 12) * $i +'%'}
+      width: #{math.div(100, 12) * $i + '%'}
+      flex-basis: #{math.div(100, 12) * $i + '%'}
 
   &.col-mobile-0
     display: none
@@ -30,8 +30,8 @@
   @include breakpoints.breakpoint-tablet
     @for $i from 1 through 12
       &.col-tablet-#{$i}
-        width: #{math.div(100, 12) * $i +'%'}
-        flex-basis: #{math.div(100, 12) * $i +'%'}
+        width: #{math.div(100, 12) * $i + '%'}
+        flex-basis: #{math.div(100, 12) * $i + '%'}
 
     &.col-tablet-0
       display: none
@@ -39,8 +39,8 @@
   @include breakpoints.breakpoint-desktop
     @for $i from 1 through 12
       &.col-desktop-#{$i}
-        width: #{math.div(100, 12) * $i +'%'}
-        flex-basis: #{math.div(100, 12) * $i +'%'}
+        width: #{math.div(100, 12) * $i + '%'}
+        flex-basis: #{math.div(100, 12) * $i + '%'}
 
     &.col-desktop-0
       display: none
@@ -48,8 +48,8 @@
   @include breakpoints.breakpoint-hd
     @for $i from 1 through 12
       &.col-hd-#{$i}
-        width: #{math.div(100, 12) * $i +'%'}
-        flex-basis: #{math.div(100, 12) * $i +'%'}
+        width: #{math.div(100, 12) * $i + '%'}
+        flex-basis: #{math.div(100, 12) * $i + '%'}
 
     &.col-hd-0
       display: none
