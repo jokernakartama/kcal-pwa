@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jokernakartama/kcal-pwa#readme",
   "dependencies": {
+    "@solidjs/router": "^0.4.3",
     "classnames": "^2.3.1",
     "core-js": "^3.8.1",
     "dexie": "^3.2.1",
