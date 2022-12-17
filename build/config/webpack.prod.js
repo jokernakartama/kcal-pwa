@@ -27,8 +27,8 @@ module.exports = merge(config, {
     new WebpackPwaManifest({
       publicPath: '.',
       start_url: 'index.html?version=pwa',
-      name: '\ud83c\udf57\ud83e\udd51\ud83c\udf5a\ud83e\udd66',
-      short_name: 'Kcal',
+      name: 'MaPoop',
+      short_name: 'MaPoop',
       description: 'An app that helps you keep track of your daily nutrients.',
       background_color: '#241C1C',
       display: 'standalone',
