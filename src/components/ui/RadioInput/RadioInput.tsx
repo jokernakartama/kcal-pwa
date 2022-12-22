@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import {
   Component,
-  createMemo,
   createSelector,
+  createSignal,
   For,
   JSX,
   splitProps
@@ -27,10 +27,21 @@ export const RadioInput: RadioInputComponent = props => {
     'class',
     'children',
     'options',
-    'value'
+    'value',
+    'onChange'
   ])
-  const selected = createMemo(() => local.value)
+  const [selected, setSelected] = createSignal(local.value)
   const isSelected = createSelector(selected)
+
+  function handleChange(
+    e: InputEvent & { currentTarget: HTMLInputElement; target: Element }
+  ) {
+
+    setSelected(e.currentTarget.value)
+    if (typeof local.onChange === 'function') {
+      local.onChange(e)
+    }
+  }
 
   return (
     <For each={local.options}>
@@ -46,6 +57,7 @@ export const RadioInput: RadioInputComponent = props => {
             value={o.value}
             disabled={o.disabled}
             {...rest}
+            onChange={handleChange}
           />
           <div class={styles.switch}></div>
           <span class={styles.label}>{o.label}</span>
