@@ -1,0 +1,49 @@
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/common/input"
+
+.wrapper
+  @include input.checkbox-wrapper
+  position: relative
+  padding: 20px
+  border: 1px solid var(--color-input-border)
+  border-radius: vars.$border-radius
+  text-align: center
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+
+  .label
+    color: var(--color-gray)
+    font-size: vars.$font-size-12
+
+  .icon
+    font-size: vars.$font-size-36
+
+    & + .label
+      margin-top: 1em
+
+  .switch
+    border-radius: 1em
+    width: 1em
+    height: 1em
+    transition: .3s
+    position: absolute
+    top: 4px
+    left: 4px
+
+    &::after
+      display: block
+      background-color: transparent
+      border-radius: 50%
+      width: calc(1em - 10px)
+      height: calc(100% - 8px)
+      transition: .3s
+
+  input
+    &:checked + .switch
+      background-color: var(--color-blue)
+      border-color: var(--color-blue)
+
+      &::after
+        background-color: var(--color-white)
