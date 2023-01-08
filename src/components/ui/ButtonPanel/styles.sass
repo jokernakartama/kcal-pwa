@@ -1,0 +1,12 @@
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  flex-grow: 0
+  flex-shrink: 0
+  display: flex
+  align-items: center
+  justify-content: flex-end
+  padding: vars.$grid-gutter
+
+  & > *:first-child:not(:last-child)
+    margin-right: auto
