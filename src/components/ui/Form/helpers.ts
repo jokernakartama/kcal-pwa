@@ -1,4 +1,4 @@
-import { FormSubmitEvent, FormValues } from './types'
+import { FormValidity, FormValues } from './types'
 
 /**
  * Parses the numeric value from an input
@@ -27,15 +27,36 @@ function getInputDateValue(input: HTMLInputElement) {
   return input.value
 }
 
+export function getFormValidity<T extends FormValues<T>>(
+  form: HTMLFormElement
+): FormValidity<T> {
+  const { elements } = form
+  const data: Partial<FormValidity<T>> = {}
+
+  if (elements === undefined) return data as FormValidity<T>
+
+  for (const fieldElement of elements) {
+    const fieldName = fieldElement.getAttribute('name')
+    const input = fieldElement as HTMLInputElement
+
+    if (input.type === 'radio' && !input.checked) continue
+    if (typeof fieldName !== 'string') continue
+
+    data[fieldName as keyof T] = input.validity
+  }
+
+  return data as FormValidity<T>
+}
+
 /**
  * Collects fields' values from a form
  * @param {SubmitEvent} e
  * @returns {Object}
  */
 export function getFormValues<T extends FormValues<T>>(
-  e: FormSubmitEvent
-): FormValues<T> | undefined {
-  const { elements } = e.currentTarget
+  form: HTMLFormElement
+): T | undefined {
+  const { elements } = form
   const data: Partial<FormValues<T>> = {}
 
   if (elements === undefined) return undefined
