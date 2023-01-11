@@ -39,9 +39,34 @@
     "gram": "g",
     "kcal": "kcal"
   },
+  "activity":  {
+    "min": "Minimal",
+    "low": "Low",
+    "avg": "Average",
+    "intense": "Intense",
+    "high": "Higher than average",
+    "veryhigh": "High",
+    "max": "Very hight"
+  },
   "button": {
     "continue": "Continue",
     "remove": "Remove",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "back": "Back",
+    "start": "Start"
+  },
+  "welcome": {
+    "personal": {
+      "header": "Ready!",
+      "desc": "To get started, provide some personal information about you"
+    },
+    "inputs": {
+      "header": "Steady!",
+      "desc": "Your appearance and lifestyle"
+    },
+    "goals": {
+      "header": "Go!",
+      "desc": "Your fitness goals"
+    }
   }
 }
