@@ -9,7 +9,7 @@ export type FormValidity<T extends object> = {
 }
 
 export type FormContextData<T extends object> = {
-  [P in keyof T]: {
+  [P in keyof T]?: {
     value: T[P]
     valid: boolean
     validity: ValidityState
