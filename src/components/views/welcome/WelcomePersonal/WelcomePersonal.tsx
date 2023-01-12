@@ -40,13 +40,12 @@ export const WelcomePersonal: WelcomePersonalComponent = (props) => {
     <div class={classNames(styles.wrapper, props.class)}>
       <Container class={styles.content}>
         <div class={styles.headers}>
-          <h1 class="m-mb-1">{t('welcome.personal.header')}</h1>
-          <h3 class="m-mb-3">{t('welcome.personal.desc')}</h3>
+          <h1 class="m-mb-2 m-mt-2">{t('welcome.personal.header')}</h1>
         </div>
 
         <div class={styles.fields}>
-          <Row>
-            <Col desktop="4" class="m-mb-3">
+          <Row class="m-mb-4">
+            <Col desktop="4" class="m-mb-2">
               <TextInput
                 required
                 type="text"
@@ -55,7 +54,7 @@ export const WelcomePersonal: WelcomePersonalComponent = (props) => {
                 name="name"
               />
             </Col>
-            <Col mobile="12" desktop="4" class="m-mb-3">
+            <Col mobile="12" desktop="4" class="m-mb-2">
               <TextInput
                 required
                 type="date"
@@ -66,6 +65,9 @@ export const WelcomePersonal: WelcomePersonalComponent = (props) => {
                 max={maxDate}
               />
             </Col>
+          </Row>
+
+          <Row>
             <Col mobile="12" desktop="4" class="m-mb-3">
               <div class={styles['cards-wrapper']}>
                 <CardRadioInput
@@ -75,11 +77,9 @@ export const WelcomePersonal: WelcomePersonalComponent = (props) => {
                   value={sexOptions()[0].value}
                 />
               </div>
-
             </Col>
           </Row>
         </div>
-
       </Container>
 
       <ButtonPanel>

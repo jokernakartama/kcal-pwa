@@ -6,7 +6,7 @@
     "birthday": "Birth date",
     "sex": "Sex",
     "male": "Male",
-    "female": "Femail",
+    "female": "Female",
     "activity": "Activity",
     "activity_min": "Minimal",
     "activity_low": "Low",
@@ -57,16 +57,13 @@
   },
   "welcome": {
     "personal": {
-      "header": "Ready!",
-      "desc": "To get started, provide some personal information about you"
+      "header": "Some personal info about you"
     },
     "inputs": {
-      "header": "Steady!",
-      "desc": "Your appearance and lifestyle"
+      "header": "Parameters and lifestyle"
     },
     "goals": {
-      "header": "Go!",
-      "desc": "Your fitness goals"
+      "header": "Your fitness goals"
     }
   }
 }

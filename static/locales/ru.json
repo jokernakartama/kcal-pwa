@@ -10,7 +10,7 @@
     "activity": "Активность",
     "activity_min": "Минимальная",
     "activity_low": "Небольшая",
-    "activity_avg": "Средняя",
+    "activity_avg": "Хорошая",
     "activity_intense": "Выше среднего",
     "activity_high": "Повышенная",
     "activity_veryhigh": "Высокая",
@@ -57,16 +57,13 @@
   },
   "welcome": {
     "personal": {
-      "header": "На старт!",
-      "desc": "Для начала расскажите немного о себе"
+      "header": "Немного о себе"
     },
     "inputs": {
-      "header": "Внимание!",
-      "desc": "Параметры и стиль жизни"
+      "header": "Параметры и стиль жизни"
     },
     "goals": {
-      "header": "Поехали!",
-      "desc": "Спортивные/фитнес цели"
+      "header": "Спортивные/фитнес цели"
     }
   }
 }
