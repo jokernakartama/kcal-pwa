@@ -4,7 +4,7 @@
 @mixin input-wrapper
   display: block
   position: relative
-  padding-top: calc(vars.$font-size-12 / 2 + 0px)
+  padding-top: calc(vars.$font-size-14 / 2 + 0px)
 
   &.disabled
     opacity: .5
@@ -12,8 +12,8 @@
   .placeholder
     user-select: none
     position: absolute
-    font-size: vars.$font-size-12
-    top: calc(vars.$font-size-12 - 1em)
+    font-size: vars.$font-size-14
+    top: calc(vars.$font-size-14 - 1em)
     text-shadow: 0 2px 2px var(--color-bg)
     left: 1.25em
     color: var(--color-input-border-accent)
@@ -51,6 +51,7 @@
 
     &::placeholder
       color: var(--color-input-border-accent)
+      opacity: .5
 
     &:placeholder-shown + .placeholder
         opacity: 0
@@ -61,12 +62,12 @@
   .icon
     position: absolute
     font-size: 1.25em
-    top: 1.25em
+    top: 1.5em
     left: 1.25em
 
     & + input,
     & + select
-      padding-left: 3em
+      padding-left: 3.25em
 
       &:placeholder-shown + .placeholder
         left: 3em
