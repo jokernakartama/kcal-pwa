@@ -10,9 +10,9 @@ declare namespace DataModel {
     /**  Amount of fats in grams */
     fats: number
     /**  Amount of carbs in grams  */
-    carbohydrates: number
+    carbs: number
     /**  Energy in kcal */
-    kcalories: number
+    energy: number
   }
 
   /**
@@ -21,7 +21,7 @@ declare namespace DataModel {
   export interface Product extends Nutrition {
     id: number
     /**  Bound user's id */
-    userId: UserModel.Info['id']
+    userId: UserModel.User['id']
     /**  The name of the product */
     name: string
   }
@@ -32,7 +32,7 @@ declare namespace DataModel {
   export interface Recipe {
     id: number
     /**  Bound user's id */
-    userId: UserModel.Info['id']
+    userId: UserModel.User['id']
     /**  The name of the recipe */
     name: string
     /**  Bound products */
@@ -55,13 +55,13 @@ declare namespace DataModel {
   export interface Meal {
     id: number
     /** Bound user's id */
-    userId: UserModel.Info['id']
+    userId: UserModel.User['id']
     /** Bound journal record */
     recordId: DataModel.JournalRecord['id']
     /** Datetime stamp */
     time: Date
     /** Bound recipe object */
-    recipe?: Omit<Recipe, 'userId'>
+    recipe?: Recipe
     /** Bound product object */
     product?: Product
     /** Whether the bound entity has been removed */
@@ -73,10 +73,10 @@ declare namespace DataModel {
     mass: Mass
   }
 
-  export interface JournalRecord extends Partial<UserModel.Goals> {
+  export interface JournalRecord {
     id: number
     /** Bound user's id */
-    userId: UserModel.Info['id']
+    userId: UserModel.User['id']
     /** A date in YYYY-MM-DD format */
     date: string
   }

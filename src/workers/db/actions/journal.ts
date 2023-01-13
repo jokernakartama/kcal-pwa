@@ -14,7 +14,7 @@ export const journalActions = {
    * @returns {Promise<(DataModel.JournalRecord[])>}
    */
   'GET users/{userId}/journal': async (
-    userId: UserModel.Info['id'],
+    userId: UserModel.User['id'],
     date: DataModel.JournalRecord['date']
   ) => {
     return await DB.journal
@@ -29,7 +29,7 @@ export const journalActions = {
    * @returns {Promise<undefined>}
    */
   'DELETE users/{userId}/journal': async (
-    userId: UserModel.Info['id']
+    userId: UserModel.User['id']
   ) => {
     try {
       await DB.journal

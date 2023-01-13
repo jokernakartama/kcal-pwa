@@ -36,7 +36,7 @@ export const productsActions = {
    * @returns {Promise<(DataModel.Product[])>}
    */
   'GET users/{userId}/products': async (
-    userId: UserModel.Info['id'],
+    userId: UserModel.User['id'],
     params?: ListParams<DataModel.Product>
   ) => {
     let collection: Collection<DataModel.Product, number>

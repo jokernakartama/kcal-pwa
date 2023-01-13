@@ -10,32 +10,32 @@ const DBWorkerClient = new WorkerClient<typeof dbWorkerActions>(
 /**
  * Gets user info
  * @param {number} userId
- * @returns {Promise<(UserModel.Info | undefined)>}
+ * @returns {Promise<(UserModel.User | undefined)>}
  */
 export function getUser(
-  userId: UserModel.Info['id']
-): Promise<UserModel.Info | undefined> {
+  userId: UserModel.User['id']
+): Promise<UserModel.User | undefined> {
   return DBWorkerClient
     .dispatch('GET users/{userId}', userId)
 }
 
 /**
  * Updates user info
- * @param {UserModel.Info} user
- * @returns {Promise<UserModel.Info>}
+ * @param {UserModel.User} user
+ * @returns {Promise<UserModel.User>}
  */
 export function setUser(
-  user: WithOptional<UserModel.Info, 'id'>
-): Promise<UserModel.Info> {
+  user: WithOptional<UserModel.User, 'id'>
+): Promise<UserModel.User> {
   return DBWorkerClient
     .dispatch('PUT users/{user}', user)
 }
 
 /**
  * Returns a list of users
- * @returns {Promise<UserModel.Info[]>}
+ * @returns {Promise<UserModel.User[]>}
  */
-export function getUsers(): Promise<UserModel.Info[]> {
+export function getUsers(): Promise<UserModel.User[]> {
   return DBWorkerClient
     .dispatch('GET users')
 }
@@ -46,7 +46,7 @@ export function getUsers(): Promise<UserModel.Info[]> {
  * @returns {Promise<UserModel.Goals | undefined>>}
  */
 export function getUserGoals(
-  userId: UserModel.Info['id']
+  userId: UserModel.User['id']
 ): Promise<UserModel.Goals | undefined> {
   return DBWorkerClient
     .dispatch('GET users/{userId}/goals', userId)
@@ -106,11 +106,11 @@ export function removeProduct(
  * @returns {Promise<PaginationResponse<DataModel.Product>>}
  */
 export function getProducts(
-  userId: UserModel.Info['id'],
+  userId: UserModel.User['id'],
   params?: PaginationParams & {
     id?: number | number[]
     name?: string,
-    sort?: 'name' | 'kcalories' | 'id'
+    sort?: 'name' | 'energy' | 'id'
     dir?: 'asc' | 'desc'
   }
 ): Promise<PaginationResponse<DataModel.Product>> {
@@ -160,7 +160,7 @@ export function removeRecipe(
  * @returns {Promise<PaginationResponse<DataModel.Recipe>>}
  */
 export function getRecipes(
-  userId: UserModel.Info['id'],
+  userId: UserModel.User['id'],
   params?: PaginationParams & {
     id?: number | number[]
     name?: string,
@@ -220,7 +220,7 @@ export function getMeals(
  * @returns {Promise<PaginationResponse<DataModel.Journal>>}
  */
 export function getJournal(
-  userId: UserModel.Info['id'],
+  userId: UserModel.User['id'],
   date: string
 ): Promise<DataModel.JournalRecord | undefined> {
   return DBWorkerClient
@@ -233,7 +233,7 @@ export function getJournal(
  * @returns {Promise<undefined>}
  */
 export function clearJournal(
-  userId: UserModel.Info['id']
+  userId: UserModel.User['id']
 ): Promise<void> {
   return DBWorkerClient
     .dispatch('DELETE users/{userId}/journal', userId)
