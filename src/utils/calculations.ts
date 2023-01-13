@@ -19,6 +19,17 @@ export const DEFAULT_NUTRIENTS_RATIO: Record<
 }
 
 /**
+ *
+ * @param {number} steps - Average number of daily steps
+ * @param {number} gym - Number of minutes of weekly power training
+ * @param {number} cardio - Number of minutes of weekly cardio/crossfit
+ * @returns {number}
+ */
+export function getActivity(steps: number, gym: number, cardio: number) {
+  return steps * 0.03 + gym * 5 / 7 + cardio
+}
+
+/**
  * Calculates BMR.
  * Basal Metabolic Rate is the number of calories
  * required to keep your body functioning at rest.
@@ -26,7 +37,7 @@ export const DEFAULT_NUTRIENTS_RATIO: Record<
  * @param {number} height
  * @param {number} age
  * @param {boolean} isMale
- * @returns
+ * @returns {number}
  */
 export function getBasalMetabolicRate(
   weight: number,
@@ -42,14 +53,16 @@ export function getBasalMetabolicRate(
  * @param {number} activity - Daily activity rate
  * @param {number} bmr - Basal Metabolic Rate
  * @param {number} goal - Coefficient determing the required deficit or surplus
- * @returns
+ * @returns {number}
  */
 export function getEnergy(
   activity: UserModel.Activity,
   bmr: number,
   goal: UserModel.WeightGoal = 0
 ) {
-  return activity * bmr * (1 + goal)
+  // Another activity rate
+  // return (bmr * activity) * (1 + goal)
+  return (bmr * 1.1 + activity) * (1 + goal)
 }
 
 /**
@@ -58,7 +71,7 @@ export function getEnergy(
  * @param {number} totalEnergy
  * @param {number} ratio - The proportion of the nutrient
  * in the total volume of food
- * @returns
+ * @returns {number}
  */
 export function getNutrientMassValue(
   nutrient: keyof typeof NutrientEnergy,
