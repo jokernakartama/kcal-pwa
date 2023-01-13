@@ -1,9 +1,12 @@
+import { Route, Routes } from '@solidjs/router'
 import { Component, createEffect, createSignal, onMount, Show } from 'solid-js'
 import { getJournal, getUserGoals, getUsers } from '../../../api'
 import { i18n } from '../../../i18n/config'
 import { useStore } from '../../../store'
 import { normalizeDate } from '../../../utils/format'
+import { AppLoading } from '../../views/AppLoading'
 import { GettingStarted } from '../../views/GettingStarted'
+// import { GettingStarted } from '../../views/GettingStarted'
 import { AppSections } from '../AppSections'
 import styles from './styles.sass'
 
@@ -25,7 +28,7 @@ export const Layout: Component = () => {
       })
   }
 
-  function fetchJournalRecord(userId: UserModel.Info['id']) {
+  function fetchJournalRecord(userId: UserModel.User['id']) {
     getJournal(userId, normalizeDate(new Date()))
       .then(record => {
         if (typeof record !== 'undefined') {
@@ -37,7 +40,7 @@ export const Layout: Component = () => {
       })
   }
 
-  function fetchUserGoals(userId: UserModel.Info['id']) {
+  function fetchUserGoals(userId: UserModel.User['id']) {
     getUserGoals(userId)
       .then(goals => {
         if (goals !== undefined) {
@@ -72,12 +75,15 @@ export const Layout: Component = () => {
 
   return (
     <div class={styles.wrapper}>
-      <Show when={isReady()} fallback={<h1>LOadiNg...</h1>}>
+      <Show when={isReady()} fallback={<AppLoading />}>
         <Show
           when={store.user !== undefined}
           fallback={<GettingStarted />}
         >
-          <AppSections />
+          <Routes>
+            <Route path="/" component={AppSections} />
+            <Route path="/start" component={GettingStarted} />
+          </Routes>
         </Show>
       </Show>
     </div>
