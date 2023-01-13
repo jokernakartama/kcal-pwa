@@ -1,12 +1,13 @@
 import classNames from 'classnames'
 import { Component, JSX, splitProps } from 'solid-js'
+import { emoji } from '../../../constants/emoji'
 import styles from './styles.sass'
 import { TextInputTypeValue } from './types'
 
 type TextInputComponent = Component<
   JSX.IntrinsicElements['input'] & {
     type: TextInputTypeValue
-    icon?: string
+    icon?: keyof typeof emoji
   }
 >
 
@@ -23,7 +24,9 @@ export const TextInput: TextInputComponent = props => {
       })}
     >
       {local.icon !== undefined && (
-        <div class={styles.icon}>{local.icon}</div>
+        <div class={styles.icon}>
+          {emoji[local.icon].html}{' '}
+        </div>
       )}
       <input {...rest} />
       <div class={styles.placeholder}>{rest.placeholder}</div>
