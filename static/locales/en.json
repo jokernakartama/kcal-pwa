@@ -20,12 +20,16 @@
     "maintain": "To maintain",
     "gain": "To gain"
   },
+  "goals": {
+    "header": "Your goals",
+    "energy": "Energy (kcal)"
+  },
   "nutrients": {
     "mass": "Mass",
     "proteins": "Proteins",
     "fats": "Fats",
-    "carbohydrates": "Carbohydrates",
-    "kcalories": "Calories",
+    "carbs": "Carbohydrates",
+    "energy": "Energy",
     "E": "E",
     "P": "P",
     "F": "F",
@@ -57,7 +61,7 @@
   },
   "welcome": {
     "personal": {
-      "header": "Some personal info about you"
+      "header": "A little about you"
     },
     "inputs": {
       "header": "Parameters and lifestyle"
