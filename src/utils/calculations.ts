@@ -56,9 +56,9 @@ export function getBasalMetabolicRate(
  * @returns {number}
  */
 export function getEnergy(
-  activity: UserModel.Activity,
+  activity: number,
   bmr: number,
-  goal: UserModel.WeightGoal = 0
+  goal = 0
 ) {
   // Another activity rate
   // return (bmr * activity) * (1 + goal)
