@@ -1,6 +1,40 @@
 @use "sass:string"
 @use "../basic/variables" as vars
 
+@mixin input-placeholder
+  user-select: none
+  position: absolute
+  font-size: vars.$font-size-14
+  top: calc(vars.$font-size-14 - 1em)
+  text-shadow: 0 1px 2px var(--color-bg)
+  left: 1.25em
+  color: var(--color-input-border-accent)
+  transition: .2s
+  line-height: 1em
+  white-space: nowrap
+
+
+@mixin input-field
+  background-color: rgba(140, 140, 140, 0.1)
+  border-radius: vars.$border-radius
+  // border-style: solid
+  border-width: 0px
+  // border-color: var(--color-input-border)
+  box-sizing: border-box
+  color: var(--color-text)
+  font-size: vars.$font-size-16
+  font-weight: 500
+  padding: 0 1.25em
+  box-shadow: vars.$shadow-basic
+  height: vars.$input-height
+  outline: none
+  display: inline-flex
+  align-items: center
+  width: 100%
+  min-width: 100%
+  transition: all .2s, opacity .5s
+
+
 @mixin input-wrapper
   display: block
   position: relative
@@ -10,37 +44,11 @@
     opacity: .5
 
   .placeholder
-    user-select: none
-    position: absolute
-    font-size: vars.$font-size-14
-    top: calc(vars.$font-size-14 - 1em)
-    text-shadow: 0 2px 2px var(--color-bg)
-    left: 1.25em
-    color: var(--color-input-border-accent)
-    transition: .2s
-    line-height: 1em
-    white-space: nowrap
+    @include input-placeholder
 
   input,
   select
-    background-color: rgba(140, 140, 140, 0.1)
-    border-radius: vars.$border-radius
-    // border-style: solid
-    border-width: 0px
-    // border-color: var(--color-input-border)
-    box-sizing: border-box
-    color: var(--color-text)
-    font-size: vars.$font-size-16
-    font-weight: 500
-    padding: 0 1.25em
-    box-shadow: vars.$shadow-basic
-    height: vars.$input-height
-    outline: none
-    display: inline-flex
-    align-items: center
-    width: 100%
-    min-width: 100%
-    transition: all .2s, opacity .5s
+    @include input-field
 
     &:focus
       border-color: var(--color-input-border-accent)
@@ -100,6 +108,7 @@
     display: inline-block
     vertical-align: middle
     margin-right: .5em
+    margin-top: -2px
     position: relative
 
     &::after
