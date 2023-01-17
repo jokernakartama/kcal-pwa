@@ -31,13 +31,11 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
 
   function getCurrentX(pageX: number, captured: number) {
     const leftValue = pageX - (captured ?? 0)
-
     return leftValue
   }
 
   function getCurrentY(pageY: number, captured: number) {
     const topValue = pageY - (captured ?? 0)
-
     return topValue
   }
 
@@ -48,13 +46,13 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
   ) {
     batch(() => {
       if (calcOptions.x !== false) {
-        const nextCapturedX = pageX - (element?.offsetLeft ?? 0)
+        const nextCapturedX = pageX - (element.clientLeft ?? 0)
         capturedX = nextCapturedX
         setCurrentX(getCurrentX(pageX, nextCapturedX))
       }
 
       if (calcOptions.y !== false) {
-        const nextCapturedY = pageY - (element?.offsetTop ?? 0)
+        const nextCapturedY = pageY - (element.clientTop ?? 0)
         capturedY = nextCapturedY
         setCurrentY(getCurrentY(pageY, nextCapturedY))
 
@@ -68,8 +66,8 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
     const element = e.currentTarget as HTMLElement
     captureCoordinates(e.pageX, e.pageY, element)
 
-    window.document.addEventListener('mousemove', move)
-    window.document.addEventListener('mouseup', release)
+    window.addEventListener('mousemove', move)
+    window.addEventListener('mouseup', release)
   }
 
   function move(e: MouseEvent) {
@@ -78,7 +76,6 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
         setCurrentX(getCurrentX(e.pageX, capturedX ?? 0))
       }
       if (calcOptions.y !== false) {
-        console.info(e.pageY, capturedY)
         setCurrentY(getCurrentY(e.pageY, capturedY ?? 0))
       }
     })
@@ -92,8 +89,8 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
 
     captureCoordinates(pageX, pageY, element)
 
-    window.document.addEventListener('touchmove', slide)
-    window.document.addEventListener('touchend', release)
+    window.addEventListener('touchmove', slide)
+    window.addEventListener('touchend', release)
   }
 
   function slide(e: TouchEvent) {
@@ -111,10 +108,10 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
   }
 
   function release() {
-    window.document.removeEventListener('mouseup', release)
-    window.document.removeEventListener('mousemove', move)
-    window.document.removeEventListener('touchend', release)
-    window.document.removeEventListener('touchmove', slide)
+    window.removeEventListener('mouseup', release)
+    window.removeEventListener('mousemove', move)
+    window.removeEventListener('touchend', release)
+    window.removeEventListener('touchmove', slide)
 
     batch(() => {
       if (calcOptions.x) {
