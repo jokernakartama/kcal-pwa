@@ -1,7 +1,7 @@
 export const NutrientEnergy = {
   proteins: 4,
   fats: 9,
-  carbohydrates: 4
+  carbs: 4
 }
 
 /**
@@ -15,7 +15,7 @@ export const DEFAULT_NUTRIENTS_RATIO: Record<
 > = {
   proteins: 0.3,
   fats: 0.3,
-  carbohydrates: 0.4
+  carbs: 0.4
 }
 
 /**
