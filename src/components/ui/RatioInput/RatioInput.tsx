@@ -36,6 +36,9 @@ export const RatioInput: RatioInputComponent = props => {
   const [state, setState] = createStore<PartsStore>({
     value: local.parts.map(ratio => ratio.defaultValue)
   })
+  const min = createMemo(() => {
+    return local.min ?? 1
+  })
   const inputValue = createMemo(() => {
     return JSON.stringify(state.value)
   })
@@ -44,11 +47,12 @@ export const RatioInput: RatioInputComponent = props => {
     if (
       (dir === -1 && index === 0) ||
       (dir === 1) && index === local.parts.length - 1
-    ) return value
+    ) return state.value[index]
 
-    const maxValue = state.value[index + dir] + state.value[index] - (local.min ?? 1)
+    const minValue = min()
+    const maxValue = state.value[index + dir] + state.value[index] - minValue
 
-    return Math.min(value, maxValue)
+    return Math.max(Math.min(value, maxValue), minValue)
   }
 
   function handleChange(
