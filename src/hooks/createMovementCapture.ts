@@ -64,6 +64,7 @@ export function createMovementCapture(options?: MovementCaptureHookOptions) {
 
   function hold(e: MouseEvent) {
     const element = e.currentTarget as HTMLElement
+    if (e.button !== 0) return
     captureCoordinates(e.pageX, e.pageY, element)
 
     window.addEventListener('mousemove', move)
