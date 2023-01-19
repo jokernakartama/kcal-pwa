@@ -1,3 +1,4 @@
+@use "../../../styles/basic/variables" as vars
 @use "../../../styles/basic/breakpoints"
 
 .wrapper
@@ -13,12 +14,5 @@
 .content
   flex-grow: 1
   overflow: hidden
-
-.tabs-wrapper
-  overflow: visible
-  display: flex
-  flex-direction: column
-  height: 100%
-
-.tab
-  overflow: auto
+  padding-top: (vars.$grid-gutter * 2)
+  padding-bottom: (vars.$grid-gutter * 2)

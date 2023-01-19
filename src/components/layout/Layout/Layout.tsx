@@ -1,18 +1,19 @@
 import { Route, Routes } from '@solidjs/router'
-import { Component, createEffect, createSignal, onMount, Show } from 'solid-js'
-import { getJournal, getUserGoals, getUsers } from '../../../api'
+import { Component, createSignal, onMount, Show } from 'solid-js'
+import { getUsers } from '../../../api'
 import { i18n } from '../../../i18n/config'
 import { useStore } from '../../../store'
-import { normalizeDate } from '../../../utils/format'
 import { AppLoading } from '../../views/AppLoading'
 import { GettingStarted } from '../../views/GettingStarted'
-// import { GettingStarted } from '../../views/GettingStarted'
 import { AppSections } from '../AppSections'
 import styles from './styles.sass'
 
+/**
+ * Fetches initial data and renders the basic view
+ */
 export const Layout: Component = () => {
   const [store, setStore] = useStore()
-  const [isReady, setIsReady] = createSignal(false)
+  const [isReady, setIsReady] = createSignal<boolean>(false)
 
   function applyLanguage() {
     return i18n
@@ -28,30 +29,6 @@ export const Layout: Component = () => {
       })
   }
 
-  function fetchJournalRecord(userId: UserModel.User['id']) {
-    getJournal(userId, normalizeDate(new Date()))
-      .then(record => {
-        if (typeof record !== 'undefined') {
-          setStore({ journal: record })
-        }
-      })
-      .catch(e => {
-        console.error('Journal fetching error: ', e)
-      })
-  }
-
-  function fetchUserGoals(userId: UserModel.User['id']) {
-    getUserGoals(userId)
-      .then(goals => {
-        if (goals !== undefined) {
-          setStore({ goals })
-        }
-      })
-      .catch(e => {
-        console.error('Goals fetching error: ', e)
-      })
-  }
-
   onMount(() => {
     Promise.all([
       fetchUser(),
@@ -63,14 +40,6 @@ export const Layout: Component = () => {
       .catch(e => {
         console.error('App starting error:', e)
       })
-
-  })
-
-  createEffect(() => {
-    if (store.user !== undefined) {
-      fetchUserGoals(store.user.id)
-      fetchJournalRecord(store.user.id)
-    }
   })
 
   return (
@@ -82,7 +51,6 @@ export const Layout: Component = () => {
         >
           <Routes>
             <Route path="/" component={AppSections} />
-            <Route path="/start" component={GettingStarted} />
           </Routes>
         </Show>
       </Show>

@@ -1,33 +1,59 @@
-import { Component, createSignal, Match, Switch } from 'solid-js'
-import { CookBook } from '../../views/CookBook'
+import { Component, createEffect, createSignal, Show } from 'solid-js'
+import { getJournal, getUserGoals } from '../../../api'
+import { useStore } from '../../../store'
+import { normalizeDate } from '../../../utils/format'
+import { AppLoading } from '../../views/AppLoading'
 import { Dashboard } from '../../views/Dashboard'
-import { UserProfile } from '../../views/UserProfile'
 import { Container } from '../Grid'
-import { TabsPanel } from '../TabsPanel'
 import styles from './styles.sass'
 
-export const AppSections: Component = (props) => {
-  const [tab, setTab] = createSignal(0)
+/**
+ * Renders basic user app and fetches basic user data
+ */
+export const AppSections: Component = () => {
+  const [store, setStore] = useStore()
+  const [isReady, setIsReady] = createSignal<boolean>(false)
+
+  function fetchJournalRecord(userId: UserModel.User['id']) {
+    return getJournal(userId, normalizeDate(new Date()))
+      .then(record => {
+        if (typeof record !== 'undefined') {
+          setStore({ journal: record })
+        }
+      })
+  }
+
+  function fetchUserGoals(userId: UserModel.User['id']) {
+    return getUserGoals(userId)
+      .then(goals => {
+        if (goals !== undefined) {
+          setStore({ goals })
+        }
+      })
+  }
+
+  createEffect(() => {
+    if (store.user !== undefined) {
+      Promise.all([
+        fetchUserGoals(store.user.id),
+        fetchJournalRecord(store.user.id)
+      ])
+        .then(() => {
+          setIsReady(true)
+        })
+        .catch(e => {
+          console.error('User data fetching error:', e)
+        })
+    }
+  })
 
   return (
-    <main class={styles.wrapper}>
-      <Container class={styles.content}>
-        <div class={styles['tabs-wrapper']}>
-          <Switch>
-            <Match when={tab() === 0}>
-              <Dashboard class={styles.tab} />
-            </Match>
-            <Match when={tab() === 1}>
-              <CookBook class={styles.tab} />
-            </Match>
-            <Match when={tab() === 2}>
-              <UserProfile />
-            </Match>
-          </Switch>
-        </div>
-      </Container>
-
-      <TabsPanel onChange={setTab}/>
-    </main>
+    <Show when={isReady()} fallback={<AppLoading />}>
+      <main class={styles.wrapper}>
+        <Container class={styles.content}>
+          <Dashboard class={styles.tab} />
+        </Container>
+      </main>
+    </Show>
   )
 }
