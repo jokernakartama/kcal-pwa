@@ -46,10 +46,13 @@ export const RatioInputPart: RatioInputPartComponent = props => {
 
     const parentWidth = (elementRef.parentElement as HTMLDivElement).clientWidth
     const sign = reversed ? -1 : 1
-
     const offsetRatio = capturedValue + (sign * offset * 100 / parentWidth)
 
     return roundTo(offsetRatio)
+  }
+
+  function handleDragStart(e: DragEvent) {
+    e.preventDefault()
   }
 
   createEffect(on(rightX, (v) => {
@@ -75,6 +78,7 @@ export const RatioInputPart: RatioInputPartComponent = props => {
       ref={elementRef}
       class={styles.range}
       style={{ 'flex-basis': `${props.value}%` }}
+      onDragStart={handleDragStart}
     >
 
       <Show when={props.label}>
