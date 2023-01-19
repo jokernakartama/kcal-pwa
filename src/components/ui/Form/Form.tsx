@@ -81,6 +81,7 @@ export const Form: FormComponent = props => {
         [styles.disabled]: local.disabled
       })}
       onInput={handleInput}
+      on:custom-input={handleInput}
       {...rest}
     >
       <FormContext.Provider value={state}>
