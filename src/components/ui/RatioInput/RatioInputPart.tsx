@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { createEffect, on, ParentComponent, Show } from 'solid-js'
+import { createEffect, createMemo, on, ParentComponent, Show } from 'solid-js'
 import { createMovementCapture } from '../../../hooks/createMovementCapture'
 import { roundTo } from '../../../utils/format'
 import styles from './styles.sass'
@@ -18,6 +18,7 @@ export const RatioInputPart: RatioInputPartComponent = props => {
   let elementRef: HTMLDivElement | undefined
   let capturedValue = props.value
 
+  const displayValue = createMemo(() => Math.round(props.value * 100))
   const { hold: onRightHold, touch: onRightTouch, x: rightX } = createMovementCapture()
   const { hold: onLeftHold, touch: onLeftTouch, x: leftX } = createMovementCapture()
 
@@ -46,9 +47,9 @@ export const RatioInputPart: RatioInputPartComponent = props => {
 
     const parentWidth = (elementRef.parentElement as HTMLDivElement).clientWidth
     const sign = reversed ? -1 : 1
-    const offsetRatio = capturedValue + (sign * offset * 100 / parentWidth)
+    const offsetRatio = capturedValue + (sign * offset / parentWidth)
 
-    return roundTo(offsetRatio)
+    return roundTo(offsetRatio, 2)
   }
 
   function handleDragStart(e: DragEvent) {
@@ -77,7 +78,7 @@ export const RatioInputPart: RatioInputPartComponent = props => {
     <div
       ref={elementRef}
       class={styles.range}
-      style={{ 'flex-basis': `${props.value}%` }}
+      style={{ 'flex-basis': `${displayValue()}%` }}
       onDragStart={handleDragStart}
     >
 
@@ -88,7 +89,7 @@ export const RatioInputPart: RatioInputPartComponent = props => {
       </Show>
 
       <div class={styles['range-value']}>
-        {props.value}%
+        {displayValue()}%
       </div>
 
       <div

@@ -1,8 +1,9 @@
 import classNames from 'classnames'
-import { Component, createMemo, Index, JSX, splitProps } from 'solid-js'
+import { Component, createEffect, createMemo, Index, JSX, on, splitProps } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
 import { RatioInputPart } from './RatioInputPart'
 import styles from './styles.sass'
+import { RatioOption } from './types'
 
 type RatioInputComponent = Component<
   Omit<JSX.IntrinsicElements['input'], 'type'> & {
@@ -10,11 +11,7 @@ type RatioInputComponent = Component<
      * Minimal value of a ratio
      */
     min?: number
-    parts: Array<{
-      color?: UI.OriginalColorName
-      defaultValue: number
-      label?: string
-    }>
+    parts: RatioOption[]
   }
 >
 
@@ -26,6 +23,7 @@ interface PartsStore {
  * Renders a parts input
  */
 export const RatioInput: RatioInputComponent = props => {
+  let inputElement: HTMLInputElement
   const [local, rest] = splitProps(props, [
     'class',
     'children',
@@ -37,7 +35,7 @@ export const RatioInput: RatioInputComponent = props => {
     value: local.parts.map(ratio => ratio.defaultValue)
   })
   const min = createMemo(() => {
-    return local.min ?? 1
+    return local.min ?? 0.01
   })
   const inputValue = createMemo(() => {
     return JSON.stringify(state.value)
@@ -82,6 +80,14 @@ export const RatioInput: RatioInputComponent = props => {
     )
   }
 
+  createEffect(on(inputValue, () => {
+    if (inputElement?.form) {
+      const e = new Event('custom-input')
+
+      inputElement.form.dispatchEvent(e)
+    }
+  }))
+
   return (
     <div class={classNames(styles.wrapper, local.class)}>
       <div class={styles.input}>
@@ -103,6 +109,7 @@ export const RatioInput: RatioInputComponent = props => {
         </div>
 
         <input
+          ref={(el) => { inputElement = el }}
           type="hidden"
           {...rest}
           value={inputValue()}
