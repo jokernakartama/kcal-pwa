@@ -1,3 +1,4 @@
+import Dexie from 'dexie'
 import { DB } from '../../../db'
 import { WithOptional } from '../../../types/utils'
 
@@ -31,7 +32,44 @@ export const userActions = {
    * @returns {Promise<void>}
    */
   'DELETE users/{userId}': async (userId: UserModel.User['id']) => {
-    return await DB.users.delete(userId)
+    try {
+      await DB.users.delete(userId)
+
+      await DB.journal
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.goals
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.info
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.products
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.recipes
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.meals
+        .where('userId')
+        .equals(userId)
+        .delete()
+    } catch (e) {
+      // Ignore errors of removing non existed bound records
+      if (!(e instanceof Dexie.ModifyError)) {
+        throw e
+      }
+    }
   },
 
   /**
