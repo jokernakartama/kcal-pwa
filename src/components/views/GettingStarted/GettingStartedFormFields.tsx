@@ -142,9 +142,9 @@ export const GettingStartedFormFields: Component = () => {
               name="ratio"
               parts={ratioOptions}
             />
-            <input type="hidden" value={proteins()}/>
-            <input type="hidden" value={fats()}/>
-            <input type="hidden" value={carbs()}/>
+            <input name="proteins" type="hidden" value={proteins()}/>
+            <input name="fats" type="hidden" value={fats()}/>
+            <input name="carbs" type="hidden" value={carbs()}/>
           </Col>
         </Row>
       </div>

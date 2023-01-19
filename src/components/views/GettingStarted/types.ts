@@ -10,5 +10,8 @@ export interface GettingStartedForm {
     number,
     /** Carbs */
     number
-  ]
+  ],
+  proteins: number
+  fats: number
+  carbs: number
 }

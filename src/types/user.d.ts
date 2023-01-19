@@ -21,11 +21,11 @@ declare namespace UserModel {
     /**
      * The user's height in centimeters
      */
-    height: number
+    height?: number
     /**
      * Value of the user's weight in kilograms
      */
-    weight: number
+    weight?: number
     /**
      * Value of the user's activity:
      * - 1.2 – minimal activity (lack of physical activity, sedentary work)
@@ -36,33 +36,33 @@ declare namespace UserModel {
      * - 1.72 – high activity (daily very intense training and high daily activity)
      * - 1.9 – very high activity (sportsmen in a period of preparations for a competition)
      */
-    activity: number
+    activity?: number
     /**
      * Value for the user's weight goal:
      * - -1 - to lose weight
      * - 0 - to keep weight
      * - 1 - to gain weight
      */
-    massGainDir: -1 | 0 | 1
+    massGainDir?: -1 | 0 | 1
     /**
      * - Normal 0.3 0.3 0.4
      * - To cut 0.4 0.25 0.35 (0.4 0.2-0.25 0.35-0.4)
      * - To bulk 0.3 0.2 0.5 (0.3-0.4 0.2-0.25 0.4-0.5)
      */
-    nutrientsRatio: [number, number, number]
+    nutrientsRatio?: [number, number, number]
 
     /**
      * Minutes spent on power training during a week
      */
-    gym: number
+    gym?: number
     /**
      * Minutes spen on cardio/crossfit during a week
      */
-    cardio: number
+    cardio?: number
     /**
      * Average number of steps during a day
      */
-    steps: number
+    steps?: number
   }
 
   export interface Goals {

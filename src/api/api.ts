@@ -43,7 +43,7 @@ export function getUsers(): Promise<UserModel.User[]> {
 /**
  * Returns the user's goals fo nutrition
  * @param {number} userId
- * @returns {Promise<UserModel.Goals | undefined>>}
+ * @returns {Promise<UserModel.Goals | undefined>}
  */
 export function getUserGoals(
   userId: UserModel.User['id']
@@ -62,6 +62,30 @@ export function setUserGoals(
 ): Promise<UserModel.Goals> {
   return DBWorkerClient
     .dispatch('PUT goals/{goals}', goals)
+}
+
+/**
+ * Returns the user's info
+ * @param {number} userId
+ * @returns {Promise<UserModel.Info | undefined>}
+ */
+export function getUserInfo(
+  userId: UserModel.User['id']
+): Promise<UserModel.Info | undefined> {
+  return DBWorkerClient
+    .dispatch('GET users/{userId}/info', userId)
+}
+
+/**
+ * Updates user's info
+ * @param {UserModel.Info} info
+ * @returns {Promise<UserModel.Info>}
+ */
+export function setUserInfo(
+  info: UserModel.Info
+): Promise<UserModel.Info> {
+  return DBWorkerClient
+    .dispatch('PUT info/{info}', info)
 }
 
 /**
