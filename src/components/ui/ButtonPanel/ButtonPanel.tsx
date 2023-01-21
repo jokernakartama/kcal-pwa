@@ -1,8 +1,8 @@
 import classNames from 'classnames'
-import { Component, JSX, splitProps } from 'solid-js'
+import { JSX, ParentComponent, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
-type ButtonPanelComponent = Component<
+type ButtonPanelComponent = ParentComponent<
   JSX.IntrinsicElements['div'] & { disabled?: boolean }
 >
 
