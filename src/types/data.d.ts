@@ -49,8 +49,22 @@ declare namespace DataModel {
     description?: string
   }
 
+  export interface Dish {
+    /** Dish type either a product or recipe */
+    type: 'product' | 'recipe'
+    /** Save target entity instance */
+    target: Omit<Product | Recipe, 'userId'>
+    /** Whether the bound entity has been removed */
+    isArchieved?: boolean
+    /**
+     * Resulting mass of the dish. If it's a recipe,
+     * calculated mass of the meal should be used by default.
+     */
+    mass: Mass
+  }
+
   /**
-   * One time meal record. It can contains either product or recipe.
+   * One time meal record.
    */
   export interface Meal {
     id: number
@@ -60,17 +74,8 @@ declare namespace DataModel {
     recordId: DataModel.JournalRecord['id']
     /** Datetime stamp */
     time: Date
-    /** Bound recipe object */
-    recipe?: Recipe
-    /** Bound product object */
-    product?: Product
-    /** Whether the bound entity has been removed */
-    isArchieved?: boolean
-    /**
-     * Resulting mass of the product or meal by recipe. If it's a recipe,
-     * calculated mass of the meal should be used by default.
-     */
-    mass: Mass
+    /** List of bound meal products and/or recipes */
+    dishes: Dish[]
   }
 
   export interface JournalRecord {
@@ -79,5 +84,7 @@ declare namespace DataModel {
     userId: UserModel.User['id']
     /** A date in YYYY-MM-DD format */
     date: string
+    /** Last saved goals during the day */
+    goals: Omit<UserModel.Goals, 'userId'>
   }
 }

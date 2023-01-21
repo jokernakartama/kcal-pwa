@@ -99,9 +99,19 @@ export const productsActions = {
         })
 
       await DB.meals
-        .where('product.id')
-        .equals(productId)
-        .modify({ isArchieved: true })
+        .where({ 'dish.type': 'product', 'dish.target.id': productId })
+        .modify((value, ref) => {
+          ref.value = {
+            ...value,
+            dishes: value.dishes.map(dish => {
+              if (dish.type === 'product' && dish.target.id === productId) {
+                return { ...dish, isArchieved: true }
+              }
+
+              return dish
+            })
+          }
+        })
     } catch (e) {
       // Ignore errors of modifying non existed entities
       if (!(e instanceof Dexie.ModifyError)) {

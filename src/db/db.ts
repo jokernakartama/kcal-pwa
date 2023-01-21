@@ -5,14 +5,14 @@ import Dexie from 'dexie'
  */
 export const DB_VER = 1
 
-export const DB_NAME = 'db_test_4'
+export const DB_NAME = 'db_test_1'
 
 export const DB_STORES = {
   users: '++id',
   info: 'userId',
   goals: 'userId',
   journal: '++id, [userId+date]',
-  meals: '++id, recordId, userId, product.id, recipe.id',
+  meals: '++id, recordId, userId, *dishes.type, *dishes.target.id',
   recipes: '++id, userId, name, *products.id',
   products: '++id, userId, name, proteins, fats, carbs, energy'
 }
