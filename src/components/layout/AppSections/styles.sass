@@ -1,18 +1,12 @@
-@use "../../../styles/basic/variables" as vars
 @use "../../../styles/basic/breakpoints"
 
 .wrapper
   height: 100%
   display: flex
+  overflow: hidden
 
   @include breakpoints.breakpoint-portrait
     flex-direction: column
 
   @include breakpoints.breakpoint-landscape
     flex-direction: row
-
-.content
-  flex-grow: 1
-  overflow: hidden
-  padding-top: (vars.$grid-gutter * 2)
-  padding-bottom: (vars.$grid-gutter * 2)

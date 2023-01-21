@@ -4,7 +4,6 @@ import { useStore } from '../../../store'
 import { normalizeDate } from '../../../utils/format'
 import { AppLoading } from '../../views/AppLoading'
 import { Dashboard } from '../../views/Dashboard'
-import { Container } from '../Grid'
 import styles from './styles.sass'
 
 /**
@@ -50,9 +49,7 @@ export const AppSections: Component = () => {
   return (
     <Show when={isReady()} fallback={<AppLoading />}>
       <main class={styles.wrapper}>
-        <Container class={styles.content}>
-          <Dashboard class={styles.tab} />
-        </Container>
+        <Dashboard class={styles.tab} />
       </main>
     </Show>
   )
