@@ -1,0 +1,22 @@
+
+.wrapper
+  min-height: 1em
+  position: relative
+  overflow: hidden
+  display: inline-block
+  background-size: 400% 400%
+  animation: loading 2s ease infinite
+  border-radius: 4px
+  background-image: linear-gradient(270deg, rgba(200, 200, 200, 0.2) 10%, white, rgba(200, 200, 200, 0.2) 50%)
+  max-width: 100%
+
+  &.block
+    display: block
+
+@keyframes loading
+  0%
+    background-position: 100% 50%
+  50%
+    background-position: 0% 50%
+  100%
+    background-position: 0% 50%
