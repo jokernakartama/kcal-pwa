@@ -20,7 +20,7 @@ export const UserBrief: UserBriefComponent = props => {
 
     const birthdate = new Date(store.user.birthDate)
 
-    return Math.abs(Math.floor(getDiffInYears(birthdate, new Date())))
+    return Math.abs(Math.ceil(getDiffInYears(birthdate, new Date())))
   })
 
   return (
