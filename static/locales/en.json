@@ -41,7 +41,8 @@
   },
   "unit": {
     "gram": "g",
-    "kcal": "kcal"
+    "kcal": "kcal",
+    "yearsold": "y.o."
   },
   "activity":  {
     "min": "Minimal activity (lack of physical activity, sedentary work)",
