@@ -57,7 +57,7 @@ export const GettingStartedFormFields: Component = () => {
   return (
     <Container class={styles.content}>
       <div class={styles.headers}>
-        <h1 class="m-mb-2 m-mt-2">{t('welcome.personal.header')}</h1>
+        <h1 class="m-mb-2 m-mt-5">{t('welcome.personal.header')}</h1>
       </div>
 
       <div class={styles.fields}>
