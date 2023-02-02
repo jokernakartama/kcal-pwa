@@ -41,7 +41,7 @@ export const GettingStartedFormFields: Component = () => {
   const maxDate: string = normalizeDate(addYearsToDate(-16))
   const minDate: string = normalizeDate(addYearsToDate(-80))
   const sexOptions = createMemo<
-    Array<SelectOption<UserModel.User['sex']>>
+  Array<SelectOption<UserModel.User['sex']>>
   >(
     () => [
       { label: `${emoji.man.string} ${t('profile.male')}`, value: 'male' },
@@ -49,9 +49,21 @@ export const GettingStartedFormFields: Component = () => {
     ]
   )
   const ratioOptions: RatioOption[] = [
-    { label: t('nutrients.proteins'), defaultValue: DEFAULT_NUTRIENTS_RATIO.proteins, color: 'blue' },
-    { label: t('nutrients.fats'), defaultValue: DEFAULT_NUTRIENTS_RATIO.fats, color: 'yellow' },
-    { label: t('nutrients.carbs'), defaultValue: DEFAULT_NUTRIENTS_RATIO.carbs, color: 'green' }
+    {
+      label: t('nutrients.proteins'),
+      defaultValue: DEFAULT_NUTRIENTS_RATIO.proteins,
+      color: 'red'
+    },
+    {
+      label: t('nutrients.fats'),
+      defaultValue: DEFAULT_NUTRIENTS_RATIO.fats,
+      color: 'orange'
+    },
+    {
+      label: t('nutrients.carbs'),
+      defaultValue: DEFAULT_NUTRIENTS_RATIO.carbs,
+      color: 'green'
+    }
   ]
 
   return (
