@@ -90,5 +90,9 @@ export const emoji = {
   forkAndKnife: {
     string: '\uD83C\uDF74',
     html: <>&#x1F374;</>
+  },
+  pushPin: {
+    string: '\uD83D\uDCCC',
+    html: <>&#x1F4CC;</>
   }
 }
