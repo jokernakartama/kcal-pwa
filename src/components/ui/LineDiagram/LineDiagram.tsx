@@ -1,8 +1,8 @@
 import classNames from 'classnames'
-import { Component, JSX, splitProps } from 'solid-js'
+import { JSX, ParentComponent, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
-type CircleDiagramComponent = Component<
+type CircleDiagramComponent = ParentComponent<
 JSX.IntrinsicElements['div'] & {
   value?: number
   color?: UI.OriginalColorName
@@ -13,7 +13,7 @@ JSX.IntrinsicElements['div'] & {
  * Renders a line diagram
  */
 export const LineDiagram: CircleDiagramComponent = props => {
-  const [local, rest] = splitProps(props, ['value', 'color', 'class'])
+  const [local, rest] = splitProps(props, ['value', 'color', 'class', 'children'])
 
   return (
     <div class={classNames(local.class, styles.wrapper)}>
@@ -26,7 +26,9 @@ export const LineDiagram: CircleDiagramComponent = props => {
         style={{
           width: `${Math.max(0, Math.min((local.value ?? 0) * 100, 100))}%`
         }}
-      />
+      >
+        {local.children}
+      </div>
     </div>
 
   )
