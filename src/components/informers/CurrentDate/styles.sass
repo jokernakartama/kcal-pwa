@@ -1,0 +1,51 @@
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 100%
+  user-select: none
+
+.field
+  flex-grow: 0
+  flex-shrink: 1
+
+  input
+    font-weight: 900
+    background-color: transparent
+    font-size: vars.$font-size-20
+
+.arrow
+  flex-shrink: 1
+  flex-grow: 1
+  display: flex
+  font-size: vars.$font-size-24
+  padding: calc(1em - 12px)
+  cursor: pointer
+  user-select: none
+  -webkit-tap-highlight-color: transparent
+
+  &.disabled
+    opacity: .5
+    pointer-events: none
+
+  &:active
+    transform: translateY(1px)
+
+  &:first-of-type
+    justify-content: flex-start
+
+  &:last-of-type
+    justify-content: flex-end
+
+  svg
+    height: 1em
+    width: 1em
+
+    path
+      fill: none
+      stroke: var(--color-text)
+      stroke-width: 3px
+      stroke-linecap: round
+      stroke-linejoin: round
