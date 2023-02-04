@@ -9,7 +9,7 @@ JSX.IntrinsicElements['svg'] & {
 }
 >
 
-const radius = 10
+const radius = 10.3
 
 /**
  * Renders an svg image of circle diagram
