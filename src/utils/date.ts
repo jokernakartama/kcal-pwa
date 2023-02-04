@@ -1,8 +1,20 @@
 /**
+ * Adds substracts days to a date
+ * @param {number} days - Number of days
+ * @param {Date} [date] - The date to add/substract
+ * @returns {Date}
+ */
+export function addDaysToDate(days: number, date: Date = new Date()) {
+  return new Date(
+    (new Date()).setTime((date).getTime() + (days * 1000 * 60 * 60 * 24))
+  )
+}
+
+/**
  * Adds substracts years to a date
  * @param {number} years - Number of years
  * @param {Date} [date] - The date to add/substract
- * @returns
+ * @returns {Date}
  */
 export function addYearsToDate(years: number, date: Date = new Date()) {
   return new Date((new Date()).setFullYear((date).getFullYear() + years))
