@@ -10,5 +10,5 @@ export type TextInputTypeValue =
 
 export type TextInputChangeEvent = Event & {
   currentTarget: HTMLInputElement
-  target: Element
+  target: HTMLInputElement
 }
