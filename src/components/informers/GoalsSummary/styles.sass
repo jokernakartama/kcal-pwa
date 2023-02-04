@@ -1,0 +1,103 @@
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  background-color: var(--color-black)
+  border-radius: vars.$border-radius
+  padding: 1.5em
+  transition: .2s
+  color: var(--color-white)
+  display: flex
+  flex-wrap: wrap
+  align-items: flex-start
+  gap: 1.5em
+
+.energy
+  text-align: center
+
+.caption
+  opacity: .7
+  font-size: vars.$font-size-10
+
+.unit
+  opacity: .7
+  font-weight: 700
+  font-size: vars.$font-size-10
+
+.value-wrapper
+  font-size: vars.$font-size-12
+  font-weight: 700
+  margin-left: auto
+
+  .skeleton
+    width: 3em
+    height: 1.125em
+    margin-bottom: -2px
+
+.value-target
+  opacity: .7
+
+.value-current
+  font-weight: 900
+  transition: .2s
+
+  &.value-done
+    color: var(--color-green)
+
+  &.value-over
+    color: var(--color-red)
+
+.diagram-wrapper
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  font-weight: 900
+  flex-wrap: wrap
+
+  & > span
+    font-size: vars.$font-size-24
+
+.diagram
+  width: 100%
+  position: absolute
+  top: .5em
+  left: 0
+
+.energy
+  .diagram-wrapper
+    box-sizing: content-box
+    height: 120px
+    width: 120px
+    font-size: vars.$font-size-14
+    padding: .5em 0
+
+
+  .caption
+    line-height: vars.$font-size-18
+
+.nutrients
+  display: flex
+  flex-direction: column
+  justify-content: flex-start
+  flex-grow: 1
+  gap: 1.25em
+
+  .nutrient
+    padding-right: 0.5em
+
+    & > label
+      display: flex
+      align-items: baseline
+      padding-bottom: .75em
+
+    .meter
+      width: 100%
+      height: 100%
+      display: flex
+      justify-content: flex-end
+      align-items: center
+
+      span
+        display: inline-flex
+        margin-right: -0.5em
+        font-size: vars.$font-size-24
