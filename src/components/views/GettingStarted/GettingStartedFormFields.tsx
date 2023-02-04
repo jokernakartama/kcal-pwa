@@ -52,12 +52,12 @@ export const GettingStartedFormFields: Component = () => {
     {
       label: t('nutrients.proteins'),
       defaultValue: DEFAULT_NUTRIENTS_RATIO.proteins,
-      color: 'red'
+      color: 'blue'
     },
     {
       label: t('nutrients.fats'),
       defaultValue: DEFAULT_NUTRIENTS_RATIO.fats,
-      color: 'orange'
+      color: 'yellow'
     },
     {
       label: t('nutrients.carbs'),
