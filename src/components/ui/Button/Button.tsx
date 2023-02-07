@@ -3,11 +3,11 @@ import { Component, JSX, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
 type ButtonComponent = Component<
-  JSX.IntrinsicElements['button'] & {
-    color: UI.Color
-    outline?: boolean
-    block?: boolean
-  }
+JSX.IntrinsicElements['button'] & {
+  color: UI.Color
+  outline?: boolean
+  block?: boolean
+}
 >
 
 /**
