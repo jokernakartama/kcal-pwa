@@ -37,23 +37,23 @@ declare namespace DataModel {
     name: string
     /**  Bound products */
     products: Array<
-      Product &
-      {
-        /** The mass of the product */
-        mass: Mass
-        /** Whether the product has been removed */
-        isArchieved?: boolean
-      }
+    Product &
+    {
+      /** The mass of the product */
+      mass: Mass
+      /** Whether the product has been removed */
+      isArchieved?: boolean
+    }
     >
     /** A short description of the recipe */
     description?: string
   }
 
-  export interface Dish {
+  export interface Dish<T extends (Product | Recipe) = Product | Recipe> {
     /** Dish type either a product or recipe */
     type: 'product' | 'recipe'
     /** Save target entity instance */
-    target: Omit<Product | Recipe, 'userId'>
+    target: Omit<T, 'userId'>
     /** Whether the bound entity has been removed */
     isArchieved?: boolean
     /**

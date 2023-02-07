@@ -11,7 +11,7 @@ export const NutrientEnergy = {
  * - To bulk 0.3 0.2 0.5 (0.3-0.4 0.2-0.25 0.4-0.5)
  */
 export const DEFAULT_NUTRIENTS_RATIO: Record<
-  keyof typeof NutrientEnergy, number
+keyof typeof NutrientEnergy, number
 > = {
   proteins: 0.3,
   fats: 0.3,
