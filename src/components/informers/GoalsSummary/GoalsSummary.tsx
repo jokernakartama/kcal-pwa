@@ -9,8 +9,8 @@ import styles from './styles.sass'
 
 type GoalsSummaryComponent = Component<
 JSX.IntrinsicElements['div'] & {
-  current: Omit<UserModel.Goals, 'userId'>
-  target: Omit<UserModel.Goals, 'userId'>
+  current: DataModel.Nutrition
+  target: DataModel.Nutrition
   loading?: boolean
 }
 >

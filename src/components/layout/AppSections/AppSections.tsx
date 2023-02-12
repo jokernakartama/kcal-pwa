@@ -49,7 +49,7 @@ export const AppSections: Component = () => {
   return (
     <Show when={isReady()} fallback={<AppLoading />}>
       <main class={styles.wrapper}>
-        <Dashboard class={styles.tab} />
+        <Dashboard />
       </main>
     </Show>
   )

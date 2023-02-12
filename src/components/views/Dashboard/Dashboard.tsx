@@ -1,56 +1,58 @@
-import classNames from 'classnames'
 import {
   Component,
+  createEffect,
   createMemo,
-  createResource,
   createSignal,
-  For
+  on
 } from 'solid-js'
-import { getJournal, getMeals, removeMeal } from '../../../api'
-import { emoji } from '../../../constants/emoji'
-import { useT } from '../../../i18n'
+import { getJournal } from '../../../api'
 import { useStore } from '../../../store'
 import { WithOptional } from '../../../types/utils'
-import { getNutrientAmount } from '../../../utils/calculations'
+import { calculateMealNutrition } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
-// import { FilterPanel } from '../../layout/FilterPanel'
-// import { TextInput } from '../../ui/TextInput'
-// import { TextInputChangeEvent } from '../../ui/TextInput/types'
+import { CurrentDate } from '../../informers/CurrentDate/CurrentDate'
+import { GoalsSummary } from '../../informers/GoalsSummary'
+import { UserBrief } from '../../informers/UserBrief'
+import { Container } from '../../layout/Grid'
+import { MealList } from '../../lists/MealList'
+import { Button } from '../../ui/Button'
+import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import styles from './styles.sass'
 
-type DashboardComponent = Component<{
-  class?: string
-}>
+type DashboardComponent = Component
 
-export const Dashboard: DashboardComponent = (props) => {
-  const t = useT()
-  const [store] = useStore()
-  const [date] = createSignal(normalizeDate(new Date()))
+/**
+ * Renders main dashboard view
+ */
+export const Dashboard: DashboardComponent = () => {
+  const [store, setStore] = useStore()
+  const [date, setDate] = createSignal(normalizeDate(new Date()))
 
   const defaultJournalRecord = createMemo<
-    WithOptional<DataModel.JournalRecord, 'id' | 'userId'>
+  WithOptional<DataModel.JournalRecord, 'id' | 'userId'>
   >(() => ({
     date: date(),
-    userId: store.user!.id
+    userId: store.user!.id,
+    goals: store.goals!
   }))
-  const [journal] = createResource(store.user, fetchJournal)
-  const journalId = createMemo(() => journal()?.id)
-  const [meals, { refetch }] = createResource(journalId, fetchMeals)
+
   const totals = createMemo(() => {
-    const dayMeals = meals()?.items
-    const totalValues = {
-      kcalories: 0,
+    const dayMeals: DataModel.Meal[] = []
+    const totalValues: DataModel.Nutrition = {
+      energy: 0,
       proteins: 0,
       fats: 0,
-      carbohydrates: 0
+      carbs: 0
     }
 
     if (typeof dayMeals !== 'undefined') {
       dayMeals.forEach(meal => {
-        totalValues.kcalories += meal.product !== undefined ? getNutrientAmount(meal.product.kcalories, meal.mass) : 0
-        totalValues.proteins += meal.product !== undefined ? getNutrientAmount(meal.product.proteins, meal.mass) : 0
-        totalValues.fats += meal.product !== undefined ? getNutrientAmount(meal.product.fats, meal.mass) : 0
-        totalValues.carbohydrates += meal.product !== undefined ? getNutrientAmount(meal.product.carbohydrates, meal.mass) : 0
+        const mealNutrition = calculateMealNutrition(meal)
+
+        totalValues.energy += mealNutrition.energy
+        totalValues.proteins += mealNutrition.proteins
+        totalValues.fats += mealNutrition.fats
+        totalValues.carbs += mealNutrition.carbs
       })
     }
 
@@ -59,82 +61,49 @@ export const Dashboard: DashboardComponent = (props) => {
 
   function fetchJournal() {
     return getJournal(store.user!.id, date())
-      .then(data => data ?? defaultJournalRecord())
-  }
-
-  function fetchMeals() {
-    return getMeals(journalId()!)
       .then(data => {
-        return data
+        const nextRecord = data ?? defaultJournalRecord
+        setStore('journal', nextRecord)
       })
   }
 
-  function deleteMeal(mealId: DataModel.Meal['id']) {
-    removeMeal(mealId)
+  function handleDateChange(nextDate: string) {
+    setDate(nextDate)
+  }
+
+  createEffect(on(date, () => {
+    Promise.resolve()
       .then(() => {
-        return refetch()
+        return fetchJournal()
       })
       .catch(console.error)
-  }
-
-  // function handleDateChange(e: TextInputChangeEvent) {
-  //   if (e.currentTarget.value !== undefined) {
-  //     setDate(e.currentTarget.value)
-  //   }
-  // }
+  }))
 
   return (
     <>
-      {/* <FilterPanel>
-        <TextInput
-          type="date"
-          value={date()}
-          onChange={handleDateChange}
+      <Container class={styles.content}>
+        {/* Brief user info */}
+        <UserBrief class="m-mb-2" />
+
+        {/* Day's nutrition goals */}
+        <GoalsSummary
+          current={totals()}
+          target={store.goals!}
+          loading={!store.goals}
         />
-      </FilterPanel> */}
 
-      <div class={classNames(props.class, styles.wrapper)}>
+        {/* Date selector */}
+        <CurrentDate class={styles.date} value={date()} onChange={handleDateChange} />
 
-        TODAY'S GOALS
+        {/* List of meals of the day */}
+        <MealList />
+      </Container>
 
-        <div>
-          {emoji.highVoltage.html}: {Math.round(totals().kcalories)} / {store.goals?.kcalories} kkal<br />
-          {emoji.poultryLeg.html}: {Math.round(totals().proteins)} / {store.goals?.proteins} g<br />
-          {emoji.avocado.html}: {Math.round(totals().fats)} / {store.goals?.fats} g<br />
-          {emoji.cookedRice.html}: {Math.round(totals().carbohydrates)} / {store.goals?.carbohydrates} g
-        </div>
-        <br /><br />
-
-        TODAY'S MEALS
-
-        <For each={meals()?.items} fallback={<div>Loading...</div>}>
-          {item => (
-            <div class={styles.meal}>
-              <div class={styles.title}>
-                {item.product?.name ?? item.recipe?.name}{' - '}
-                <b>{item.mass} g</b>
-                <button onClick={() => deleteMeal(item.id)}> X </button>
-              </div>
-              <div>
-                <small>
-                  {t('nutrients.E')}:{' '}
-                  {getNutrientAmount(item.product?.kcalories ?? 0, item.mass)}{' '}
-                  {t('unit.kcal')}{' | '}
-                  {t('nutrients.P')}:{' '}
-                  {getNutrientAmount(item.product?.proteins ?? 0, item.mass)}{' '}
-                  {t('unit.gram')}{' | '}
-                  {t('nutrients.F')}:{' '}
-                  {getNutrientAmount(item.product?.fats ?? 0, item.mass)}{' '}
-                  {t('unit.gram')}{' | '}
-                  {t('nutrients.C')}:{' '}
-                  {getNutrientAmount(item.product?.carbohydrates ?? 0, item.mass)}{' '}
-                  {t('unit.gram')}
-                </small>
-              </div>
-            </div>
-          )}
-        </For>
-      </div>
+      <ButtonPanel>
+        <Button disabled={true} block color="primary" type="button">
+          Yum!
+        </Button>
+      </ButtonPanel>
     </>
   )
 }
