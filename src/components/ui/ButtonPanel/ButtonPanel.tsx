@@ -3,7 +3,7 @@ import { JSX, ParentComponent, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
 type ButtonPanelComponent = ParentComponent<
-  JSX.IntrinsicElements['div'] & { disabled?: boolean }
+JSX.IntrinsicElements['div'] & { disabled?: boolean }
 >
 
 /**

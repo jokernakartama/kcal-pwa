@@ -8,7 +8,7 @@ import { Loader } from '../../ui/Loader'
 import styles from './styles.sass'
 
 type UserBriefComponent = Component<
-  JSX.IntrinsicElements['div']
+JSX.IntrinsicElements['div']
 >
 
 export const UserBrief: UserBriefComponent = props => {

@@ -13,15 +13,15 @@ import styles from './styles.sass'
 import { SelectOption } from './types'
 
 type SelectInputComponent = Component<
-  JSX.IntrinsicElements['select'] & {
-    /**
+JSX.IntrinsicElements['select'] & {
+  /**
      * Allows to specify input data type
      */
-    type?: 'text' | 'number' | 'boolean' | 'json'
-    placeholder?: string
-    options: Array<SelectOption<string | number>>
-    icon?: keyof typeof emoji
-  }
+  type?: 'text' | 'number' | 'boolean' | 'json'
+  placeholder?: string
+  options: Array<SelectOption<string | number>>
+  icon?: keyof typeof emoji
+}
 >
 
 /**

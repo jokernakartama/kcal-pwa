@@ -3,7 +3,7 @@ import { Component, JSX, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
 type CheckboxInputComponent = Component<
-  Omit<JSX.IntrinsicElements['input'], 'type'>
+Omit<JSX.IntrinsicElements['input'], 'type'>
 >
 
 /**

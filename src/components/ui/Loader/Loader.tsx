@@ -3,9 +3,9 @@ import { Component, JSX, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
 type LoaderComponent = Component<
-  JSX.IntrinsicElements['span'] & {
-    block?: boolean
-  }
+JSX.IntrinsicElements['span'] & {
+  block?: boolean
+}
 >
 
 /**

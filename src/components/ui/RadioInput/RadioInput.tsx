@@ -10,13 +10,13 @@ import {
 import styles from './styles.sass'
 
 type RadioInputComponent = Component<
-  Omit<JSX.IntrinsicElements['input'], 'type'> & {
-    options: Array<{
-      value?: string | number
-      label: JSX.Element
-      disabled?: boolean
-    }>
-  }
+Omit<JSX.IntrinsicElements['input'], 'type'> & {
+  options: Array<{
+    value?: string | number
+    label: JSX.Element
+    disabled?: boolean
+  }>
+}
 >
 
 /**

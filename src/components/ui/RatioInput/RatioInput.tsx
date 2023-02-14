@@ -6,13 +6,13 @@ import styles from './styles.sass'
 import { RatioOption } from './types'
 
 type RatioInputComponent = Component<
-  Omit<JSX.IntrinsicElements['input'], 'type'> & {
-    /**
+Omit<JSX.IntrinsicElements['input'], 'type'> & {
+  /**
      * Minimal value of a ratio
      */
-    min?: number
-    parts: RatioOption[]
-  }
+  min?: number
+  parts: RatioOption[]
+}
 >
 
 interface PartsStore {

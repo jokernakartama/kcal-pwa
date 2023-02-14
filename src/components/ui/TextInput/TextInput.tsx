@@ -5,10 +5,10 @@ import styles from './styles.sass'
 import { TextInputTypeValue } from './types'
 
 type TextInputComponent = Component<
-  JSX.IntrinsicElements['input'] & {
-    type: TextInputTypeValue
-    icon?: keyof typeof emoji
-  }
+JSX.IntrinsicElements['input'] & {
+  type: TextInputTypeValue
+  icon?: keyof typeof emoji
+}
 >
 
 /**

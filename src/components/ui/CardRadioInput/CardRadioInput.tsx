@@ -4,14 +4,14 @@ import { emoji } from '../../../constants/emoji'
 import styles from './styles.sass'
 
 type CardRadioInputComponent = Component<
-  Omit<JSX.IntrinsicElements['input'], 'type'> & {
-    options: Array<{
-      value?: string | number
-      label: JSX.Element
-      disabled?: boolean
-      icon?: keyof typeof emoji
-    }>
-  }
+Omit<JSX.IntrinsicElements['input'], 'type'> & {
+  options: Array<{
+    value?: string | number
+    label: JSX.Element
+    disabled?: boolean
+    icon?: keyof typeof emoji
+  }>
+}
 >
 
 /**
