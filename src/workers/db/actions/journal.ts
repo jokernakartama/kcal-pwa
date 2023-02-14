@@ -1,10 +1,7 @@
 import Dexie from 'dexie'
 import { DB } from '../../../db'
-import { PaginationParams } from '../../../types/pagination'
 import { WithOptional } from '../../../types/utils'
 import { normalizeDate } from '../../../utils/format'
-import { getPaginatedResponse, handleSortParams } from '../helpers'
-import { SortingParams } from '../types'
 
 export const journalActions = {
   /**
@@ -55,17 +52,12 @@ export const journalActions = {
    * @returns {Promise<DataModel.Meal[]>}
    */
   'GET journal/{recordId}/meals': async (
-    recordId: DataModel.JournalRecord['id'],
-    params?: PaginationParams & SortingParams<DataModel.Meal>
+    recordId: DataModel.JournalRecord['id']
   ) => {
-    const collection = DB.meals
+    return await DB.meals
       .where('recordId')
       .equals(recordId)
-
-    return await getPaginatedResponse(
-      handleSortParams(collection, params),
-      params
-    )
+      .toArray()
   },
 
   /**

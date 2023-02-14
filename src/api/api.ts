@@ -228,13 +228,12 @@ export function removeMeal(
  * @returns
  */
 export function getMeals(
-  recordId: DataModel.JournalRecord['id'],
-  params?: PaginationParams & {
-    dir: 'asc' | 'desc'
-  }
-): Promise<PaginationResponse<DataModel.Meal>> {
+  recordId?: DataModel.JournalRecord['id']
+): Promise<DataModel.Meal[]> {
+  if (!recordId) return Promise.resolve([])
+
   return DBWorkerClient
-    .dispatch('GET journal/{recordId}/meals', recordId, params)
+    .dispatch('GET journal/{recordId}/meals', recordId)
 }
 
 /**
