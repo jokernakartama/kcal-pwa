@@ -49,7 +49,7 @@ declare namespace DataModel {
     description?: string
   }
 
-  export interface Dish<T extends (Product | Recipe) = Product | Recipe> {
+  export interface BasicDish<T extends (Product | Recipe) = Product | Recipe> {
     /** Dish type either a product or recipe */
     type: 'product' | 'recipe'
     /** Save target entity instance */
@@ -62,6 +62,18 @@ declare namespace DataModel {
      */
     mass: Mass
   }
+
+  export type Dish<
+    T extends (Product | Recipe) = Product | Recipe
+  > = T extends Product
+    ? BasicDish<Product> & { type: 'product' }
+    : T extends Recipe
+      ? BasicDish<Recipe> & {
+        type: 'recipe'
+        /** Portion value for easier calculations  */
+        portion: number
+      }
+      : never
 
   /**
    * One time meal record.
