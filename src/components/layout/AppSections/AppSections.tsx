@@ -1,3 +1,4 @@
+import { Outlet } from '@solidjs/router'
 import { Component, createEffect, createSignal, Show } from 'solid-js'
 import { getJournal, getUserGoals } from '../../../api'
 import { useStore } from '../../../store'
@@ -51,6 +52,7 @@ export const AppSections: Component = () => {
       <main class={styles.wrapper}>
         <Dashboard />
       </main>
+      <Outlet />
     </Show>
   )
 }

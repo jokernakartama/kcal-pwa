@@ -1,11 +1,11 @@
-import { Route, Routes } from '@solidjs/router'
+import { useRoutes } from '@solidjs/router'
 import { Component, createSignal, onMount, Show } from 'solid-js'
 import { getUsers } from '../../../api'
 import { i18n } from '../../../i18n/config'
+import { routes } from '../../../routes'
 import { useStore } from '../../../store'
 import { AppLoading } from '../../views/AppLoading'
 import { GettingStarted } from '../../views/GettingStarted'
-import { AppSections } from '../AppSections'
 import styles from './styles.sass'
 
 /**
@@ -14,6 +14,7 @@ import styles from './styles.sass'
 export const Layout: Component = () => {
   const [store, setStore] = useStore()
   const [isReady, setIsReady] = createSignal<boolean>(false)
+  const Routes = useRoutes(routes)
 
   function applyLanguage() {
     return i18n
@@ -49,9 +50,7 @@ export const Layout: Component = () => {
           when={store.user !== undefined}
           fallback={<GettingStarted />}
         >
-          <Routes>
-            <Route path="/" component={AppSections} />
-          </Routes>
+          <Routes />
         </Show>
       </Show>
     </div>
