@@ -1,0 +1,91 @@
+@use "../../../styles/basic/breakpoints"
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  display: block
+  z-index: 2
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  display: flex
+  align-items: center
+  justify-content: center
+
+.backdrop
+  display: none
+  z-index: 1
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  backdrop-filter: blur(3px)
+
+  @include breakpoints.breakpoint-desktop
+    display: block
+
+
+.window
+  display: flex
+  flex-direction: column
+  background-color: var(--color-bg)
+  height: 100%
+  width: 100%
+
+  @include breakpoints.breakpoint-desktop
+    border-radius: vars.$border-radius
+    box-shadow: vars.$shadow-dialog
+    max-width: vars.$dialog-window-width
+    max-height: vars.$dialog-window-height
+
+
+.content
+  flex-grow: 1
+  flex-shrink: 1
+  overflow: auto
+
+.header,
+.footer
+  flex-shrink: 0
+
+.header
+  display: flex
+  align-items: center
+  padding: (vars.$grid-gutter * 2)
+
+.close,
+.back
+  display: flex
+  font-size: vars.$font-size-24
+  cursor: pointer
+  user-select: none
+  -webkit-tap-highlight-color: transparent
+
+  &:active
+    transform: translateY(1px)
+
+  svg
+    height: 1em
+    width: 1em
+
+    path
+      fill: none
+      stroke: var(--color-text)
+      stroke-width: 3px
+      stroke-linecap: round
+      stroke-linejoin: round
+
+.back
+  margin-right: 1em
+
+  @include breakpoints.breakpoint-desktop
+    display: none
+
+.close
+  display: none
+  margin-left: auto
+
+  @include breakpoints.breakpoint-desktop
+    display: block
