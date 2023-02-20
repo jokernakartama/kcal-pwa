@@ -2,6 +2,8 @@ import classNames from 'classnames'
 import { Component, JSX, splitProps } from 'solid-js'
 import { addDaysToDate } from '../../../utils/date'
 import { normalizeDate } from '../../../utils/format'
+import { BackIcon } from '../../icons/BackIcon'
+import { ForthIcon } from '../../icons/ForthIcon'
 import { TextInput } from '../../ui/TextInput'
 import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
@@ -42,14 +44,7 @@ export const CurrentDate: CurrentDateComponent = props => {
   return (
     <div class={classNames(local.class, styles.wrapper)} {...rest}>
       <span class={styles.arrow} onClick={goPrev}>
-        <svg
-          viewBox="0 0 24 24"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs />
-          <path d="M 15.717801,3.4926034 8.2797325,11.661871 15.72025,20.507405" />
-        </svg>
+        <BackIcon />
       </span>
 
       <TextInput
@@ -67,14 +62,7 @@ export const CurrentDate: CurrentDateComponent = props => {
         })}
         onClick={goNext}
       >
-        <svg
-          viewBox="0 0 24 24"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs />
-          <path d="M 8.0004825,3.4926034 15.438551,11.661871 7.9980335,20.507405" />
-        </svg>
+        <ForthIcon />
       </span>
     </div>
   )
