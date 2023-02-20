@@ -1,4 +1,5 @@
 declare namespace DataModel {
+  export type ID = number
   export type Mass = number
 
   /**
@@ -19,7 +20,7 @@ declare namespace DataModel {
    * Nutrition of 100 grams of the product
    */
   export interface Product extends Nutrition {
-    id: number
+    id: ID
     /**  Bound user's id */
     userId: UserModel.User['id']
     /**  The name of the product */
@@ -30,7 +31,7 @@ declare namespace DataModel {
    * A set of products with defined mass
    */
   export interface Recipe {
-    id: number
+    id: ID
     /**  Bound user's id */
     userId: UserModel.User['id']
     /**  The name of the recipe */
@@ -79,7 +80,7 @@ declare namespace DataModel {
    * One time meal record.
    */
   export interface Meal {
-    id: number
+    id: ID
     /** Bound user's id */
     userId: UserModel.User['id']
     /** Bound journal record */
@@ -91,7 +92,7 @@ declare namespace DataModel {
   }
 
   export interface JournalRecord {
-    id: number
+    id: ID
     /** Bound user's id */
     userId: UserModel.User['id']
     /** A date in YYYY-MM-DD format */
