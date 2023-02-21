@@ -1,0 +1,108 @@
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  display: flex
+  border-radius: vars.$border-radius
+  font-size: vars.$font-size-16
+  background-color: rgba(150, 150, 150, 0.07)
+  box-shadow: vars.$shadow-basic
+  margin-bottom: 16px
+  padding: 1.25em
+  user-select: none
+
+.values
+  flex-grow: 1
+  flex-shrink: 1
+
+.buttons
+  overflow: hidden
+  line-height: 0
+  flex-grow: 0
+  flex-shrink: 0
+  margin-top: -1.25em
+  margin-bottom: -1.25em
+  margin-right: -1.25em
+
+  .controls-group
+    font-size: vars.$font-size-20
+    transform: translateY(-2.25em)
+    transition: .3s
+    opacity: 0
+    pointer-events: none
+    display: flex
+    flex-direction: column
+
+    &.secondary
+      margin-top: -2.25em
+      transform: translateY(2.25em)
+
+    &.visible
+      pointer-events: all
+      opacity: 1
+      transform: translateY(0)
+
+    .control
+      padding: .625em
+      flex-grow: 1
+      flex-shrink: 1
+
+
+  svg
+    height: 1em
+    width: 1em
+
+  .control
+    &:active
+      transform: translateY(1px)
+
+    &.close
+      color: var(--color-danger)
+    &.confirm
+      color: var(--color-accent)
+
+.header
+  display: flex
+  gap: .5em
+
+  .mass
+    flex-grow: 0
+    flex-shrink: 0
+
+  .portion
+    font-weight: 700
+    margin-left: .5em
+    font-size: vars.$font-size-12
+    vertical-align: super
+    white-space: nowrap
+
+  .caption
+    flex-grow: 1
+    flex-shrink: 1
+    width: 0
+    display: flex
+
+  .caption-text
+    overflow: hidden
+    max-width: 100%
+    white-space: nowrap
+    text-overflow: ellipsis
+
+.nutrients
+  display: flex
+  font-size: vars.$font-size-12
+  gap: 1em
+
+.nutrient
+  display: flex
+  min-width: 4em
+  font-weight: 700
+
+  &.energy
+    margin-left: auto
+    text-align: right
+
+  .unit
+    opacity: .7
+
+  .nutrient-value
+    padding-left: .5em
