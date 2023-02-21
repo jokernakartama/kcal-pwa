@@ -5,6 +5,7 @@ type BackIconComponent = Component<JSX.IntrinsicElements['svg']>
 export const BackIcon: BackIconComponent = props => {
   return (
     <svg
+      class="svg-icon"
       viewBox="0 0 24 24"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
