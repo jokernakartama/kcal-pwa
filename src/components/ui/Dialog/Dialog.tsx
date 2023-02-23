@@ -9,6 +9,7 @@ JSX.IntrinsicElements['div'] & {
   header?: JSX.Element
   footer?: JSX.Element
   onClose?: () => void
+  onBack?: () => void
 }
 >
 
@@ -18,12 +19,18 @@ JSX.IntrinsicElements['div'] & {
 export const Dialog: DialogComponent = props => {
   const [local, rest] = splitProps(
     props,
-    ['class', 'children', 'header', 'footer', 'onClose']
+    ['class', 'children', 'header', 'footer', 'onClose', 'onBack']
   )
 
   function handleClose() {
     if (typeof local.onClose === 'function') {
       local.onClose()
+    }
+  }
+
+  function handleBack() {
+    if (typeof local.onBack === 'function') {
+      local.onBack()
     }
   }
 
@@ -37,7 +44,7 @@ export const Dialog: DialogComponent = props => {
       >
         <div class={styles.window}>
           <div class={styles.header}>
-            <span class={styles.back} onClick={handleClose}>
+            <span class={styles.back} onClick={handleBack}>
               <BackIcon />
             </span>
             {local.header}
