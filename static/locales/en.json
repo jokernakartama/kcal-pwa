@@ -58,7 +58,26 @@
     "remove": "Remove",
     "cancel": "Cancel",
     "back": "Back",
-    "start": "Start"
+    "start": "Start",
+    "save": "Save"
+  },
+  "dialog": {
+    "meal": {
+      "add": "Add a meal",
+      "change": "Change the meal"
+    },
+    "dishes": {
+      "choose": "Choose a dish",
+      "add": "Add the dish"
+    },
+    "product": {
+      "add": "Add a new product",
+      "change": "Change the product"
+    },
+    "recipe": {
+      "add": "Add a new recipe",
+      "change": "Change the recipe"
+    }
   },
   "welcome": {
     "personal": {
