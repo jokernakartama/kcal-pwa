@@ -94,5 +94,9 @@ export const emoji = {
   pushPin: {
     string: '\uD83D\uDCCC',
     html: <>&#x1F4CC;</>
+  },
+  magnifyingGlass: {
+    string: '\uD83D\uDD0E',
+    html: <>&#x1F50E;</>
   }
 }
