@@ -5,9 +5,20 @@
   flex-shrink: 0
   display: flex
   align-items: center
-  justify-content: flex-end
   gap: (vars.$grid-gutter * 2)
   padding: (vars.$grid-gutter * 2)
 
-  & > *:first-child:not(:last-child)
-    margin-right: auto
+  &.justify-start
+    justify-content: flex-start
+
+    & > *:last-child:not(:first-child)
+      margin-left: auto
+
+  &.justify-center
+    justify-content: center
+
+  &.justify-end
+    justify-content: flex-end
+
+    & > *:first-child:not(:last-child)
+      margin-right: auto
