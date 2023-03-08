@@ -131,14 +131,17 @@ export function getFormValidity<T extends FormValues<T>>(
  * Collects fields' values from a form
  * @param {SubmitEvent} e
  * @returns {Object}
+ * @throws an error in case when the form doesn't contain any elements
  */
 export function getFormValues<T extends FormValues<T>>(
   form: HTMLFormElement
-): T | undefined {
+): T {
   const { elements } = form
   const data: Partial<FormValues<T>> = {}
 
-  if (elements === undefined) return undefined
+  if (elements === undefined) {
+    throw new Error('Cannot get form values, because there are no fields in the form')
+  }
 
   for (const fieldElement of elements) {
     const fieldName = fieldElement.getAttribute('name')

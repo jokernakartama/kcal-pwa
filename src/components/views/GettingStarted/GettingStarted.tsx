@@ -57,18 +57,17 @@ export const GettingStarted: Component = () => {
     e.preventDefault()
     const values = getFormValues<GettingStartedForm>(e.currentTarget)
 
-    if (values) {
-      saveUser(values)
-        .then((user) => {
-          return saveGoals(user.id, values)
-        })
-        .then((goals) => {
-          return saveUserInfo(goals.userId, values)
-        })
-        .catch(err => {
-          console.warn(err)
-        })
-    }
+    saveUser(values)
+      .then((user) => {
+        return saveGoals(user.id, values)
+      })
+      .then((goals) => {
+        return saveUserInfo(goals.userId, values)
+      })
+      .catch(err => {
+        console.warn(err)
+      })
+
   }
 
   return (

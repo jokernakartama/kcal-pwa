@@ -36,8 +36,6 @@ export const Form: FormComponent = props => {
     const values = getFormValues(form)
     const validity = getFormValidity(form)
 
-    if (typeof values === 'undefined') return {}
-
     return Object.entries(values)
       .reduce<typeof state>((result, [fieldName, fieldValue]) => {
         const fieldValidity = validity[fieldName as keyof typeof validity] as ValidityState
