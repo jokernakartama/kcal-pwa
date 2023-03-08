@@ -16,8 +16,21 @@ type FormComponent = Component<
  */
 export const Form: FormComponent = props => {
   let formElement: HTMLFormElement
-  const [local, rest] = splitProps(props, ['class', 'children', 'disabled', 'onInput'])
+  const [local, rest] = splitProps(
+    props,
+    ['class', 'children', 'disabled', 'onInput', 'ref']
+  )
   const [state, setState] = createStore<FormContextType<any>>({})
+
+  function setRef (form: HTMLFormElement) {
+    formElement = form
+
+    if (typeof props.ref === 'function') {
+      props.ref(form)
+    } else {
+      props.ref = form
+    }
+  }
 
   function getFormContext(form: HTMLFormElement) {
     const values = getFormValues(form)
@@ -76,7 +89,7 @@ export const Form: FormComponent = props => {
 
   return (
     <form
-      ref={el => { formElement = el }}
+      ref={setRef}
       class={classNames(styles.wrapper, local.class, {
         [styles.disabled]: local.disabled
       })}
