@@ -14,7 +14,7 @@ DataModel.Nutrition & {
   identifier: DataModel.ID
   mass?: DataModel.Mass
   portion?: number
-  onClose?: (id: DataModel.ID) => void
+  onRemove?: (id: DataModel.ID) => void
 }>
 
 /**
@@ -33,12 +33,23 @@ export const NutritionItem: NutritionItemComponent = props => {
     'carbs',
     'mass',
     'class',
-    'onClose'
+    'onRemove'
   ])
 
-  function handleClose() {
-    if (typeof local.onClose === 'function') {
-      local.onClose(local.identifier)
+  function handleRemove(e: Event) {
+    e.stopPropagation()
+    setIsRemoving(true)
+  }
+
+  function handleCancel(e: Event) {
+    e.stopPropagation()
+    setIsRemoving(false)
+  }
+
+  function handleConfirm(e: Event) {
+    e.stopPropagation()
+    if (typeof local.onRemove === 'function') {
+      local.onRemove(local.identifier)
     }
   }
 
@@ -55,10 +66,12 @@ export const NutritionItem: NutritionItemComponent = props => {
             </Show>
           </div>
 
-          <div class={styles.mass}>
-            {local.mass} {' '}
-            <span class={styles.unit}>{t('unit.gram')}</span>
-          </div>
+          <Show when={local.mass}>
+            <div class={styles.mass}>
+              {local.mass} {' '}
+              <span class={styles.unit}>{t('unit.gram')}</span>
+            </div>
+          </Show>
         </div>
 
         <div class={classNames(styles.nutrients, 'm-mt-1')}>
@@ -98,7 +111,6 @@ export const NutritionItem: NutritionItemComponent = props => {
           <div class={classNames(styles.nutrient, styles.energy)}>
             <div class={styles['nutrient-caption']}>
               {emoji.highVoltage.html}
-              {/* {t('nutrients.E')}: */}
             </div>
             <div class={styles['nutrient-value']}>
               {local.energy} {' '}
@@ -108,7 +120,7 @@ export const NutritionItem: NutritionItemComponent = props => {
         </div>
       </div>
 
-      <Show when={typeof local.onClose === 'function'}>
+      <Show when={typeof local.onRemove === 'function'}>
         <div class={styles.buttons}>
           <div
             class={
@@ -120,7 +132,7 @@ export const NutritionItem: NutritionItemComponent = props => {
           >
             <div
               class={classNames(styles.close, styles.control)}
-              onClick={() => setIsRemoving(true)}
+              onClick={handleRemove}
             >
               <CrossIcon />
             </div>
@@ -137,13 +149,13 @@ export const NutritionItem: NutritionItemComponent = props => {
           >
             <div
               class={classNames(styles.cancel, styles.control)}
-              onClick={() => setIsRemoving(false)}
+              onClick={handleCancel}
             >
               <CancelIcon />
             </div>
             <div
               class={classNames(styles.confirm, styles.control)}
-              onClick={handleClose}
+              onClick={handleConfirm}
             >
               <CheckIcon />
             </div>
