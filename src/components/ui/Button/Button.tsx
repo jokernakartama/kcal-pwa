@@ -5,6 +5,7 @@ import styles from './styles.sass'
 type ButtonComponent = Component<
 JSX.IntrinsicElements['button'] & {
   color: UI.Color
+  loading?: boolean
   outline?: boolean
   block?: boolean
 }
@@ -19,7 +20,8 @@ export const Button: ButtonComponent = props => {
     'class',
     'color',
     'block',
-    'outline'
+    'outline',
+    'loading'
   ])
 
   return (
@@ -33,6 +35,7 @@ export const Button: ButtonComponent = props => {
           [styles.outline]: local.outline === true
         }
       )}
+      disabled={rest.disabled ?? local.loading}
       {...rest}
     >
       {local.children}
