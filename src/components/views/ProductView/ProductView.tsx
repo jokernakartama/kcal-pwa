@@ -5,7 +5,7 @@ import { setProduct } from '../../../api'
 import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
 import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
-import { useUser } from '../../../store'
+import { useProfile } from '../../../store'
 import { ProductForm, ProductFormValues } from '../../forms/ProductForm'
 import { Button } from '../../ui/Button'
 import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
@@ -21,7 +21,7 @@ import styles from './styles.sass'
 export const ProductView: Component = () => {
   const [isLoading, setIsLoading] = createSignal<boolean>(false)
   const t = useT()
-  const user = useUser()
+  const user = useProfile()
   const [query] = useSearchParams<{ next?: string }>()
   const navigate = useNavigate()
   const rewind = createRewindNavigator()

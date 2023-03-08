@@ -13,7 +13,7 @@ export const useStore = () => useContext(StoreContext)
  * @returns {UserModel.User}
  * @throws An error in case if the user is not set yet
  */
-export const useUser = () => {
+export const useProfile = () => {
   const [store] = useStore()
 
   if (!store.user) {
