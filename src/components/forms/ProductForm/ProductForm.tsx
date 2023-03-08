@@ -1,37 +1,27 @@
 import { Component } from 'solid-js'
-import { emoji } from '../../../constants/emoji'
-// import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
-import { WithOptional } from '../../../types/utils'
 import { Col, Row } from '../../layout/Grid'
-import { Button } from '../../ui/Button'
-import { Form, getFormValues } from '../../ui/Form'
-import { FormSubmitEvent } from '../../ui/Form/types'
 import { TextInput } from '../../ui/TextInput'
 
-type FormValues = Omit<DataModel.Product, 'id' | 'userId'>
+export type ProductFormValues = Omit<DataModel.Product, 'id' | 'userId'>
 
-type ProductFormComponent = Component<{
-  defaults?: DataModel.Product
-  onSubmit: (values?: FormValues) => void
-}>
+type ProductFormComponent = Component
 
-export const ProductForm: ProductFormComponent = props => {
+/**
+ * Doesn't render a <Form />
+ * Renders product form fields.
+ */
+export const ProductForm: ProductFormComponent = () => {
   const t = useT()
 
-  function handleSubmit(e: FormSubmitEvent) {
-    e.preventDefault()
-    props.onSubmit(getFormValues<FormValues>(e))
-  }
-
   return (
-    <Form onSubmit={handleSubmit}>
+    <>
       <Row>
-      <Col desktop="4" class="m-mb-2">
+        <Col desktop="8" class="m-mb-2">
           <TextInput
             required
             type="text"
-            icon={emoji.forkAndKnife.string}
+            icon="forkAndKnife"
             placeholder={t('product.name')}
             name="name"
             min="0"
@@ -41,16 +31,16 @@ export const ProductForm: ProductFormComponent = props => {
           <TextInput
             required
             type="number"
-            icon={emoji.highVoltage.string}
-            placeholder={`${t('nutrients.kcalories')}, ${t('unit.kcal')}`}
-            name="kcalories"
+            icon="highVoltage"
+            placeholder={`${t('nutrients.energy')}, ${t('unit.kcal')}`}
+            name="energy"
             min="0"
           />
         </Col>
         <Col desktop="4" class="m-mb-2">
           <TextInput
             type="number"
-            icon={emoji.poultryLeg.string}
+            icon="poultryLeg"
             placeholder={`${t('nutrients.proteins')}, ${t('unit.gram')}`}
             name="proteins"
             min="0"
@@ -60,7 +50,7 @@ export const ProductForm: ProductFormComponent = props => {
           <TextInput
             required
             type="number"
-            icon={emoji.avocado.string}
+            icon="avocado"
             placeholder={`${t('nutrients.fats')}, ${t('unit.gram')}`}
             name="fats"
             min="0"
@@ -69,21 +59,13 @@ export const ProductForm: ProductFormComponent = props => {
         <Col desktop="4" class="m-mb-2">
           <TextInput
             type="number"
-            icon={emoji.cookedRice.string}
-            placeholder={`${t('nutrients.carbohydrates')}, ${t('unit.gram')}`}
-            name="carbohydrates"
+            icon="cookedRice"
+            placeholder={`${t('nutrients.carbs')}, ${t('unit.gram')}`}
+            name="carbs"
             min="0"
           />
         </Col>
       </Row>
-
-      <Row>
-        <Col>
-          <Button block color="primary" type="submit">
-            {t('button.continue')}
-          </Button>
-        </Col>
-      </Row>
-    </Form>
+    </>
   )
 }
