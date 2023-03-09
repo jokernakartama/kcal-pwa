@@ -59,7 +59,11 @@
     "cancel": "Cancel",
     "back": "Back",
     "start": "Start",
-    "save": "Save"
+    "save": "Save",
+    "clear": "Clear",
+    "search": "Search",
+    "add": "Add",
+    "save_add": "Save and add"
   },
   "dialog": {
     "meal": {
@@ -68,7 +72,13 @@
     },
     "dish": {
       "choose": "Choose a dish",
-      "add": "Add the dish"
+      "add": "Add the dish",
+      "select": {
+        "product": "Select a product",
+        "recipe": "Select a recipe"
+      },
+      "recipes": "Recipes",
+      "products": "Products"
     },
     "product": {
       "add": "Add a new product",
@@ -89,5 +99,11 @@
     "goals": {
       "header": "Your fitness goals"
     }
+  },
+  "products": {
+    "empty": "No products found"
+  },
+  "recipes": {
+    "empty": "No recipes found"
   }
 }
