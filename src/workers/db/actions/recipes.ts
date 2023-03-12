@@ -102,7 +102,7 @@ export const recipesActions = {
         .delete(recipeId)
 
       await DB.meals
-        .where({ 'dish.type': 'recipe', 'dish.target.id': recipeId })
+        .where({ 'dishes.type': 'recipe', 'dishes.target.id': recipeId })
         .modify((value, ref) => {
           ref.value = {
             ...value,

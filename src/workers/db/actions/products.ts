@@ -99,7 +99,7 @@ export const productsActions = {
         })
 
       await DB.meals
-        .where({ 'dish.type': 'product', 'dish.target.id': productId })
+        .where({ 'dishes.type': 'product', 'dishes.target.id': productId })
         .modify((value, ref) => {
           ref.value = {
             ...value,
