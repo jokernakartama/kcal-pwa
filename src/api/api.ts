@@ -1,4 +1,4 @@
-import { PaginationResponse, PaginationParams } from '../types/pagination'
+import { PaginationResponse, PaginationParams, SortingDirection } from '../types/pagination'
 import { WithOptional } from '../types/utils'
 import { WorkerClient } from '../utils/queryableWorker'
 import { dbWorkerActions } from '../workers/db/actions'
@@ -135,7 +135,7 @@ export function getProducts(
     id?: number | number[]
     name?: string,
     sort?: 'name' | 'energy' | 'id'
-    dir?: 'asc' | 'desc'
+    dir?: SortingDirection
   }
 ): Promise<PaginationResponse<DataModel.Product>> {
   return DBWorkerClient
@@ -190,7 +190,7 @@ export function getRecipes(
     name?: string,
     products?: number[]
     sort?: 'name' | 'id'
-    dir?: 'asc' | 'desc'
+    dir?: SortingDirection
   }
 ): Promise<PaginationResponse<DataModel.Recipe>> {
   return DBWorkerClient

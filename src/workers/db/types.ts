@@ -1,4 +1,4 @@
-import { PaginationParams } from '../../types/pagination'
+import { PaginationParams, SortingDirection } from '../../types/pagination'
 
 /**
  * An object that has the "id" key
@@ -39,7 +39,7 @@ export interface RangeParams<T> {
  * @property {string} [sort]
  */
 export interface SortingParams<T> {
-  dir?: 'asc' | 'desc'
+  dir?: SortingDirection
   sort?: keyof T
 }
 
