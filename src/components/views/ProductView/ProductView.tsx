@@ -86,7 +86,9 @@ export const ProductView: Component = () => {
           </>
         }
       >
-        <ProductForm />
+        <div class={styles.fields}>
+          <ProductForm />
+        </div>
       </Dialog>
     </Form>
   )
