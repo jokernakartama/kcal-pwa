@@ -79,7 +79,7 @@ export const recipesActions = {
 
       collection = collection
         .filter(
-          product => normalizeString(product.name).startsWith(filteredName)
+          product => normalizeString(product.name).includes(filteredName)
         )
     }
 
