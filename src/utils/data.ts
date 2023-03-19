@@ -1,11 +1,23 @@
+import { WithOptional } from '../types/utils'
 import { getNutrientAmount } from './calculations'
+
+/**
+ * Checks if target is a recipe
+ * @param {(DataModel.Product | DataModel.Recipe)} dish
+ * @returns {boolean}
+ */
+export function isRecipe(
+  dish: DataModel.Product | DataModel.Recipe
+): dish is DataModel.Recipe {
+  return !!(dish as DataModel.Recipe).products
+}
 
 /**
  * Whether the dish is a product
  * @param {DataModel.Dish} dish
  * @returns {boolean}
  */
-export function isProduct(
+export function isDishProduct(
   dish: DataModel.Dish
 ): dish is DataModel.Dish<DataModel.Product>{
   if (dish.type === 'product') {
@@ -20,7 +32,7 @@ export function isProduct(
  * @param {DataModel.Dish} dish
  * @returns {boolean}
  */
-export function isRecipe(
+export function isDishRecipe(
   dish: DataModel.Dish
 ): dish is DataModel.Dish<DataModel.Recipe>{
   if (dish.type === 'recipe') {
@@ -37,15 +49,10 @@ export function isRecipe(
  * @returns {Object} Nutrition values
  */
 export function calculateProductNutrition(
-  product: DataModel.Nutrition,
+  product: WithOptional<DataModel.Product, 'userId' | 'id'>,
   mass: DataModel.Mass
-): Record<
-  keyof DataModel.Nutrition,
-  number
-  > {
-  const result: Record<
-  keyof DataModel.Nutrition, number
-  > & { energy: number } = {
+): DataModel.Nutrition {
+  const result: DataModel.Nutrition = {
     energy: 0,
     proteins: 0,
     fats: 0,
@@ -61,17 +68,43 @@ export function calculateProductNutrition(
 }
 
 /**
+ * Calculates nutrition of a recipe
+ * @param {DataModel.Recipe} recipe
+ * @param {number} [portion=1]
+ * @returns
+ */
+export function calculateRecipeNutrition(
+  recipe: WithOptional<DataModel.Recipe, 'userId' | 'id'>,
+  portion = 1
+): DataModel.Nutrition {
+  const result: DataModel.Nutrition = {
+    energy: 0,
+    proteins: 0,
+    fats: 0,
+    carbs: 0
+  }
+
+  recipe.products.forEach(product => {
+    const productNutrition = calculateProductNutrition(product, product.mass)
+
+    result.energy += productNutrition.energy * portion
+    result.proteins += productNutrition.proteins * portion
+    result.fats += productNutrition.fats * portion
+    result.carbs += productNutrition.carbs * portion
+  })
+
+  return result
+}
+
+/**
  * Calculates nutrition of a meal
  * @param {DataModel.Meal} meal
  * @returns {Object} Nutrition of the meal
  */
-export function calculateMealNutrition(meal: DataModel.Meal): Record<
-keyof DataModel.Nutrition,
-number
-> {
-  const result: Record<
-  keyof DataModel.Nutrition, number
-  > & { energy: number } = {
+export function calculateMealNutrition(
+  meal: DataModel.Meal
+): DataModel.Nutrition {
+  const result: DataModel.Nutrition = {
     energy: 0,
     proteins: 0,
     fats: 0,
@@ -79,16 +112,15 @@ number
   }
 
   meal.dishes.forEach(dish => {
-    if (isRecipe(dish)) {
-      dish.target.products.forEach(product => {
-        const productNutrition = calculateProductNutrition(product, product.mass)
+    if (isDishRecipe(dish)) {
+      const recipeNutrition = calculateRecipeNutrition(dish.target)
 
-        result.energy += productNutrition.energy
-        result.proteins += productNutrition.proteins
-        result.fats += productNutrition.fats
-        result.carbs += productNutrition.carbs
-      })
-    } else if (isProduct(dish)) {
+      result.energy += recipeNutrition.energy
+      result.proteins += recipeNutrition.proteins
+      result.fats += recipeNutrition.fats
+      result.carbs += recipeNutrition.carbs
+
+    } else if (isDishProduct(dish)) {
       const productNutrition = calculateProductNutrition(dish.target, dish.mass)
 
       result.energy += productNutrition.energy
