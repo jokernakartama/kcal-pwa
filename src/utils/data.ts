@@ -7,9 +7,35 @@ import { getNutrientAmount } from './calculations'
  * @returns {boolean}
  */
 export function isRecipe(
-  dish: DataModel.Product | DataModel.Recipe
+  dish: WithOptional<DataModel.Product | DataModel.Recipe, 'userId'>
 ): dish is DataModel.Recipe {
   return !!(dish as DataModel.Recipe).products
+}
+
+/**
+ * Creates a dish record from anything
+ * @param {(DataModel.Product | DataModel.Recipe)} target
+ * @param {number} amount
+ * @returns {DataModel.Dish}
+ */
+export function getDishFromAnything(
+  target: DataModel.Dish['target'],
+  amount: number
+): DataModel.Dish {
+  if (isRecipe(target)) {
+    return {
+      type: 'recipe',
+      target,
+      portion: amount
+    }
+  }
+
+  return {
+    type: 'product',
+    target: target as DataModel.Product,
+    mass: amount
+  }
+
 }
 
 /**

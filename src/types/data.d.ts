@@ -52,25 +52,23 @@ declare namespace DataModel {
 
   export interface BasicDish<T extends (Product | Recipe) = Product | Recipe> {
     /** Dish type either a product or recipe */
-    type: 'product' | 'recipe'
+    readonly type: 'product' | 'recipe'
     /** Save target entity instance */
-    target: Omit<T, 'userId'>
+    readonly target: Omit<T, 'userId'>
     /** Whether the bound entity has been removed */
     isArchieved?: boolean
-    /**
-     * Resulting mass of the dish. If it's a recipe,
-     * calculated mass of the meal should be used by default.
-     */
-    mass: Mass
   }
 
   export type Dish<
-    T extends (Product | Recipe) = Product | Recipe
-  > = T extends Product
-    ? BasicDish<Product> & { type: 'product' }
-    : T extends Recipe
+    T extends (Omit<Product | Recipe, 'userId'>) = Product | Recipe
+  > = T extends Omit<Product, 'userId'>
+    ? BasicDish<Product> & {
+      readonly type: 'product'
+      mass: Mass
+    }
+    : T extends Omit<Recipe, 'userId'>
       ? BasicDish<Recipe> & {
-        type: 'recipe'
+        readonly type: 'recipe'
         /** Portion value for easier calculations  */
         portion: number
       }

@@ -26,6 +26,7 @@
   },
   "nutrients": {
     "mass": "Mass",
+    "portion": "Portion",
     "proteins": "Proteins",
     "fats": "Fats",
     "carbs": "Carbs",
@@ -73,12 +74,16 @@
     "dish": {
       "choose": "Choose a dish",
       "add": "Add the dish",
+      "add_product": "Add this product",
+      "add_recipe": "Add this dish",
       "select": {
         "product": "Select a product",
         "recipe": "Select a recipe"
       },
       "recipes": "Recipes",
-      "products": "Products"
+      "products": "Products",
+      "per_100g": "Nutrients per 100g",
+      "per_portion": "Nutrients per portion"
     },
     "product": {
       "add": "Add a new product",

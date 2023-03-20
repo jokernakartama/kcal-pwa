@@ -6,6 +6,10 @@ export interface AppStoreState {
   user?: UserModel.User
   goals?: UserModel.Goals
   info?: UserModel.Info
+  /**
+   * List of dishes for a new meal
+   */
+  dishes: DataModel.Dish[]
 }
 
 export type AppStore = [
