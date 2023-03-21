@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { Component, JSX, Show, splitProps } from 'solid-js'
 import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
+import { roundTo } from '../../../utils/format'
 import { CircleDiagram } from '../../ui/CircleDiagram'
 import { LineDiagram } from '../../ui/LineDiagram'
 import { GoalsSummaryValue } from './GoalSummaryValue'
@@ -43,7 +44,7 @@ export const GoalsSummary: GoalsSummaryComponent = (props) => {
           <span>{emoji.highVoltage.html}</span>
         </div>
         <GoalsSummaryValue
-          current={local.current.energy}
+          current={roundTo(local.current.energy)}
           target={local.target.energy}
           loading={local.loading}
         /> <Show when={!local.loading}>
@@ -56,7 +57,7 @@ export const GoalsSummary: GoalsSummaryComponent = (props) => {
           <label>
             <div class={styles.caption}>{t('nutrients.proteins')}</div>
             <GoalsSummaryValue
-              current={local.current.proteins}
+              current={roundTo(local.current.proteins)}
               target={local.target.proteins}
               loading={local.loading}
             /> <Show when={!local.loading}>
@@ -66,6 +67,7 @@ export const GoalsSummary: GoalsSummaryComponent = (props) => {
 
           <LineDiagram
             color="blue"
+            secondValue={.7}
             value={local.current.proteins / local.target.proteins}
           >
             <div class={styles.meter}>
@@ -78,7 +80,7 @@ export const GoalsSummary: GoalsSummaryComponent = (props) => {
           <label>
             <div class={styles.caption}>{t('nutrients.fats')}</div>
             <GoalsSummaryValue
-              current={local.current.fats}
+              current={roundTo(local.current.fats)}
               target={local.target.fats}
               loading={local.loading}
             /> <Show when={!local.loading}>
@@ -100,7 +102,7 @@ export const GoalsSummary: GoalsSummaryComponent = (props) => {
           <label>
             <div class={styles.caption}>{t('nutrients.carbs')}</div>
             <GoalsSummaryValue
-              current={local.current.carbs}
+              current={roundTo(local.current.carbs)}
               target={local.target.carbs}
               loading={local.loading}
             /> <Show when={!local.loading}>
