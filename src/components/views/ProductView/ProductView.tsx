@@ -47,7 +47,7 @@ export const ProductView: Component = () => {
   }
 
   function goBack() {
-    rewind(route.ADD_DISH, -1)
+    rewind(route.DISH_LIST, -1)
   }
 
   function closeDialog() {
@@ -79,8 +79,8 @@ export const ProductView: Component = () => {
               <Button disabled={isLoading()} color="secondary" onClick={goBack}>
                 {t('button.back')}
               </Button>
-              <Button color="primary" loading={isLoading()} type="submit">
-                {t(`button.${query.next === route.ADD_PRODUCT ? 'save_add' : 'add'}`)}
+              <Button half block color="primary" loading={isLoading()} type="submit">
+                {t(`button.${query.next === route.ADD_DISH ? 'save_add' : 'add'}`)}
               </Button>
             </ButtonPanel>
           </>

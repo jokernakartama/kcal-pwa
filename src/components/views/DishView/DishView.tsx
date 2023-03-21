@@ -134,7 +134,7 @@ export const DishView: Component = () => {
               <Button color="secondary" onClick={goBack}>
                 {t('button.back')}
               </Button>
-              <Button disabled={!dish()} type="submit" color="primary">
+              <Button half block disabled={!dish()} type="submit" color="primary">
                 {t('button.add')}
               </Button>
             </ButtonPanel>

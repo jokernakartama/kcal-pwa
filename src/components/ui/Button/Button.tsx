@@ -8,6 +8,7 @@ JSX.IntrinsicElements['button'] & {
   loading?: boolean
   outline?: boolean
   block?: boolean
+  half?: boolean
 }
 >
 
@@ -20,6 +21,7 @@ export const Button: ButtonComponent = props => {
     'class',
     'color',
     'block',
+    'half',
     'outline',
     'loading'
   ])
@@ -31,8 +33,9 @@ export const Button: ButtonComponent = props => {
         local.class,
         styles[`color-${local.color}`],
         {
-          [styles.block]: local.block === true,
-          [styles.outline]: local.outline === true
+          [styles.block]: local.block,
+          [styles.half]: local.half,
+          [styles.outline]: local.outline
         }
       )}
       disabled={rest.disabled ?? local.loading}
