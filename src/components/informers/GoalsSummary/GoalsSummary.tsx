@@ -67,7 +67,6 @@ export const GoalsSummary: GoalsSummaryComponent = (props) => {
 
           <LineDiagram
             color="blue"
-            secondValue={.7}
             value={local.current.proteins / local.target.proteins}
           >
             <div class={styles.meter}>
