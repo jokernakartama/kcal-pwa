@@ -61,37 +61,33 @@ export const journalActions = {
   },
 
   /**
-   * Adds a meal to a journal record
+   * Adds a meal to journal
    * @param {DataModel.Meal} meal
    * @returns {Promise<(number | undefined)>}
    */
   'PUT meals/{meal}': async (
-    meal: WithOptional<DataModel.Meal, 'recordId' | 'id'>
+    meal: WithOptional<DataModel.Meal, 'id' | 'time' | 'recordId'>
   ) => {
-    const date = normalizeDate(meal.time)
-    const record = meal.recordId === undefined
-      ? undefined
-      : await DB.journal.get(meal.recordId)
+    const time = new Date()
+    const date = normalizeDate(time)
+    const record = await DB.journal
+      .where({ userId: meal.userId, date })
+      .first()
     let recordId = record?.id
 
-    if (record === undefined || record.date !== date) {
+    if (record === undefined) {
       recordId = await DB.journal.put(
         {
           userId: meal.userId,
-          date: normalizeDate(meal.time)
+          date
         } as const as DataModel.JournalRecord
       )
     }
 
     if (recordId !== undefined) {
       const id = await DB.meals
-        .put(
-          {
-            ...meal as DataModel.Meal,
-            recordId
-          }
-        )
-      const result: DataModel.Meal = { ...meal, id, recordId }
+        .put({ ...meal as DataModel.Meal, recordId })
+      const result: DataModel.Meal = { ...meal, id, recordId, time }
 
       return result
     }

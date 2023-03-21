@@ -198,12 +198,12 @@ export function getRecipes(
 }
 
 /**
- * Adds a meal. If meal's recordId is not provided also creates a record.
+ * Adds a meal. If meal's record does not exist also creates a record.
  * @param {DataModel.Meal} meal
  * @returns {Promise<DataModel.Meal>}
  */
 export function addMeal(
-  meal: WithOptional<DataModel.Meal, 'id' | 'recordId'>
+  meal: Omit<DataModel.Meal, 'id' | 'recordId' | 'time'>
 ): Promise<DataModel.Meal> {
   return DBWorkerClient
     .dispatch('PUT meals/{meal}', meal)
