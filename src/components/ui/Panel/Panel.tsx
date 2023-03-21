@@ -1,24 +1,34 @@
 import classNames from 'classnames'
 import { createEffect, createMemo, createSignal, ParentComponent } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { createMovementCapture } from '../../../hooks/createMovementCapture'
 import styles from './styles.sass'
 
 type PanelComponent<T = any> = ParentComponent<{
   when: T | undefined | null | false
+  /**
+   * Whether the content of the panel should be
+   * mounted after the panel is closed
+   */
   keepalive?: boolean
+  /**
+   * A value between 0 and 1 defines what part of the panel should be moved
+   * down to call `onClose`
+   */
+  closeTreshold?: number
   onClose?: () => void
 }>
 
 /**
  * Renders a panel
  */
-export const Panel: PanelComponent = (props) => {
-  let headerRef: HTMLDivElement | undefined
-  const [capturedY, setCapturedY] = createSignal<number | undefined>()
-  const [currentY, setCurrentY] = createSignal<number | undefined>()
+export const Panel: PanelComponent = props => {
+  let dialogElement: HTMLDivElement | undefined
+  const { isCaptured, hold, touch, y } = createMovementCapture({ x: false })
+  const treshold = props.closeTreshold ?? 0.5
   const dialogStyle = createMemo(() => {
-    return capturedY()
-      ? { transform: `translateY(${currentY()!}px)` }
+    return isCaptured()
+      ? { transform: `translateY(${Math.max(y()!, 0)}px)` }
       : undefined
   })
 
@@ -36,77 +46,40 @@ export const Panel: PanelComponent = (props) => {
     if (!isOpen()) setIsHidden(true)
   }
 
-  function hold(e: MouseEvent) {
-    setCapturedY(e.pageY - (headerRef?.offsetTop ?? 0))
-    window.document.addEventListener('mousemove', move)
-    window.document.addEventListener('mouseup', release)
-  }
-
-  function touch(e: TouchEvent) {
-    if (!e.touches[0]) return
-
-    const { pageY } = e.touches[0]
-    setCapturedY(pageY - (headerRef?.offsetTop ?? 0))
-
-    window.document.addEventListener('touchmove', slide)
-    window.document.addEventListener('touchend', release)
-  }
-
-  function slide(e: TouchEvent) {
-    if (!e.touches[0]) return
-
-    const { pageY } = e.touches[0]
-    const topMax = window.document.documentElement.clientHeight - 80
-    const topValue = pageY - (capturedY() ?? 0)
-    setCurrentY(
-      topValue >= 0
-        ? (topValue > topMax ? topMax : topValue)
-        : 0
-    )
-  }
-
-  function move(e: MouseEvent) {
-    const my = e.pageY
-    const topMax = window.document.documentElement.clientHeight - 80
-    const topValue = my - (capturedY() ?? 0)
-    setCurrentY(
-      topValue >= 0
-        ? (topValue > topMax ? topMax : topValue)
-        : 0
-    )
-  }
-
-  function release() {
-    window.document.removeEventListener('mouseup', release)
-    window.document.removeEventListener('mousemove', move)
-    window.document.removeEventListener('touchend', release)
-    window.document.removeEventListener('touchmove', slide)
-
-    setCapturedY(undefined)
-    setCurrentY(undefined)
-  }
-
   createEffect(() => {
     if (isOpen()) setIsHidden(false)
+  })
+
+  createEffect(() => {
+    const yValue = y()
+
+    if (
+      typeof yValue !== 'undefined' &&
+      typeof props.onClose === 'function' &&
+      !isCaptured() &&
+      yValue > (dialogElement?.clientHeight ?? 0) * treshold
+    ) {
+      props.onClose()
+    }
   })
 
   return (
     <Portal mount={window.document.body}>
       <div
         class={classNames(styles.wrapper, {
-          [styles.captured]: typeof capturedY() !== 'undefined'
+          [styles.captured]: isCaptured()
         })}
       >
         <div
+          ref={el => { dialogElement = el }}
           class={classNames(styles.dialog, {
             [styles.open]: isOpen(),
-            [styles.captured]: typeof capturedY() !== 'undefined'
+            [styles.captured]: isCaptured()
           })}
           style={dialogStyle()}
           onTransitionEnd={handleTransitionEnd}
         >
           <div
-            ref={headerRef}
             class={styles.top}
             onMouseDown={hold}
             onTouchStart={touch}
