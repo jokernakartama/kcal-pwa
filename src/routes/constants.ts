@@ -18,15 +18,11 @@ export const route = {
   /**
    * Looking for a product/recipe and adding it to a new meal
    */
-  ADD_DISH: '/new-meal/add-dish',
+  DISH_LIST: '/new-meal/add-dish',
   /**
-   * Setting up mass for a particular product to add it to a new meal
+   * Setting up mass/portion for a particular product/recipe to add it to a new meal
    */
-  ADD_PRODUCT: '/new-meal/add-dish/product/:id',
-  /**
-   * Setting up portion size for a particular recipe to add it to a new meal
-   */
-  ADD_RECIPE: '/new-meal/add-dish/recipe/:id',
+  ADD_DISH: '/new-meal/add-dish/:type/:id',
   /**
    * Displaying the list of dishes of a meal
    */
