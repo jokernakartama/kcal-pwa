@@ -86,7 +86,7 @@ export const journalActions = {
 
     if (recordId !== undefined) {
       const id = await DB.meals
-        .put({ ...meal as DataModel.Meal, recordId })
+        .put({ ...meal, recordId, time } as const as DataModel.Meal)
       const result: DataModel.Meal = { ...meal, id, recordId, time }
 
       return result
