@@ -1,0 +1,37 @@
+@use "../../../styles/basic/breakpoints"
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  animation: slide .3s 1
+
+.inputs
+  padding-bottom: 0
+
+.search
+  flex-grow: 1
+
+.radio-wrapper
+  display: flex
+  padding-left: 0
+  flex-direction: column
+  align-items: flex-start
+  gap: 8px
+  padding-top: 10px
+
+.radio
+  flex-shrink: 1
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+.list
+  height: 100%
+  padding: 0 (vars.$grid-gutter * 2)
+
+@keyframes slide
+  0%
+    opacity: 0
+    transform: translateY(200px)
+  100%
+    opacity: 1
+    transform: translateY(0px)
