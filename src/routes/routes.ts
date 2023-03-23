@@ -1,24 +1,31 @@
+import { RouteDefinition } from '@solidjs/router'
 import { AppSections } from '../components/layout/AppSections'
+import { DishesSearchView } from '../components/views/DishesSearchView'
+import { DishView } from '../components/views/DishView'
+import { MealView } from '../components/views/MealView'
+import { ProductView } from '../components/views/ProductView'
+// import { RecipeView } from '../components/views/RecipeView'
+import { route } from './constants'
 
-export const routes = [
+export const routes: RouteDefinition[] = [
   {
     path: '/',
     component: AppSections,
     children: [
-      { path: '/' },
-      { path: '/profile', /* ProfileView */ },
-      { path: '/goals', /* GoalsView */ },
+      { path: route.HOME },
+      { path: route.PROFILE, /* ProfileView */ },
+      { path: route.GOALS, /* GoalsView */ },
 
-      { path: '/new-meal', /* component: MealView */ },
-      { path: '/new-weal/add-dish', /* component: DishesView */ },
-      { path: '/new-meal/add-dish/product/:id', /* component: DishView */ },
-      { path: '/new-meal/add-dish/recipe/:id', /* component: DishView */ },
-      { path: '/meal/:id', /* component: MealView */ },
+      { path: route.NEW_MEAL, component: MealView },
+      { path: route.DISH_LIST, component: DishesSearchView },
+      { path: route.ADD_DISH, component: DishView },
+      { path: route.MEAL, component: MealView },
 
-      { path: '/new-product', /* component: ProductView */ },
-      { path: '/new-recipe', /* component: RecipeView */ },
-      { path: '/product/:id', /* component: ProductView */ },
-      { path: '/recipe/:id', /* component: RecipeView */ },
+      { path: route.NEW_PRODUCT, component: ProductView },
+      { path: route.NEW_RECIPE, /* component: RecipeView */ },
+      { path: route.PRODUCT, component: ProductView },
+      { path: route.RECIPE, /* component: RecipeView */ },
+      { path: '/*' }
     ]
   }
 ]
