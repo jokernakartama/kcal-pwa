@@ -1,10 +1,8 @@
 import classNames from 'classnames'
-import { Component, createSignal, JSX, Show, splitProps } from 'solid-js'
+import { Component, JSX, Show, splitProps } from 'solid-js'
 import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
-import { CancelIcon } from '../../icons/CancelIcon'
-import { CheckIcon } from '../../icons/CheckIcon'
-import { CrossIcon } from '../../icons/CrossIcon'
+import { ListItem } from '../ListItem'
 import styles from './styles.sass'
 
 type NutritionItemComponent = Component<
@@ -21,7 +19,6 @@ DataModel.Nutrition & {
  * Renders common nutrition object
  */
 export const NutritionItem: NutritionItemComponent = props => {
-  const [isRemoving, setIsRemoving] = createSignal<boolean>(false)
   const t = useT()
   const [local, rest] = splitProps(props, [
     'caption',
@@ -36,132 +33,76 @@ export const NutritionItem: NutritionItemComponent = props => {
     'onRemove'
   ])
 
-  function handleRemove(e: Event) {
-    e.stopPropagation()
-    setIsRemoving(true)
-  }
-
-  function handleCancel(e: Event) {
-    e.stopPropagation()
-    setIsRemoving(false)
-  }
-
-  function handleConfirm(e: Event) {
-    e.stopPropagation()
-    if (typeof local.onRemove === 'function') {
-      local.onRemove(local.identifier)
-    }
-  }
-
   return (
-    <div class={classNames(styles.wrapper, local.class)} {...rest}>
-      <div class={styles.values}>
-        <div class={styles.header}>
-          <div class={styles.caption}>
-            <div class={styles['caption-text']}>{local.caption}</div>
-            <Show when={local.portion}>
-              <span class={styles.portion}>
+    <ListItem
+      identifier={local.identifier}
+      class={classNames(local.class)}
+      onRemove={local.onRemove}
+      {...rest}
+    >
+      <div class={styles.header}>
+        <div class={styles.caption}>
+          <div class={styles['caption-text']}>{local.caption}</div>
+          <Show when={local.portion}>
+            <span class={styles.portion}>
                 &times; {local.portion?.toLocaleString()}
-              </span>
-            </Show>
-          </div>
-
-          <Show when={local.mass}>
-            <div class={styles.mass}>
-              {local.mass} {' '}
-              <span class={styles.unit}>{t('unit.gram')}</span>
-            </div>
+            </span>
           </Show>
         </div>
 
-        <div class={classNames(styles.nutrients, 'm-mt-1')}>
-          <div class={classNames(styles.nutrient, styles.protein)}>
-            <div class={styles['nutrient-caption']}>
-              {/* {emoji.poultryLeg.html} */}
-              {t('nutrients.P')}:
-            </div>
-            <div class={styles['nutrient-value']}>
-              {local.proteins} {' '}
-              <span class={styles.unit}>{t('unit.gram')}</span>
-            </div>
+        <Show when={local.mass}>
+          <div class={styles.mass}>
+            {local.mass} {' '}
+            <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
+        </Show>
+      </div>
 
-          <div class={classNames(styles.nutrient, styles.fats)}>
-            <div class={styles['nutrient-caption']}>
-              {/* {emoji.avocado.html} */}
-              {t('nutrients.F')}:
-            </div>
-            <div class={styles['nutrient-value']}>
-              {local.fats} {' '}
-              <span class={styles.unit}>{t('unit.gram')}</span>
-            </div>
+      <div class={classNames(styles.nutrients, 'm-mt-1')}>
+        <div class={classNames(styles.nutrient, styles.protein)}>
+          <div class={styles['nutrient-caption']}>
+            {/* {emoji.poultryLeg.html} */}
+            {t('nutrients.P')}:
           </div>
-
-          <div class={classNames(styles.nutrient, styles.carbs)}>
-            <div class={styles['nutrient-caption']}>
-              {/* {emoji.cookedRice.html} */}
-              {t('nutrients.C')}:
-            </div>
-            <div class={styles['nutrient-value']}>
-              {local.carbs} {' '}
-              <span class={styles.unit}>{t('unit.gram')}</span>
-            </div>
+          <div class={styles['nutrient-value']}>
+            {local.proteins} {' '}
+            <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
+        </div>
 
-          <div class={classNames(styles.nutrient, styles.energy)}>
-            <div class={styles['nutrient-caption']}>
-              {emoji.highVoltage.html}
-            </div>
-            <div class={styles['nutrient-value']}>
-              {local.energy} {' '}
-              <span class={styles.unit}>{t('unit.kcal')}</span>
-            </div>
+        <div class={classNames(styles.nutrient, styles.fats)}>
+          <div class={styles['nutrient-caption']}>
+            {/* {emoji.avocado.html} */}
+            {t('nutrients.F')}:
+          </div>
+          <div class={styles['nutrient-value']}>
+            {local.fats} {' '}
+            <span class={styles.unit}>{t('unit.gram')}</span>
+          </div>
+        </div>
+
+        <div class={classNames(styles.nutrient, styles.carbs)}>
+          <div class={styles['nutrient-caption']}>
+            {/* {emoji.cookedRice.html} */}
+            {t('nutrients.C')}:
+          </div>
+          <div class={styles['nutrient-value']}>
+            {local.carbs} {' '}
+            <span class={styles.unit}>{t('unit.gram')}</span>
+          </div>
+        </div>
+
+        <div class={classNames(styles.nutrient, styles.energy)}>
+          <div class={styles['nutrient-caption']}>
+            {emoji.highVoltage.html}
+          </div>
+          <div class={styles['nutrient-value']}>
+            {local.energy} {' '}
+            <span class={styles.unit}>{t('unit.kcal')}</span>
           </div>
         </div>
       </div>
+    </ListItem>
 
-      <Show when={typeof local.onRemove === 'function'}>
-        <div class={styles.buttons}>
-          <div
-            class={
-              classNames(
-                styles['controls-group'],
-                { [styles.visible]: !isRemoving() }
-              )
-            }
-          >
-            <div
-              class={classNames(styles.close, styles.control)}
-              onClick={handleRemove}
-            >
-              <CrossIcon />
-            </div>
-          </div>
-
-          <div
-            class={
-              classNames(
-                styles['controls-group'],
-                styles.secondary,
-                { [styles.visible]: isRemoving() }
-              )
-            }
-          >
-            <div
-              class={classNames(styles.cancel, styles.control)}
-              onClick={handleCancel}
-            >
-              <CancelIcon />
-            </div>
-            <div
-              class={classNames(styles.confirm, styles.control)}
-              onClick={handleConfirm}
-            >
-              <CheckIcon />
-            </div>
-          </div>
-        </div>
-      </Show>
-    </div>
   )
 }
