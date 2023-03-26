@@ -1,9 +1,12 @@
+import { useNavigate } from '@solidjs/router'
 import classNames from 'classnames'
+import { inject } from 'regexparam'
 import { createMemo, createSelector, For, Show } from 'solid-js'
 import { produce } from 'solid-js/store'
 import { removeMeal } from '../../../api'
 import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
+import { route } from '../../../routes/constants'
 import { useStore } from '../../../store'
 import { calculateMealNutrition } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
@@ -16,6 +19,7 @@ import styles from './styles.sass'
  */
 export const MealList = () => {
   const t = useT()
+  const navigate = useNavigate()
   const [store, setStore] = useStore()
   const isRemoveable = createSelector(() => normalizeDate(new Date()))
   const mealNutrition = createMemo<Array<DataModel.Meal & DataModel.Nutrition>>(
@@ -28,6 +32,14 @@ export const MealList = () => {
       })
     }
   )
+
+  function goToMeal(id: DataModel.Meal['id']) {
+    const pathname = inject(
+      route.MEAL,
+      { id }
+    )
+    navigate(pathname)
+  }
 
   function deleteMeal(meal: DataModel.Meal, i: number) {
     if (normalizeDate(new Date()) !== normalizeDate(meal.time)) return
@@ -49,6 +61,7 @@ export const MealList = () => {
         {(item, index) => (
           <ListItem
             identifier={item.id}
+            onClick={() => goToMeal(item.id)}
             onRemove={
               isRemoveable(normalizeDate(item.time))
                 ? () => deleteMeal(item, index())

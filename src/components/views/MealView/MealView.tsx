@@ -1,5 +1,5 @@
-import { useNavigate } from '@solidjs/router'
-import { Component, createMemo, For } from 'solid-js'
+import { useNavigate, useParams } from '@solidjs/router'
+import { Component, createMemo, For, Show } from 'solid-js'
 import { produce } from 'solid-js/store'
 import { addMeal } from '../../../api'
 import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
@@ -26,13 +26,23 @@ type MealViewComponent = Component
  */
 export const MealView: MealViewComponent = () => {
   const [store, setStore] = useStore()
+  const params = useParams<{ id: string }>()
   const t = useT()
   const user = useProfile()
   const navigate = useNavigate()
   const rewind = createRewindNavigator()
   const isSaveable = createMemo(() => store.dishes.length > 0)
+  const targetMeal = createMemo(() => {
+    if (params.id) {
+      return store.meals.find(m => m.id === +params.id)
+    }
+    return undefined
+  })
+
   const dishes = createMemo(() => {
-    return store.dishes.map(dish => {
+    const source = targetMeal() ? targetMeal()!.dishes : store.dishes
+
+    return source.map(dish => {
       if (isDishRecipe(dish)) {
         return {
           ...calculateRecipeNutrition(dish.target, dish.portion),
@@ -96,9 +106,23 @@ export const MealView: MealViewComponent = () => {
       class={styles.wrapper}
       onClose={goBack}
       onBack={goBack}
-      header={<h2>{t('dialog.meal.add')}</h2>}
+      header={
+        <h2>{targetMeal()
+          ? `${targetMeal()!.time.toLocaleString()}`
+          : t('dialog.meal.add')}
+        </h2>
+      }
       footer={
-        <>
+        <Show
+          when={!targetMeal()}
+          fallback={
+            <ButtonPanel justify="start">
+              <Button color="secondary" onClick={goBack}>
+                {t('button.back')}
+              </Button>
+            </ButtonPanel>
+          }
+        >
           <ButtonPanel>
             <Button color="secondary" onClick={goBack}>
               {t('button.cancel')}
@@ -117,7 +141,7 @@ export const MealView: MealViewComponent = () => {
               <PlusIcon />
             </Button>
           </ButtonPanel>
-        </>
+        </Show>
       }
     >
       <Container>
@@ -132,7 +156,7 @@ export const MealView: MealViewComponent = () => {
               carbs={item.carbs}
               energy={item.energy}
               mass={item.mass}
-              onRemove={removeDish}
+              onRemove={!targetMeal() ? removeDish : undefined}
             />
           )}
         </For>
