@@ -1,3 +1,5 @@
+import { clockEmoji } from './clock'
+
 export const emoji = {
   man: {
     string: '\uD83D\uDC68',
@@ -98,5 +100,7 @@ export const emoji = {
   magnifyingGlass: {
     string: '\uD83D\uDD0E',
     html: <>&#x1F50E;</>
-  }
+  },
+
+  ...clockEmoji
 }
