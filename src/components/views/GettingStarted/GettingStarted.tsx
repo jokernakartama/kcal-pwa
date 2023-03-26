@@ -24,8 +24,6 @@ export const GettingStarted: Component = () => {
       birthDate: form.birthDate
     })
       .then((user) => {
-        setStore({ user })
-
         return user
       })
   }
@@ -56,13 +54,18 @@ export const GettingStarted: Component = () => {
   function handleSubmit(e: FormSubmitEvent) {
     e.preventDefault()
     const values = getFormValues<GettingStartedForm>(e.currentTarget)
+    let user: UserModel.User | undefined
 
     saveUser(values)
-      .then((user) => {
+      .then((u) => {
+        user = u
         return saveGoals(user.id, values)
       })
       .then((goals) => {
         return saveUserInfo(goals.userId, values)
+      })
+      .then(() => {
+        setStore({ user })
       })
       .catch(err => {
         console.warn(err)

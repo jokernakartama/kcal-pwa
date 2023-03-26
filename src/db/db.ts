@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 
-export const DB_NAME = 'db_test_1'
+export const DB_NAME = 'ma_poop_data'
 
 export const DB_STORES = {
   users: '++id',

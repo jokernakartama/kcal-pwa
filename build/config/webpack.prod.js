@@ -29,7 +29,7 @@ module.exports = merge(config, {
       start_url: 'index.html?standalone=true',
       name: 'MaPoop',
       short_name: 'MaPoop',
-      description: 'An app that helps you keep track of your daily nutrients.',
+      description: 'An app that helps you keep tracking your daily nutrients.',
       background_color: '#241C1C',
       display: 'standalone',
       theme_color: '#31363B',
