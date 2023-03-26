@@ -1,0 +1,124 @@
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/common/input"
+
+.wrapper
+  display: block
+  position: relative
+  padding-top: calc(vars.$font-size-14 / 2 + 0px)
+
+  .input
+    @include input.input-field
+    padding: 0
+
+.ranges-wrapper
+  display: flex
+  height: 100%
+  width: 100%
+
+.range
+  position: relative
+  height: 100%
+  display: flex
+  flex-direction: column
+  // flex-grow: 0
+  // flex-shrink: 0
+
+  &:first-child
+    .range-bar
+      border-bottom-left-radius: vars.$border-radius
+
+    .control-button:first-child
+      display: none
+
+  &:last-child
+    .range-bar
+      border-bottom-right-radius: vars.$border-radius
+
+    .control-button:last-child
+      display: none
+
+  .label
+    @include input.input-placeholder
+    max-width: calc(100% - 1.25em)
+    overflow: hidden
+    text-overflow: ellipsis
+    margin-top: calc(vars.$font-size-14 / 2 * -1)
+
+.range-bar
+  height: .75em
+  flex-shrink: 0
+
+.range-value
+  flex-grow: 1
+  flex-shrink: 1
+  display: flex
+  align-items: center
+  justify-content: center
+  padding-top: .5em
+  user-select: none
+  max-width: 100%
+  overflow: hidden
+
+.color
+  &-black
+    color: var(--color-white)
+    background-color: var(--color-black)
+    border-bottom-color: var(--color-black)
+  &-metal
+    color: var(--color-white)
+    background-color: var(--color-metal)
+    border-bottom-color: var(--color-metal)
+  &-gray
+    color: var(--color-black)
+    background-color: var(--color-gray)
+    border-bottom-color: var(--color-gray)
+  &-silver
+    color: var(--color-black)
+    background-color: var(--color-silver)
+    border-bottom-color: var(--color-silver)
+  &-white
+    color: var(--color-black)
+    background-color: var(--color-white)
+    border-bottom-color: var(--color-white)
+  &-blue
+    color: var(--color-white)
+    background-color: var(--color-blue)
+    border-bottom-color: var(--color-blue)
+  &-green
+    color: var(--color-white)
+    background-color: var(--color-green)
+    border-bottom-color: var(--color-green)
+  &-red
+    color: var(--color-white)
+    background-color: var(--color-red)
+    border-bottom-color: var(--color-red)
+  &-orange
+    color: var(--color-black)
+    background-color: var(--color-orange)
+    border-bottom-color: var(--color-orange)
+  &-yellow
+    color: var(--color-black)
+    background-color: var(--color-yellow)
+    border-bottom-color: var(--color-yellow)
+
+.controls
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  display: flex
+
+
+.control-button
+  flex-grow: 1
+
+  // &:first-child
+  //   background-color: rgba(255, 0, 255, 0.2)
+
+  // &:last-child
+  //   background-color: rgba(0, 255, 255, 0.2)
+
+  // &:active
+  //   cursor: ew-resize
+  //   background-color: rgba(255, 255, 0, 0.2)

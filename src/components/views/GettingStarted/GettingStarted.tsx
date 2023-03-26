@@ -1,45 +1,87 @@
 import { Component } from 'solid-js'
-import { setUser, setUserGoals } from '../../../api'
+import { setUser, setUserGoals, setUserInfo } from '../../../api'
+import { useT } from '../../../i18n'
 import { useStore } from '../../../store'
-import { getBasalMetabolicRate, getEnergy, getNutrientMassValue } from '../../../utils/calculations'
-import { UserInfoForm } from '../../forms/UserInfoForm'
-import { Container } from '../../layout/Grid'
+import { Button } from '../../ui/Button'
+import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
+import { Form, getFormValues } from '../../ui/Form'
+import { FormSubmitEvent } from '../../ui/Form/types'
+import { GettingStartedFormFields } from './GettingStartedFormFields'
+import styles from './styles.sass'
+import { GettingStartedForm } from './types'
 
+/**
+ * Renders the welcome screen
+ */
 export const GettingStarted: Component = () => {
+  const t = useT()
   const [, setStore] = useStore()
 
-  function handleSubmit(values: UserModel.Info) {
-    setUser(values)
+  function saveUser(form: GettingStartedForm): Promise<UserModel.User> {
+    return setUser({
+      name: form.name,
+      sex: form.sex,
+      birthDate: form.birthDate
+    })
       .then((user) => {
-        setStore({ user })
-
         return user
-      })
-      .then((user) => {
-        const age = (new Date()).getFullYear() - (new Date(user.birthDate)).getFullYear()
-        const bmr = getBasalMetabolicRate(
-          user.weight,
-          user.height,
-          age,
-          user.sex === 'male'
-        )
-        const energy = getEnergy(user.activity, bmr, user.goal)
-        return setUserGoals({
-          userId: user.id,
-          kcalories: Math.round(energy),
-          proteins: Math.round(getNutrientMassValue('proteins', energy)),
-          fats: Math.round(getNutrientMassValue('fats', energy)),
-          carbohydrates: Math.round(getNutrientMassValue('carbohydrates', energy))
-        })
-      })
-      .catch(e => {
-        console.warn(e)
       })
   }
 
+  function saveGoals(
+    userId: UserModel.User['id'],
+    form: GettingStartedForm
+  ): Promise<UserModel.Goals> {
+    return setUserGoals({
+      userId,
+      energy: form.energy,
+      proteins: Math.round(form.proteins),
+      fats: Math.round(form.fats),
+      carbs: Math.round(form.carbs)
+    })
+  }
+
+  function saveUserInfo(
+    userId: UserModel.User['id'],
+    form: GettingStartedForm
+  ): Promise<UserModel.Info> {
+    return setUserInfo({
+      userId,
+      nutrientsRatio: form.ratio
+    })
+  }
+
+  function handleSubmit(e: FormSubmitEvent) {
+    e.preventDefault()
+    const values = getFormValues<GettingStartedForm>(e.currentTarget)
+    let user: UserModel.User | undefined
+
+    saveUser(values)
+      .then((u) => {
+        user = u
+        return saveGoals(user.id, values)
+      })
+      .then((goals) => {
+        return saveUserInfo(goals.userId, values)
+      })
+      .then(() => {
+        setStore({ user })
+      })
+      .catch(err => {
+        console.warn(err)
+      })
+
+  }
+
   return (
-    <Container>
-      <UserInfoForm onSubmit={handleSubmit} />
-    </Container>
+    <Form class={styles.form} autocomplete="off" onSubmit={handleSubmit}>
+      <GettingStartedFormFields />
+
+      <ButtonPanel>
+        <Button color="accent" type="submit">
+          {t('button.start')}!
+        </Button>
+      </ButtonPanel>
+    </Form>
   )
 }

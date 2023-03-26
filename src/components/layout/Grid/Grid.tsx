@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { ParentComponent } from 'solid-js'
+import { JSX, ParentComponent } from 'solid-js'
 import styles from './styles.sass'
 
 type ColWidth =
@@ -16,10 +16,9 @@ type ColWidth =
   | '10'
   | '12'
 
-type ContainerComponent = ParentComponent<{ class?: string }>
-type RowComponent = ParentComponent<{ class?: string }>
-type ColComponent = ParentComponent<{
-  class?: string
+type ContainerComponent = ParentComponent<JSX.IntrinsicElements['div']>
+type RowComponent = ParentComponent<JSX.IntrinsicElements['div']>
+type ColComponent = ParentComponent<JSX.IntrinsicElements['div'] & {
   mobile?: ColWidth
   tablet?: ColWidth
   desktop?: ColWidth
@@ -28,7 +27,7 @@ type ColComponent = ParentComponent<{
 
 export const Container: ContainerComponent = props => {
   return (
-    <div class={classNames(styles.container, props.class)}>
+    <div ref={props.ref} class={classNames(styles.container, props.class)}>
       {props.children}
     </div>
   )
@@ -36,7 +35,7 @@ export const Container: ContainerComponent = props => {
 
 export const Row: RowComponent = props => {
   return (
-    <div class={classNames(styles.row, props.class)}>
+    <div ref={props.ref} class={classNames(styles.row, props.class)}>
       {props.children}
     </div>
   )
@@ -45,6 +44,7 @@ export const Row: RowComponent = props => {
 export const Col: ColComponent = props => {
   return (
     <div
+      ref={props.ref}
       class={classNames(styles.col, props.class, {
         [styles[`col-mobile-${props.mobile as string}`]]: props.mobile !== undefined,
         [styles[`col-tablet-${props.tablet as string}`]]:

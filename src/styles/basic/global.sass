@@ -4,6 +4,7 @@
 @use "../themes/dark" as theme-dark
 // @use "./fonts"
 @use "./utils"
+@use "../common/headers" as *
 
 :root
   @media (prefers-color-scheme: light)
@@ -17,7 +18,10 @@
 
 html
   background-color: var(--color-bg)
-  height: 100vh
+  position: fixed
+  width: 100%
+  height: 100%
+  overflow: hidden
 
 body
   height: 100%
@@ -26,6 +30,7 @@ body
   font-family: Source Sans Pro, Ubuntu, 'Open Sans', sans-serif
   font-size: vars.$font-size-14
   margin: 0
+  user-select: none
   overflow-x: hidden
   overscroll-behavior: none
   text-rendering: optimizeLegibility
@@ -37,3 +42,15 @@ body
 
   [data-theme="dark"]
     @include utils.generate-vars(module-variables(theme-dark))
+
+small
+  font-size: (vars.$font-size-14 * 0.825)
+
+
+:global(.svg-icon)
+  path
+    fill: none
+    stroke: currentColor
+    stroke-width: 3px
+    stroke-linecap: round
+    stroke-linejoin: round

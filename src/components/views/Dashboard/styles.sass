@@ -1,12 +1,14 @@
-.wrapper
-  display: block
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/common/input"
 
-.meal
-  padding: 4px
-  border: 1px solid gray
+.content
+  flex-grow: 1
+  flex-shrink: 1
+  overflow: auto
+  padding-top: (vars.$grid-gutter * 2)
 
-  .title
-    display: flex
+.hidden
+  display: none
 
-    button
-      margin-left: auto
+.options-button
+  min-width: 5em

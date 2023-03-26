@@ -1,10 +1,13 @@
 @use "../../../styles/common/input"
+@use "../../../styles/basic/variables" as vars
 
 .wrapper
   @include input.input-wrapper
 
   input
     &[type="date"]
+      -webkit-appearance: none
+      -moz-appearance: none
       appearance: none
 
       &::-webkit-inner-spin-button,
@@ -14,3 +17,36 @@
         -webkit-appearance: none
         -moz-appearance: none
         appearance: none
+
+    &[type="search"]
+      -webkit-appearance: none
+      -moz-appearance: none
+      appearance: none
+
+      &::-webkit-search-cancel-button
+        -webkit-appearance: none
+        -moz-appearance: none
+        appearance: none
+
+  &.clearable
+    input
+      padding-right: 3.25em
+
+  .clear
+    height: calc(vars.$input-height - (vars.$font-size-14 / 2 + 0px))
+    width: vars.$input-height
+    display: flex
+    align-items: center
+    justify-content: center
+    position: absolute
+    font-size: 1.25em
+    top: calc(vars.$font-size-14 / 2 + 0px)
+    right: 0
+    transition: opacity .3s
+
+    svg
+      height: 1em
+      width: 1em
+
+  input:placeholder-shown ~ .clear
+    opacity: 0

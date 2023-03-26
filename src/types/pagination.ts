@@ -17,3 +17,8 @@ export interface PaginationParams {
   limit?: number
   offset?: number
 }
+
+/**
+ * @typedef {('asc' | 'desc')} PaginationParams
+ */
+export type SortingDirection = 'asc' | 'desc'

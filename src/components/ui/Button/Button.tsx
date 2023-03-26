@@ -3,11 +3,13 @@ import { Component, JSX, splitProps } from 'solid-js'
 import styles from './styles.sass'
 
 type ButtonComponent = Component<
-  JSX.IntrinsicElements['button'] & {
-    color: UI.Color
-    outline?: boolean
-    block?: boolean
-  }
+JSX.IntrinsicElements['button'] & {
+  color: UI.Color
+  loading?: boolean
+  outline?: boolean
+  block?: boolean
+  half?: boolean
+}
 >
 
 /**
@@ -19,7 +21,9 @@ export const Button: ButtonComponent = props => {
     'class',
     'color',
     'block',
-    'outline'
+    'half',
+    'outline',
+    'loading'
   ])
 
   return (
@@ -29,10 +33,12 @@ export const Button: ButtonComponent = props => {
         local.class,
         styles[`color-${local.color}`],
         {
-          [styles.block]: local.block === true,
-          [styles.outline]: local.outline === true
+          [styles.block]: local.block,
+          [styles.half]: local.half,
+          [styles.outline]: local.outline
         }
       )}
+      disabled={rest.disabled ?? local.loading}
       {...rest}
     >
       {local.children}

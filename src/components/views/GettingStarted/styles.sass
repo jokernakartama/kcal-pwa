@@ -1,2 +1,55 @@
-.wrapper
-  display: block
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/basic/breakpoints"
+
+.form
+  height: 100%
+  display: flex
+  flex-direction: column
+
+.content
+  flex-grow: 1
+  flex-shrink: 1
+  overflow: auto
+  display: flex
+  flex-direction: column
+
+.headers
+  flex-shrink: 0
+
+  h1, h3
+    line-height: 1.25em
+
+.fields
+  flex-grow: 1
+
+.sex-options
+  display: flex
+  gap: calc(vars.$grid-gutter * 2)
+  align-items: center
+  // justify-content: space-evenly
+  height: 100%
+  flex-wrap: wrap
+  padding-left: calc(vars.$grid-gutter / 2)
+
+  @include breakpoints.breakpoint-tablet
+    padding-left: 0
+    flex-direction: column
+    align-items: flex-start
+    gap: 8px
+    padding-top: 10px
+
+
+.hidden
+  display: none
+
+.energy-hint
+  padding-top: 0.75em
+  display: flex
+  justify-content: space-evenly
+  width: 100%
+  gap: 1.5em
+
+  & > span
+    display: block
+    // text-align: right
+    min-width: 5.5em

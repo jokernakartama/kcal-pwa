@@ -1,23 +1,23 @@
 import Dexie from 'dexie'
 
-/**
- * Don't forget to change DB version if there were any changes!
- */
-export const DB_VER = 1
-
-export const DB_NAME = 'db_test_3'
+export const DB_NAME = 'ma_poop_data'
 
 export const DB_STORES = {
   users: '++id',
+  info: 'userId',
   goals: 'userId',
   journal: '++id, [userId+date]',
-  meals: '++id, recordId, userId, product.id, recipe.id',
+  // Unfortunately, seems like there is no way
+  // to use multy-entry compound index, like "*[dishes.type+dihes.target.id]"
+  meals: '++id, recordId, userId, *dishes.type, *dishes.target.id',
   recipes: '++id, userId, name, *products.id',
-  products: '++id, userId, name, proteins, fats, carbohydrates, kcalories'
+  products: '++id, userId, name, proteins, fats, carbs, energy'
 }
 
 class AppDB extends Dexie {
-  users!: Dexie.Table<UserModel.Info, number>
+  users!: Dexie.Table<UserModel.User, number>
+
+  info!: Dexie.Table<UserModel.Info, number>
 
   goals!: Dexie.Table<UserModel.Goals, number>
 
@@ -31,7 +31,7 @@ class AppDB extends Dexie {
 
   constructor() {
     super(DB_NAME)
-    this.version(DB_VER).stores(DB_STORES)
+    this.version(1).stores(DB_STORES)
   }
 }
 

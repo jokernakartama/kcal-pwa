@@ -1,46 +1,54 @@
 @use "sass:string"
 @use "../basic/variables" as vars
 
+@mixin input-placeholder
+  user-select: none
+  position: absolute
+  font-size: vars.$font-size-14
+  top: calc(vars.$font-size-14 - 1em)
+  text-shadow: 0 1px 2px var(--color-bg)
+  left: 1.25em
+  color: var(--color-input-border-accent)
+  transition: .2s
+  line-height: 1em
+  white-space: nowrap
+
+
+@mixin input-field
+  background-color: var(--color-backdrop)
+  border-radius: vars.$border-radius
+  // border-style: solid
+  border-width: 0px
+  // border-color: var(--color-input-border)
+  box-sizing: border-box
+  color: var(--color-text)
+  font-size: vars.$font-size-16
+  font-weight: 500
+  padding: 0 1.25em
+  box-shadow: vars.$shadow-basic
+  height: vars.$input-height
+  outline: none
+  display: inline-flex
+  align-items: center
+  width: 100%
+  min-width: 100%
+  transition: all .2s, opacity .5s
+
+
 @mixin input-wrapper
   display: block
   position: relative
-  padding-top: calc(vars.$font-size-12 / 2 + 0px)
+  padding-top: calc(vars.$font-size-14 / 2 + 0px)
 
   &.disabled
     opacity: .5
 
   .placeholder
-    user-select: none
-    position: absolute
-    font-size: vars.$font-size-12
-    top: calc(vars.$font-size-12 - 1em)
-    background-color: var(--color-bg)
-    left: 1.25em
-    color: var(--color-input-border-accent)
-    transition: .2s
-    line-height: 1em
-    white-space: nowrap
+    @include input-placeholder
 
   input,
   select
-    background-color: var(--color-bg)
-    border-radius: vars.$border-radius
-    border-style: solid
-    border-width: 1px
-    border-color: var(--color-input-border)
-    box-sizing: border-box
-    color: var(--color-text)
-    font-size: vars.$font-size-16
-    font-weight: 500
-    padding: 0 1.25em
-    box-shadow: vars.$shadow-basic
-    height: vars.$input-height
-    outline: none
-    display: inline-flex
-    align-items: center
-    width: 100%
-    min-width: 100%
-    transition: all .2s, opacity .5s
+    @include input-field
 
     &:focus
       border-color: var(--color-input-border-accent)
@@ -50,7 +58,8 @@
 
 
     &::placeholder
-      color: var(--color-input-border)
+      color: var(--color-input-border-accent)
+      opacity: .5
 
     &:placeholder-shown + .placeholder
         opacity: 0
@@ -60,13 +69,14 @@
 
   .icon
     position: absolute
+    line-height: 1em
     font-size: 1.25em
-    top: 1.25em
+    top: calc(50% - .325em )
     left: 1.25em
 
     & + input,
     & + select
-      padding-left: 3em
+      padding-left: 3.25em
 
       &:placeholder-shown + .placeholder
         left: 3em
@@ -99,6 +109,7 @@
     display: inline-block
     vertical-align: middle
     margin-right: .5em
+    margin-top: -1.5px
     position: relative
 
     &::after

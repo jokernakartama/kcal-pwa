@@ -6,7 +6,7 @@
     "birthday": "Birth date",
     "sex": "Sex",
     "male": "Male",
-    "female": "Femail",
+    "female": "Female",
     "activity": "Activity",
     "activity_min": "Minimal",
     "activity_low": "Low",
@@ -14,18 +14,23 @@
     "activity_intense": "Intense",
     "activity_high": "Higher than average",
     "activity_veryhigh": "High",
-    "activity_max": "Very hight",
+    "activity_max": "Very high",
     "goal": "Goal",
     "lose": "To lose",
     "maintain": "To maintain",
     "gain": "To gain"
   },
+  "goals": {
+    "header": "Your goals",
+    "energy": "Energy (kcal)"
+  },
   "nutrients": {
     "mass": "Mass",
+    "portion": "Portion",
     "proteins": "Proteins",
     "fats": "Fats",
-    "carbohydrates": "Carbohydrates",
-    "kcalories": "Calories",
+    "carbs": "Carbs",
+    "energy": "Energy",
     "E": "E",
     "P": "P",
     "F": "F",
@@ -37,11 +42,80 @@
   },
   "unit": {
     "gram": "g",
-    "kcal": "kcal"
+    "kcal": "kcal",
+    "yearsold": "y.o."
+  },
+  "activity":  {
+    "min": "Minimal activity (lack of physical activity, sedentary work)",
+    "low": "Little activity (light workout or walking, little daily activity during the day)",
+    "avg": "Average activity (workout 4-5 times a week, good activity during the day)",
+    "intense": "Above average activity (intense workout 5-6 times a week, good activity during the day)",
+    "high": "Increased activity (daily workout, high daily activity)",
+    "veryhigh": "High activity (daily very intense training and high daily activity)",
+    "max": "Very high activity (sportsmen in a period of preparations for a competition)"
   },
   "button": {
+    "yum": "Yum",
     "continue": "Continue",
     "remove": "Remove",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "back": "Back",
+    "start": "Start",
+    "save": "Save",
+    "clear": "Clear",
+    "search": "Search",
+    "add": "Add",
+    "save_add": "Save and add"
+  },
+  "label": {
+    "and_more": "and {{count}} more"
+  },
+  "dialog": {
+    "meal": {
+      "add": "Add a meal",
+      "change": "Change the meal"
+    },
+    "dish": {
+      "choose": "Choose a dish",
+      "add": "Add the dish",
+      "add_product": "Add this product",
+      "add_recipe": "Add this dish",
+      "select": {
+        "product": "Select a product",
+        "recipe": "Select a recipe"
+      },
+      "recipes": "Recipes",
+      "products": "Products",
+      "per_100g": "Nutrients per 100g",
+      "per_portion": "Nutrients per portion"
+    },
+    "product": {
+      "add": "Add a new product",
+      "change": "Change the product"
+    },
+    "recipe": {
+      "add": "Add a new recipe",
+      "change": "Change the recipe"
+    }
+  },
+  "welcome": {
+    "personal": {
+      "header": "A little about you"
+    },
+    "inputs": {
+      "header": "Parameters and lifestyle"
+    },
+    "goals": {
+      "header": "Your fitness goals"
+    }
+  },
+  "products": {
+    "empty": "No products found"
+  },
+  "recipes": {
+    "empty": "No recipes found"
+  },
+  "meals": {
+    "dishes": "Dishes"
   }
 }

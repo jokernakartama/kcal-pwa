@@ -1,7 +1,7 @@
 export const NutrientEnergy = {
   proteins: 4,
   fats: 9,
-  carbohydrates: 4
+  carbs: 4
 }
 
 /**
@@ -11,11 +11,22 @@ export const NutrientEnergy = {
  * - To bulk 0.3 0.2 0.5 (0.3-0.4 0.2-0.25 0.4-0.5)
  */
 export const DEFAULT_NUTRIENTS_RATIO: Record<
-  keyof typeof NutrientEnergy, number
+keyof typeof NutrientEnergy, number
 > = {
   proteins: 0.3,
   fats: 0.3,
-  carbohydrates: 0.4
+  carbs: 0.4
+}
+
+/**
+ *
+ * @param {number} steps - Average number of daily steps
+ * @param {number} gym - Number of minutes of weekly power training
+ * @param {number} cardio - Number of minutes of weekly cardio/crossfit
+ * @returns {number}
+ */
+export function getActivity(steps: number, gym: number, cardio: number) {
+  return steps * 0.03 + gym * 5 / 7 + cardio
 }
 
 /**
@@ -26,7 +37,7 @@ export const DEFAULT_NUTRIENTS_RATIO: Record<
  * @param {number} height
  * @param {number} age
  * @param {boolean} isMale
- * @returns
+ * @returns {number}
  */
 export function getBasalMetabolicRate(
   weight: number,
@@ -42,14 +53,16 @@ export function getBasalMetabolicRate(
  * @param {number} activity - Daily activity rate
  * @param {number} bmr - Basal Metabolic Rate
  * @param {number} goal - Coefficient determing the required deficit or surplus
- * @returns
+ * @returns {number}
  */
 export function getEnergy(
-  activity: UserModel.Activity,
+  activity: number,
   bmr: number,
-  goal: UserModel.WeightGoal = 0
+  goal = 0
 ) {
-  return activity * bmr * (1 + goal)
+  // Another activity rate
+  // return (bmr * activity) * (1 + goal)
+  return (bmr * 1.1 + activity) * (1 + goal)
 }
 
 /**
@@ -58,7 +71,7 @@ export function getEnergy(
  * @param {number} totalEnergy
  * @param {number} ratio - The proportion of the nutrient
  * in the total volume of food
- * @returns
+ * @returns {number}
  */
 export function getNutrientMassValue(
   nutrient: keyof typeof NutrientEnergy,

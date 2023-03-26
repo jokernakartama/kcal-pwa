@@ -1,3 +1,4 @@
+import Dexie from 'dexie'
 import { DB } from '../../../db'
 import { WithOptional } from '../../../types/utils'
 
@@ -5,21 +6,21 @@ export const userActions = {
   /**
    * Returns a user by id from the "users" table
    * @param {number} id
-   * @returns {Promise<(UserModel.Info | undefined)>}
+   * @returns {Promise<(UserModel.User | undefined)>}
    */
-  'GET users/{userId}': async (userId: UserModel.Info['id']) => {
+  'GET users/{userId}': async (userId: UserModel.User['id']) => {
     return await DB.users.get(userId)
   },
 
   /**
    * Updates the user or creates a new one (if the user's id is not provided)
    * in the "users" table
-   * @param {UserModel.Info} user
+   * @param {UserModel.User} user
    * @returns {Promise<number>}
    */
-  'PUT users/{user}': async (user: WithOptional<UserModel.Info, 'id'>) => {
-    const id = await DB.users.put(user as UserModel.Info)
-    const result: UserModel.Info = { ...user, id }
+  'PUT users/{user}': async (user: WithOptional<UserModel.User, 'id'>) => {
+    const id = await DB.users.put(user as UserModel.User)
+    const result: UserModel.User = { ...user, id }
 
     return result
   },
@@ -30,13 +31,50 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<void>}
    */
-  'DELETE users/{userId}': async (userId: UserModel.Info['id']) => {
-    return await DB.users.delete(userId)
+  'DELETE users/{userId}': async (userId: UserModel.User['id']) => {
+    try {
+      await DB.users.delete(userId)
+
+      await DB.journal
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.goals
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.info
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.products
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.recipes
+        .where('userId')
+        .equals(userId)
+        .delete()
+
+      await DB.meals
+        .where('userId')
+        .equals(userId)
+        .delete()
+    } catch (e) {
+      // Ignore errors of removing non existed bound records
+      if (!(e instanceof Dexie.ModifyError)) {
+        throw e
+      }
+    }
   },
 
   /**
    * Returns a list of users from the "users" table
-   * @returns {Promise<UserModel.Info[]>}
+   * @returns {Promise<UserModel.User[]>}
    */
   'GET users': async () => {
     return await DB.users.toArray()
@@ -47,7 +85,7 @@ export const userActions = {
    * @param {number} id
    * @returns {Promise<(UserModel.Goals | undefined)>}
    */
-  'GET users/{userId}/goals': async (userId: UserModel.Info['id']) => {
+  'GET users/{userId}/goals': async (userId: UserModel.User['id']) => {
     return await DB.goals.get({ userId })
   },
 
@@ -60,5 +98,25 @@ export const userActions = {
     await DB.goals.put(goals)
 
     return goals
+  },
+
+  /**
+   * Returns the user's info from the "info" table
+   * @param {number} id
+   * @returns {Promise<(UserModel.Info | undefined)>}
+   */
+  'GET users/{userId}/info': async (userId: UserModel.User['id']) => {
+    return await DB.info.get({ userId })
+  },
+
+  /**
+   * Updates the user's info
+   * @param {UserModel.Info} info
+   * @returns {Promise<(UserModel.Info | undefined)>}
+   */
+  'PUT info/{info}': async (info: UserModel.Info) => {
+    await DB.info.put(info)
+
+    return info
   }
 }

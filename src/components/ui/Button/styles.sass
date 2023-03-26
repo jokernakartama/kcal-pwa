@@ -1,4 +1,5 @@
 @use "../../../styles/basic/variables" as vars
+@use "../../../styles/basic/breakpoints"
 
 .wrapper
   background-color: var(--color-bg)
@@ -14,10 +15,8 @@
   font-weight: 600
   padding: 0 1.25em
   min-height: vars.$input-height
-  transition: 0.1s
 
   &:active
-    // box-shadow: var(--shadow-inner)
     transform: translateY(1px)
 
   &.color
@@ -41,7 +40,16 @@
     display: block
     width: 100%
 
+  &.half
+    @include breakpoints.breakpoint-tablet
+      max-width: 50%
+
   &[disabled]
-    // text-shadow: 1px -1px 1px rgba(0, 0, 0, 0.2), -1px -1px 1px rgba(0, 0, 0, 0.2)
     pointer-events: none
     opacity: .5
+
+  & > :global(.svg-icon)
+    height: 1.125em
+    width: 1.125em
+    vertical-align: middle
+    margin-top: -0.125em

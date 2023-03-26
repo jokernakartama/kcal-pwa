@@ -5,17 +5,23 @@ import {
   createSelector,
   For,
   JSX,
+  mergeProps,
   splitProps
 } from 'solid-js'
+import { emoji } from '../../../constants/emoji'
 import styles from './styles.sass'
 import { SelectOption } from './types'
 
 type SelectInputComponent = Component<
-  JSX.IntrinsicElements['select'] & {
-    placeholder?: string
-    options: Array<SelectOption<string | number>>
-    icon?: string
-  }
+JSX.IntrinsicElements['select'] & {
+  /**
+     * Allows to specify input data type
+     */
+  type?: 'text' | 'number' | 'boolean' | 'json'
+  placeholder?: string
+  options: Array<SelectOption<string | number>>
+  icon?: keyof typeof emoji
+}
 >
 
 /**
@@ -24,10 +30,12 @@ type SelectInputComponent = Component<
 export const SelectInput: SelectInputComponent = props => {
   const [local, rest] = splitProps(props, [
     'class',
+    'type',
     'options',
     'icon',
     'value'
   ])
+  const inputProps = mergeProps({ type: local.type ?? 'text' }, rest)
   const selected = createMemo(() => local.value)
   const isSelected = createSelector(selected)
   const options = createMemo(
@@ -41,9 +49,9 @@ export const SelectInput: SelectInputComponent = props => {
       })}
     >
       {local.icon !== undefined && (
-        <div class={styles.icon}>{local.icon}</div>
+        <div class={styles.icon}>{emoji[local.icon].html}{' '}</div>
       )}
-      <select {...rest}>
+      <select { ...inputProps}>
         <For each={options()}>
           {o => (
             <option

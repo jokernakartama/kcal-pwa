@@ -1,10 +1,7 @@
 import Dexie from 'dexie'
 import { DB } from '../../../db'
-import { PaginationParams } from '../../../types/pagination'
 import { WithOptional } from '../../../types/utils'
 import { normalizeDate } from '../../../utils/format'
-import { getPaginatedResponse, handleSortParams } from '../helpers'
-import { SortingParams } from '../types'
 
 export const journalActions = {
   /**
@@ -14,7 +11,7 @@ export const journalActions = {
    * @returns {Promise<(DataModel.JournalRecord[])>}
    */
   'GET users/{userId}/journal': async (
-    userId: UserModel.Info['id'],
+    userId: UserModel.User['id'],
     date: DataModel.JournalRecord['date']
   ) => {
     return await DB.journal
@@ -29,7 +26,7 @@ export const journalActions = {
    * @returns {Promise<undefined>}
    */
   'DELETE users/{userId}/journal': async (
-    userId: UserModel.Info['id']
+    userId: UserModel.User['id']
   ) => {
     try {
       await DB.journal
@@ -55,51 +52,42 @@ export const journalActions = {
    * @returns {Promise<DataModel.Meal[]>}
    */
   'GET journal/{recordId}/meals': async (
-    recordId: DataModel.JournalRecord['id'],
-    params?: PaginationParams & SortingParams<DataModel.Meal>
+    recordId: DataModel.JournalRecord['id']
   ) => {
-    const collection = DB.meals
+    return await DB.meals
       .where('recordId')
       .equals(recordId)
-
-    return await getPaginatedResponse(
-      handleSortParams(collection, params),
-      params
-    )
+      .toArray()
   },
 
   /**
-   * Adds a meal to a journal record
+   * Adds a meal to journal
    * @param {DataModel.Meal} meal
    * @returns {Promise<(number | undefined)>}
    */
   'PUT meals/{meal}': async (
-    meal: WithOptional<DataModel.Meal, 'recordId' | 'id'>
+    meal: WithOptional<DataModel.Meal, 'id' | 'time' | 'recordId'>
   ) => {
-    const date = normalizeDate(meal.time)
-    const record = meal.recordId === undefined
-      ? undefined
-      : await DB.journal.get(meal.recordId)
+    const time = new Date()
+    const date = normalizeDate(time)
+    const record = await DB.journal
+      .where({ userId: meal.userId, date })
+      .first()
     let recordId = record?.id
 
-    if (record === undefined || record.date !== date) {
+    if (record === undefined) {
       recordId = await DB.journal.put(
         {
           userId: meal.userId,
-          date: normalizeDate(meal.time)
+          date
         } as const as DataModel.JournalRecord
       )
     }
 
     if (recordId !== undefined) {
       const id = await DB.meals
-        .put(
-          {
-            ...meal as DataModel.Meal,
-            recordId
-          }
-        )
-      const result: DataModel.Meal = { ...meal, id, recordId }
+        .put({ ...meal, recordId, time } as const as DataModel.Meal)
+      const result: DataModel.Meal = { ...meal, id, recordId, time }
 
       return result
     }

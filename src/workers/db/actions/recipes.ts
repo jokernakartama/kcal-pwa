@@ -36,7 +36,7 @@ export const recipesActions = {
    * @returns {Promise<DataModel.Recipe[]>}
    */
   'GET users/{userId}/recipes': async (
-    userId: UserModel.Info['id'],
+    userId: UserModel.User['id'],
     params?: ListParams<DataModel.Recipe>
   ) => {
     let collection: Collection<DataModel.Recipe, number>
@@ -79,7 +79,7 @@ export const recipesActions = {
 
       collection = collection
         .filter(
-          product => normalizeString(product.name).startsWith(filteredName)
+          product => normalizeString(product.name).includes(filteredName)
         )
     }
 
@@ -102,9 +102,19 @@ export const recipesActions = {
         .delete(recipeId)
 
       await DB.meals
-        .where('product.id')
-        .equals(recipeId)
-        .modify({ isArchieved: true })
+        .where({ 'dishes.type': 'recipe', 'dishes.target.id': recipeId })
+        .modify((value, ref) => {
+          ref.value = {
+            ...value,
+            dishes: value.dishes.map(dish => {
+              if (dish.type === 'recipe' && dish.target.id === recipeId) {
+                return { ...dish, isArchieved: true }
+              }
+
+              return dish
+            })
+          }
+        })
     } catch (e) {
       // Ignore errors of modifying non existed entities
       if (!(e instanceof Dexie.ModifyError)) {

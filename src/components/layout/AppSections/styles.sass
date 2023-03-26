@@ -1,24 +1,6 @@
-@use "../../../styles/basic/breakpoints"
 
 .wrapper
   height: 100%
   display: flex
-
-  @include breakpoints.breakpoint-portrait
-    flex-direction: column
-
-  @include breakpoints.breakpoint-landscape
-    flex-direction: row
-
-.content
-  flex-grow: 1
   overflow: hidden
-
-.tabs-wrapper
-  overflow: visible
-  display: flex
   flex-direction: column
-  height: 100%
-
-.tab
-  overflow: auto

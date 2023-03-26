@@ -1,0 +1,15 @@
+@use "../../../styles/basic/variables" as vars
+
+.wrapper
+  animation: slide .3s 1
+
+.fields
+  padding: 0 (vars.$grid-gutter * 2)
+
+@keyframes slide
+  0%
+    opacity: 0
+    transform: translateY(200px)
+  100%
+    opacity: 1
+    transform: translateY(0px)
