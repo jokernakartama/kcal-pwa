@@ -1,3 +1,4 @@
+import { useNavigate } from '@solidjs/router'
 import {
   Component,
   createEffect,
@@ -5,7 +6,9 @@ import {
   createSignal,
   on
 } from 'solid-js'
-import { getJournal } from '../../../api'
+import { getJournal, getMeals } from '../../../api'
+import { useT } from '../../../i18n'
+import { route } from '../../../routes/constants'
 import { useStore } from '../../../store'
 import { WithOptional } from '../../../types/utils'
 import { calculateMealNutrition } from '../../../utils/data'
@@ -25,8 +28,10 @@ type DashboardComponent = Component
  * Renders main dashboard view
  */
 export const Dashboard: DashboardComponent = () => {
+  const t = useT()
   const [store, setStore] = useStore()
   const [date, setDate] = createSignal(normalizeDate(new Date()))
+  const navigate = useNavigate()
 
   const defaultJournalRecord = createMemo<
   WithOptional<DataModel.JournalRecord, 'id' | 'userId'>
@@ -37,7 +42,7 @@ export const Dashboard: DashboardComponent = () => {
   }))
 
   const totals = createMemo(() => {
-    const dayMeals: DataModel.Meal[] = []
+    const dayMeals: DataModel.Meal[] = store.meals
     const totalValues: DataModel.Nutrition = {
       energy: 0,
       proteins: 0,
@@ -64,11 +69,22 @@ export const Dashboard: DashboardComponent = () => {
       .then(data => {
         const nextRecord = data ?? defaultJournalRecord
         setStore('journal', nextRecord)
+        return data
+      })
+      .then((j) => {
+        return getMeals(j?.id)
+      })
+      .then((meals) => {
+        setStore('meals', meals)
       })
   }
 
   function handleDateChange(nextDate: string) {
     setDate(nextDate)
+  }
+
+  function showAddMealDialog() {
+    navigate(route.NEW_MEAL)
   }
 
   createEffect(on(date, () => {
@@ -100,8 +116,16 @@ export const Dashboard: DashboardComponent = () => {
       </Container>
 
       <ButtonPanel>
-        <Button disabled={true} block color="primary" type="button">
-          Yum!
+        {/* <Button
+          class={styles['options-button']}
+          outline
+          color="primary"
+          type="button"
+        >
+          ...
+        </Button> */}
+        <Button half block color="primary" type="button" onClick={showAddMealDialog}>
+          {t('button.yum')}!
         </Button>
       </ButtonPanel>
     </>

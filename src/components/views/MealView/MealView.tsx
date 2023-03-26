@@ -71,8 +71,13 @@ export const MealView: MealViewComponent = () => {
         // `structuredClone` cannot be applied here as well
         .map(d => ({ ...d, target: { ...d.target } })) as DataModel.Dish[]
     })
-      .then(() => {
-        setStore('dishes', [])
+      .then((meal) => {
+        setStore(
+          produce((s) => {
+            s.dishes = []
+            s.meals?.unshift(meal)
+          })
+        )
         rewind(route.HOME, -1)
       })
       .catch(console.error)
