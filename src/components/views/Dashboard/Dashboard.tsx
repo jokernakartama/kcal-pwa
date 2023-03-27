@@ -75,7 +75,7 @@ export const Dashboard: DashboardComponent = () => {
         return getMeals(j?.id)
       })
       .then((meals) => {
-        setStore('meals', meals)
+        setStore('meals', meals.reverse())
       })
   }
 
