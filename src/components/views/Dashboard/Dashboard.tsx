@@ -101,15 +101,17 @@ export const Dashboard: DashboardComponent = () => {
         {/* Brief user info */}
         <UserBrief class="m-mb-2" />
 
-        {/* Day's nutrition goals */}
-        <GoalsSummary
-          current={totals()}
-          target={store.goals!}
-          loading={!store.goals}
-        />
+        <div class={styles.informers}>
+          {/* Day's nutrition goals */}
+          <GoalsSummary
+            current={totals()}
+            target={store.goals!}
+            loading={!store.goals}
+          />
 
-        {/* Date selector */}
-        <CurrentDate class={styles.date} value={date()} onChange={handleDateChange} />
+          {/* Date selector */}
+          <CurrentDate class={styles.date} value={date()} onChange={handleDateChange} />
+        </div>
 
         {/* List of meals of the day */}
         <MealList />
