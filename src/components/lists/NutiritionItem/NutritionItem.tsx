@@ -65,7 +65,7 @@ export const NutritionItem: NutritionItemComponent = props => {
             {t('nutrients.P')}:
           </div>
           <div class={styles['nutrient-value']}>
-            {local.proteins} {' '}
+            {Math.round(local.proteins)} {' '}
             <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
         </div>
@@ -76,7 +76,7 @@ export const NutritionItem: NutritionItemComponent = props => {
             {t('nutrients.F')}:
           </div>
           <div class={styles['nutrient-value']}>
-            {local.fats} {' '}
+            {Math.round(local.fats)} {' '}
             <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
         </div>
@@ -87,7 +87,7 @@ export const NutritionItem: NutritionItemComponent = props => {
             {t('nutrients.C')}:
           </div>
           <div class={styles['nutrient-value']}>
-            {local.carbs} {' '}
+            {Math.round(local.carbs)} {' '}
             <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
         </div>
@@ -97,7 +97,7 @@ export const NutritionItem: NutritionItemComponent = props => {
             {emoji.highVoltage.html}
           </div>
           <div class={styles['nutrient-value']}>
-            {local.energy} {' '}
+            {Math.round(local.energy)} {' '}
             <span class={styles.unit}>{t('unit.kcal')}</span>
           </div>
         </div>

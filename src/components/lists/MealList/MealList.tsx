@@ -84,7 +84,7 @@ export const MealList = () => {
                       {/* {t('nutrients.P')}: */}
                     </div>
                     <div class={styles['nutrient-value']}>
-                      {item.proteins} {' '}
+                      {Math.round(item.proteins)} {' '}
                       <span class={styles.unit}>{t('unit.gram')}</span>
                     </div>
                   </div>
@@ -95,7 +95,7 @@ export const MealList = () => {
                       {/* {t('nutrients.F')}: */}
                     </div>
                     <div class={styles['nutrient-value']}>
-                      {item.fats} {' '}
+                      {Math.round(item.fats)} {' '}
                       <span class={styles.unit}>{t('unit.gram')}</span>
                     </div>
                   </div>
@@ -106,7 +106,7 @@ export const MealList = () => {
                       {/* {t('nutrients.C')}: */}
                     </div>
                     <div class={styles['nutrient-value']}>
-                      {item.carbs} {' '}
+                      {Math.round(item.carbs)} {' '}
                       <span class={styles.unit}>{t('unit.gram')}</span>
                     </div>
                   </div>
@@ -114,7 +114,7 @@ export const MealList = () => {
 
                 <div class={styles['energy-wrapper']}>
                   <div class={styles.energy}>
-                    <b>{emoji.highVoltage.html} {item.energy}</b> {' '}
+                    <b>{Math.round(item.energy)}</b> {' '}
                     <span class={styles.unit}>{t('unit.kcal')}</span>
                   </div>
 
