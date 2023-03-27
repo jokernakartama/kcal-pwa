@@ -13,7 +13,11 @@ export function normalizeString(str: string) {
  * @returns {string}
  */
 export function normalizeDate(date: Date) {
-  return date.toISOString().slice(0, 10)
+  const YY = date.getFullYear()
+  const MM = date.getMonth() + 1
+  const DD = date.getDate()
+
+  return `${YY}-${MM < 10 ? `0${MM}` : MM}-${DD < 10 ? `0${DD}` : DD}`
 }
 
 /**

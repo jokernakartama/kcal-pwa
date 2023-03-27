@@ -175,6 +175,8 @@ export const DishView: Component = () => {
             <Match when={params.type === 'product'}>
               <TextInput
                 required
+                clearable
+                autofocus
                 name="amount"
                 value={mass()}
                 type="number"
@@ -192,6 +194,7 @@ export const DishView: Component = () => {
             <Match when={params.type === 'recipe'}>
               <TextInput
                 required
+                clearable
                 autofocus
                 name="amount"
                 value={portion()}
