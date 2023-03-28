@@ -11,6 +11,7 @@ import {
   calculateRecipeNutrition,
   isDishRecipe
 } from '../../../utils/data'
+import { normalizeDate } from '../../../utils/format'
 import { PlusIcon } from '../../icons/PlusIcon'
 import { Container } from '../../layout/Grid'
 import { NutritionItem } from '../../lists/NutiritionItem/NutritionItem'
@@ -63,12 +64,24 @@ export const MealView: MealViewComponent = () => {
     })
   })
 
-  function goNext() {
+  function goToDishList() {
     navigate(route.DISH_LIST, { replace: false })
   }
 
-  function goBack() {
+  function goToMain() {
     rewind(route.HOME, -1)
+  }
+
+  function addMealToStore(meal: DataModel.Meal) {
+    setStore(
+      produce((s) => {
+        s.dishes = []
+
+        if (s.journal?.date === normalizeDate(new Date())) {
+          s.meals?.unshift(meal)
+        }
+      })
+    )
   }
 
   function createMeal() {
@@ -82,13 +95,9 @@ export const MealView: MealViewComponent = () => {
         .map(d => ({ ...d, target: { ...d.target } })) as DataModel.Dish[]
     })
       .then((meal) => {
-        setStore(
-          produce((s) => {
-            s.dishes = []
-            s.meals?.unshift(meal)
-          })
-        )
-        rewind(route.HOME, -1)
+        addMealToStore(meal)
+
+        goToMain()
       })
       .catch(console.error)
   }
@@ -104,8 +113,8 @@ export const MealView: MealViewComponent = () => {
   return (
     <Dialog
       class={styles.wrapper}
-      onClose={goBack}
-      onBack={goBack}
+      onClose={goToMain}
+      onBack={goToMain}
       header={
         <h2>{targetMeal()
           ? `${targetMeal()!.time.toLocaleString()}`
@@ -117,14 +126,14 @@ export const MealView: MealViewComponent = () => {
           when={!targetMeal()}
           fallback={
             <ButtonPanel justify="start">
-              <Button color="secondary" onClick={goBack}>
+              <Button color="secondary" onClick={goToMain}>
                 {t('button.back')}
               </Button>
             </ButtonPanel>
           }
         >
           <ButtonPanel>
-            <Button color="secondary" onClick={goBack}>
+            <Button color="secondary" onClick={goToMain}>
               {t('button.cancel')}
             </Button>
 
@@ -137,7 +146,7 @@ export const MealView: MealViewComponent = () => {
               {t('button.save')}
             </Button>
 
-            <Button color="primary" onClick={goNext}>
+            <Button color="primary" onClick={goToDishList}>
               <PlusIcon />
             </Button>
           </ButtonPanel>
