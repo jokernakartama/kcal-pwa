@@ -40,6 +40,10 @@
     "name": "Product title",
     "mass": "Mass"
   },
+  "recipe": {
+    "name": "Recipe title",
+    "description": "Description"
+  },
   "unit": {
     "gram": "g",
     "kcal": "kcal",
@@ -65,7 +69,8 @@
     "clear": "Clear",
     "search": "Search",
     "add": "Add",
-    "save_add": "Save and add"
+    "save_add": "Save and add",
+    "save_as_recipe": "Save as a recipe"
   },
   "label": {
     "and_more": "and {{count}} more"

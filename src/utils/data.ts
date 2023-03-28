@@ -158,3 +158,22 @@ export function calculateMealNutrition(
 
   return result
 }
+
+/**
+ * Unproxifies the dish
+ * @param {DataModel.Dish} dish
+ * @returns {DataModel.Dish}
+ */
+export function cloneDish(dish: DataModel.Dish): DataModel.Dish {
+  if (dish.type === 'recipe') {
+    return ({
+      ...dish,
+      target: {
+        ...dish.target,
+        products: dish.target.products.map(product => ({ ...product }))
+      }
+    })
+  }
+
+  return ({ ...dish, target: { ...dish.target } })
+}

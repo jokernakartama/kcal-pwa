@@ -201,9 +201,9 @@ export const DishView: Component = () => {
                 type="number"
                 icon="forkAndKnife"
                 class="m-mb-3"
-                min="0.5"
+                min="1"
                 max="5"
-                step="0.5"
+                step="1"
                 placeholder={t('nutrients.portion')}
                 onInput={handlePortionInput}
               />

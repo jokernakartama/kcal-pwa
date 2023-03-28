@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from '@solidjs/router'
-import { Component, createMemo, For, Show } from 'solid-js'
+import { Component, createMemo, createSignal, For, Show } from 'solid-js'
 import { produce } from 'solid-js/store'
-import { addMeal } from '../../../api'
+import { addMeal, setRecipe } from '../../../api'
 import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
 import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
@@ -9,6 +9,7 @@ import { useProfile, useStore } from '../../../store'
 import {
   calculateProductNutrition,
   calculateRecipeNutrition,
+  cloneDish,
   isDishRecipe
 } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
@@ -18,6 +19,8 @@ import { NutritionItem } from '../../lists/NutiritionItem/NutritionItem'
 import { Button } from '../../ui/Button'
 import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import { Dialog } from '../../ui/Dialog'
+import { TextInput } from '../../ui/TextInput'
+import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
 
 type MealViewComponent = Component
@@ -27,6 +30,9 @@ type MealViewComponent = Component
  */
 export const MealView: MealViewComponent = () => {
   const [store, setStore] = useStore()
+  const [isRecipeMode, setIsRecipeMode] = createSignal<boolean>(false)
+  const [recipeName, setRecipeName] = createSignal<string>('')
+  const [recipeDescription, setRecipeDescripton] = createSignal<string>('')
   const params = useParams<{ id: string }>()
   const t = useT()
   const user = useProfile()
@@ -64,6 +70,13 @@ export const MealView: MealViewComponent = () => {
     })
   })
 
+  const isConvertableToRecipe = createMemo(() => {
+    const meal = targetMeal()
+    if (!meal) return false
+
+    return !meal.dishes.some(dish => isDishRecipe(dish) || dish.isArchieved)
+  })
+
   function goToDishList() {
     navigate(route.DISH_LIST, { replace: false })
   }
@@ -92,10 +105,47 @@ export const MealView: MealViewComponent = () => {
       dishes: store.dishes
         // Map here because store.dishes is a Proxy
         // `structuredClone` cannot be applied here as well
-        .map(d => ({ ...d, target: { ...d.target } })) as DataModel.Dish[]
+        .map(cloneDish)
     })
       .then((meal) => {
         addMealToStore(meal)
+
+        goToMain()
+      })
+      .catch(console.error)
+  }
+
+  function showRecipeEditor() {
+    setIsRecipeMode(true)
+  }
+
+  function handleRecipeNameChange(e: TextInputChangeEvent) {
+    setRecipeName(e.target.value)
+  }
+
+  function handleRecipeDescriptionChange(e: TextInputChangeEvent) {
+    setRecipeDescripton(e.target.value)
+  }
+
+  function createRecipeFromMeal() {
+    const meal = targetMeal()
+
+    if (!meal) return
+
+    const products: DataModel.Recipe['products'] = (
+      meal.dishes as Array<DataModel.Dish<Omit<DataModel.Product, 'userId'>>>
+    ).map(dish => ({
+      ...dish.target,
+      mass: dish.mass
+    }))
+
+    setRecipe({
+      name: recipeName(),
+      userId: user.id,
+      products,
+      description: recipeDescription()
+    })
+      .then(() => {
 
         goToMain()
       })
@@ -125,10 +175,31 @@ export const MealView: MealViewComponent = () => {
         <Show
           when={!targetMeal()}
           fallback={
-            <ButtonPanel justify="start">
+            <ButtonPanel justify={isConvertableToRecipe() ? 'end' : 'start'}>
               <Button color="secondary" onClick={goToMain}>
                 {t('button.back')}
               </Button>
+
+              <Show when={isConvertableToRecipe() && !isRecipeMode()}>
+                <Button
+                  half block
+                  outline color="primary"
+                  onClick={showRecipeEditor}
+                >
+                  {t('button.save_as_recipe')}
+                </Button>
+              </Show>
+
+              <Show when={isConvertableToRecipe() && isRecipeMode()}>
+                <Button
+                  half block
+                  outline color="primary"
+                  onClick={createRecipeFromMeal}
+                >
+                  {t('button.save')}
+                </Button>
+              </Show>
+
             </ButtonPanel>
           }
         >
@@ -154,6 +225,26 @@ export const MealView: MealViewComponent = () => {
       }
     >
       <Container>
+        <Show when={isRecipeMode()}>
+          <TextInput
+            class="m-mb-2"
+            type="text"
+            icon="forkAndKnife"
+            placeholder={t('recipe.name')}
+            value={recipeName()}
+            onInput={handleRecipeNameChange}
+          />
+
+          <TextInput
+            class="m-mb-2"
+            type="text"
+            icon="memo"
+            placeholder={t('recipe.description')}
+            value={recipeDescription()}
+            onInput={handleRecipeDescriptionChange}
+          />
+        </Show>
+
         <For each={dishes()}>
           {(item, index) => (
             <NutritionItem
