@@ -1,7 +1,7 @@
 declare namespace DataModel {
   export type ID = number
   export type Mass = number
-
+  export type DishType = 'product' | 'recipe'
   /**
    * Base type for nutrition
    */
@@ -38,7 +38,7 @@ declare namespace DataModel {
     name: string
     /**  Bound products */
     products: Array<
-    Product &
+    Omit<Product, 'userId'> &
     {
       /** The mass of the product */
       mass: Mass
@@ -52,7 +52,7 @@ declare namespace DataModel {
 
   export interface BasicDish<T extends (Product | Recipe) = Product | Recipe> {
     /** Dish type either a product or recipe */
-    readonly type: 'product' | 'recipe'
+    readonly type: DishType
     /** Save target entity instance */
     readonly target: Omit<T, 'userId'>
     /** Whether the bound entity has been removed */

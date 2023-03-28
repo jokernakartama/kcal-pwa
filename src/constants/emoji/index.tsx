@@ -101,6 +101,10 @@ export const emoji = {
     string: '\uD83D\uDD0E',
     html: <>&#x1F50E;</>
   },
+  memo: {
+    string: '\uD83D\uDCDD',
+    html: <>&#x1F4DD;</>
+  },
 
   ...clockEmoji
 }
