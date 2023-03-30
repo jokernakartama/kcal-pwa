@@ -27,10 +27,10 @@ module.exports = merge(config, {
     new WebpackPwaManifest({
       publicPath: '.',
       start_url: 'index.html?standalone=true',
-      name: 'MaPoop',
-      short_name: 'MaPoop',
+      name: 'Moon Pooper',
+      short_name: 'Moon Pooper',
       description: 'An app that helps you keep tracking your daily nutrients.',
-      background_color: '#241C1C',
+      background_color: '#31363B',
       display: 'standalone',
       theme_color: '#31363B',
       orientation: 'portrait',

@@ -193,7 +193,7 @@ export const MealView: MealViewComponent = () => {
               <Show when={isConvertableToRecipe() && isRecipeMode()}>
                 <Button
                   half block
-                  outline color="primary"
+                  color="primary"
                   onClick={createRecipeFromMeal}
                 >
                   {t('button.save')}
