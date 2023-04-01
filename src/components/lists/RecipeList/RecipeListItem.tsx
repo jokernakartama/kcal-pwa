@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { createMemo, JSX, Show, splitProps } from 'solid-js'
+import { createMemo, For, JSX, Show, splitProps } from 'solid-js'
 import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
 import { calculateRecipeNutrition } from '../../../utils/data'
@@ -10,6 +10,7 @@ type RecipeListItemComponent = ListItemComponent<{
   caption: JSX.Element
   recipe: Omit<DataModel.Recipe, 'userId'>
   portion?: number
+  detailed?: boolean
 }>
 
 /**
@@ -23,6 +24,7 @@ export const RecipeListItem: RecipeListItemComponent = props => {
     'portion',
     'recipe',
     'class',
+    'detailed',
     'children',
     'onRemove'
   ])
@@ -62,6 +64,26 @@ export const RecipeListItem: RecipeListItemComponent = props => {
           <span class={styles.unit}>{t('unit.gram')}</span>
         </div>
       </div>
+
+      <Show when={local.detailed}>
+        <ul class={classNames(styles.details)}>
+          <For each={local.recipe.products}>
+            {item => (
+              <li>
+                <span class={styles['product-name']}>
+                - {item.name}
+                </span>
+                <span class={styles['product-nutrition']}>
+                </span>
+                <span class={styles['product-mass']}>
+                  {Math.round(item.mass)} {' '}
+                  <span class={styles.unit}>{t('unit.gram')}</span>
+                </span>
+              </li>
+            )}
+          </For>
+        </ul>
+      </Show>
 
       <div class={classNames(styles.nutrients, 'm-mt-1')}>
         <div class={classNames(styles.nutrient, styles.protein)}>
@@ -105,6 +127,5 @@ export const RecipeListItem: RecipeListItemComponent = props => {
         </div>
       </div>
     </ListItem>
-
   )
 }

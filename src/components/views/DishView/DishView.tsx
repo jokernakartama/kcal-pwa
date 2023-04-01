@@ -62,6 +62,7 @@ export const DishView: Component = () => {
     if (isRecipe(target)) {
       return calculateRecipeNutrition(target, 1)
     }
+
     return calculateProductNutrition(target, 100)
 
   })
@@ -142,8 +143,8 @@ export const DishView: Component = () => {
         }
       >
         <Container>
-          <Show when={dish}>
-            <h2 class="m-mb-1">{dish()?.name}</h2>
+          <Show when={dish()}>
+            <h2 class="m-mb-1">{dish()!.name}</h2>
 
             <div class={classNames(styles['basic-nutrients'], 'm-mb-2')}>
               {t(`dialog.dish.${params.type === 'recipe'
@@ -153,19 +154,27 @@ export const DishView: Component = () => {
               <span class={styles['basic-values']}>
                 <span>
                   {emoji.highVoltage.html}{' '}
-                  <b>{dishBasicNutrition()?.energy}</b> {t('unit.kcal')}
+                  <b>
+                    {Math.round(dishBasicNutrition()!.energy)}
+                  </b> {t('unit.kcal')}
                 </span>
                 <span>
                   {emoji.poultryLeg.html}{' '}
-                  <b>{dishBasicNutrition()?.proteins}</b> {t('unit.gram')}
+                  <b>
+                    {Math.round(dishBasicNutrition()!.proteins)}
+                  </b> {t('unit.gram')}
                 </span>
                 <span>
                   {emoji.avocado.html}{' '}
-                  <b>{dishBasicNutrition()?.fats}</b> {t('unit.gram')}
+                  <b>
+                    {Math.round(dishBasicNutrition()!.fats)}
+                  </b> {t('unit.gram')}
                 </span>
                 <span>
                   {emoji.cookedRice.html}{' '}
-                  <b>{dishBasicNutrition()?.carbs}</b> {t('unit.gram')}
+                  <b>
+                    {Math.round(dishBasicNutrition()!.carbs)}
+                  </b> {t('unit.gram')}
                 </span>
               </span>
             </div>

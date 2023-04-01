@@ -17,6 +17,7 @@ import { RecipeListItem } from './RecipeListItem'
 
 type RecipeListComponent = Component<
 JSX.IntrinsicElements['div'] & {
+  detailed?: boolean
   /** Id or array of ids of recipes */
   recipes?: number | number[]
   search?: string,
@@ -79,6 +80,7 @@ export const RecipeList: RecipeListComponent = props => {
       <For each={recipes()} fallback={t('recipes.empty')}>
         {(item, index) => (
           <RecipeListItem
+            detailed={props.detailed}
             caption={item.name}
             identifier={item.id}
             recipe={item}

@@ -242,6 +242,7 @@ export const MealView: MealViewComponent = () => {
                 </Match>
                 <Match when={isDishRecipe(item)}>
                   <RecipeListItem
+                    detailed
                     caption={item.target.name}
                     identifier={index()}
                     portion={(item as DataModel.Dish<DataModel.Recipe>).portion}

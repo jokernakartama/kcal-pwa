@@ -124,6 +124,7 @@ export const DishesSearchView: DishesSearchViewComponent = () => {
 
         <Match when={tab() === 'recipe'}>
           <RecipeList
+            detailed
             class={styles.list}
             search={search()}
             onRecipeClick={addDish}

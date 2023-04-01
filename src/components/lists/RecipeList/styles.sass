@@ -1,4 +1,6 @@
 @use "../../../styles/common/list"
+@use "../../../styles/basic/variables" as vars
+@use "../../../styles/basic/breakpoints"
 
 .header
   @include list.item-header
@@ -8,3 +10,26 @@
 
 .nutrient
   @include list.item-nutrient
+
+.details
+  list-style-type: none
+  padding-left: .625em
+  font-size: vars.$font-size-12
+
+  li
+    display: flex
+    width: 100%
+    opacity: .7
+    margin-top: .5em
+    gap: .25em
+
+
+.product-mass
+  margin-left: auto
+
+.product-nutrition
+  flex-grow: 1
+  flex-shrink: 1
+  border-bottom: 1px dotted var(--color-text)
+  height: .9em
+  align-self: baseline
