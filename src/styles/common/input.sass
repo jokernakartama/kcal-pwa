@@ -7,10 +7,15 @@
   font-size: vars.$font-size-14
   top: calc(vars.$font-size-14 - 1em)
   text-shadow: 0 1px 2px var(--color-bg)
+  background-color: var(--color-bg)
+  box-shadow: 0 0 2px var(--color-bg)
   left: 1.25em
   color: var(--color-input-border-accent)
   transition: .2s
   line-height: 1em
+  padding:  0 .25em
+  border-radius: 1em
+  display: inline-block
   white-space: nowrap
 
 
@@ -47,6 +52,7 @@
     @include input-placeholder
 
   input,
+  textarea,
   select
     @include input-field
 

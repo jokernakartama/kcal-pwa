@@ -8,7 +8,7 @@ export type TextInputTypeValue =
   | 'tel'
   | 'url'
 
-export type TextInputChangeEvent = InputEvent & {
-  currentTarget: HTMLInputElement
-  target: HTMLInputElement
+export type TextInputChangeEvent<Input = HTMLInputElement> = InputEvent & {
+  currentTarget: Input
+  target: Input
 }
