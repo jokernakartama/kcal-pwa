@@ -97,22 +97,22 @@ export const Dashboard: DashboardComponent = () => {
 
   return (
     <>
-      <Container class={styles.content}>
+      <Container class={styles.informers}>
         {/* Brief user info */}
         <UserBrief class="m-mb-2" />
 
-        <div class={styles.informers}>
-          {/* Day's nutrition goals */}
-          <GoalsSummary
-            current={totals()}
-            target={store.goals!}
-            loading={!store.goals}
-          />
+        {/* Day's nutrition goals */}
+        <GoalsSummary
+          current={totals()}
+          target={store.goals!}
+          loading={!store.goals}
+        />
 
-          {/* Date selector */}
-          <CurrentDate class={styles.date} value={date()} onChange={handleDateChange} />
-        </div>
+        {/* Date selector */}
+        <CurrentDate class={styles.date} value={date()} onChange={handleDateChange} />
+      </Container>
 
+      <Container class={styles.content}>
         {/* List of meals of the day */}
         <MealList />
       </Container>

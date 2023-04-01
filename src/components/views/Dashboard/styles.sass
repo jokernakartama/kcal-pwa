@@ -1,20 +1,16 @@
 @use "../../../styles/basic/variables" as vars
 @use "../../../styles/common/input"
 
+.informers
+  padding-top: (vars.$grid-gutter * 2)
+
 .content
   flex-grow: 1
   flex-shrink: 1
   overflow: auto
-  padding-top: (vars.$grid-gutter * 2)
 
 .hidden
   display: none
 
 .options-button
   min-width: 5em
-
-.informers
-  position: sticky
-  top: 0
-  z-index: 1
-  background: var(--color-bg)
