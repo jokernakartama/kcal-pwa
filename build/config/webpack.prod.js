@@ -27,9 +27,9 @@ module.exports = merge(config, {
     new WebpackPwaManifest({
       publicPath: '.',
       start_url: 'index.html?standalone=true',
-      name: 'Moon Pooper',
-      short_name: 'Moon Pooper',
-      description: 'An app that helps you keep tracking your daily nutrients.',
+      name: 'MaPoop',
+      short_name: 'MaPoop',
+      description: 'An app that helps you to track your daily nutrients consumption',
       background_color: '#31363B',
       display: 'standalone',
       theme_color: '#31363B',
@@ -39,6 +39,12 @@ module.exports = merge(config, {
           src: path.join(rootDir, 'src/icons/icon.png'),
           sizes: [96, 128, 192, 256, 384, 512, 1024]
         },
+        ,
+        {
+          src: path.join(rootDir, 'src/icons/icon_monochrome.png'),
+          size: [96, 128, 192, 256],
+          purpose: 'monochrome'
+        }
         {
           src: path.join(rootDir, 'src/icons/icon_maskable.png'),
           size: [96, 128, 192, 256, 384, 512, 1024],
