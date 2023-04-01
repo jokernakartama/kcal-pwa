@@ -7,6 +7,7 @@ import { NavigateOptions, useNavigate } from '@solidjs/router'
 export function createRewindNavigator() {
   const navigate = useNavigate()
 
+  // Fint ushami to implement app-like navigation
   function rewind(
     to: string,
     delta = 0,

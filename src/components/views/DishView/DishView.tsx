@@ -76,12 +76,15 @@ export const DishView: Component = () => {
   }
 
   function goNext() {
-    // Fint ushami to implement app-like navigation
     rewind(route.NEW_MEAL, -2)
   }
 
   function goBack() {
     rewind(route.DISH_LIST, -1)
+  }
+
+  function goToMain() {
+    rewind(route.HOME, -3)
   }
 
   function addDish(amount: number) {
@@ -122,7 +125,8 @@ export const DishView: Component = () => {
     <Form autocomplete="off" onSubmit={handleSubmit}>
       <Dialog
         class={styles.wrapper}
-        onClose={goBack}
+        onBack={goBack}
+        onClose={goToMain}
         header={
           <h2>{t(`dialog.dish.${params.type === 'recipe'
             ? 'add_recipe'
