@@ -5,7 +5,8 @@ import { CheckIcon } from '../../icons/CheckIcon'
 import { CrossIcon } from '../../icons/CrossIcon'
 import styles from './styles.sass'
 
-type ListItemComponent = ParentComponent<
+export type ListItemComponent<T = object> = ParentComponent<
+T &
 JSX.IntrinsicElements['div'] &
 {
   identifier: DataModel.ID

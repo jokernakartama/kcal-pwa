@@ -4,7 +4,7 @@ import { useT } from '../../../i18n'
 import { useProfile } from '../../../store'
 import { PaginationParams, SortingDirection } from '../../../types/pagination'
 import { PageScroll } from '../../ui/PageScroll/PageScroll'
-import { NutritionItem } from '../NutiritionItem'
+import { ProductListItem } from './ProductListItem'
 
 type ProductListComponent = Component<
 JSX.IntrinsicElements['div'] & {
@@ -69,13 +69,10 @@ export const ProductList: ProductListComponent = props => {
     >
       <For each={products()} fallback={t('products.empty')}>
         {item => (
-          <NutritionItem
+          <ProductListItem
             caption={item.name}
             identifier={item.id}
-            proteins={item.proteins}
-            fats={item.fats}
-            carbs={item.carbs}
-            energy={item.energy}
+            product={item}
             onClick={() => handleProductClick(item)}
             onRemove={deleteProduct}
           />

@@ -12,9 +12,8 @@ import { getRecipes, removeRecipe } from '../../../api'
 import { useT } from '../../../i18n'
 import { useProfile } from '../../../store'
 import { PaginationParams, SortingDirection } from '../../../types/pagination'
-import { calculateRecipeNutrition } from '../../../utils/data'
 import { PageScroll } from '../../ui/PageScroll/PageScroll'
-import { NutritionItem } from '../NutiritionItem'
+import { RecipeListItem } from './RecipeListItem'
 
 type RecipeListComponent = Component<
 JSX.IntrinsicElements['div'] & {
@@ -39,20 +38,6 @@ export const RecipeList: RecipeListComponent = props => {
   const searchString = createMemo(() => props.search)
   const recipesSignal = createSignal<DataModel.Recipe[] | undefined>([])
   const [recipes, setRecipes] = recipesSignal
-  const recipesNutrition = createMemo(() => {
-    if (typeof recipes() === 'undefined') return []
-
-    return recipes()!.map(recipe => {
-      return {
-        ...calculateRecipeNutrition(recipe),
-        name: recipe.name,
-        id: recipe.id,
-        mass: recipe
-          .products
-          .reduce((mass, product) => mass + product.mass, 0)
-      }
-    })
-  })
 
   function fetchRecipes({ offset, limit }: PaginationParams) {
     return getRecipes(user.id, {
@@ -91,16 +76,12 @@ export const RecipeList: RecipeListComponent = props => {
       signal={recipesSignal}
       {...rest}
     >
-      <For each={recipesNutrition()} fallback={t('recipes.empty')}>
+      <For each={recipes()} fallback={t('recipes.empty')}>
         {(item, index) => (
-          <NutritionItem
+          <RecipeListItem
             caption={item.name}
             identifier={item.id}
-            proteins={item.proteins}
-            fats={item.fats}
-            carbs={item.carbs}
-            energy={item.energy}
-            mass={item.mass}
+            recipe={item}
             onClick={() => handleRecipeClick(recipes()![index()])}
             onRemove={deleteRecipe}
           />

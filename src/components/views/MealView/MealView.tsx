@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from '@solidjs/router'
-import { Component, createMemo, createSignal, For, Show } from 'solid-js'
+import { Component, createMemo, createSignal, For, Match, Show, Switch } from 'solid-js'
 import { produce } from 'solid-js/store'
 import { addMeal, setRecipe } from '../../../api'
 import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
@@ -7,18 +7,19 @@ import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
 import { useProfile, useStore } from '../../../store'
 import {
-  calculateProductNutrition,
-  calculateRecipeNutrition,
   cloneDish,
+  isDishProduct,
   isDishRecipe
 } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
 import { PlusIcon } from '../../icons/PlusIcon'
 import { Container } from '../../layout/Grid'
-import { NutritionItem } from '../../lists/NutiritionItem/NutritionItem'
+import { ProductListItem } from '../../lists/ProductList'
+import { RecipeListItem } from '../../lists/RecipeList'
 import { Button } from '../../ui/Button'
 import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import { Dialog } from '../../ui/Dialog'
+import { Textarea } from '../../ui/Textarea'
 import { TextInput } from '../../ui/TextInput'
 import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
@@ -48,26 +49,7 @@ export const MealView: MealViewComponent = () => {
 
   const dishes = createMemo(() => {
     const source = targetMeal() ? targetMeal()!.dishes : store.dishes
-
-    return source.map(dish => {
-      if (isDishRecipe(dish)) {
-        return {
-          ...calculateRecipeNutrition(dish.target, dish.portion),
-          caption: dish.target.name,
-          portion: dish.portion,
-          mass: dish.target
-            .products
-            .reduce((mass, product) => mass + product.mass * dish.portion, 0)
-        }
-      }
-
-      return {
-        ...calculateProductNutrition(dish.target, dish.mass),
-        caption: dish.target.name,
-        portion: undefined,
-        mass: dish.mass
-      }
-    })
+    return source
   })
 
   const isConvertableToRecipe = createMemo(() => {
@@ -123,7 +105,9 @@ export const MealView: MealViewComponent = () => {
     setRecipeName(e.target.value)
   }
 
-  function handleRecipeDescriptionChange(e: TextInputChangeEvent) {
+  function handleRecipeDescriptionChange(
+    e: TextInputChangeEvent<HTMLTextAreaElement>
+  ) {
     setRecipeDescripton(e.target.value)
   }
 
@@ -235,10 +219,8 @@ export const MealView: MealViewComponent = () => {
             onInput={handleRecipeNameChange}
           />
 
-          <TextInput
+          <Textarea
             class="m-mb-2"
-            type="text"
-            icon="memo"
             placeholder={t('recipe.description')}
             value={recipeDescription()}
             onInput={handleRecipeDescriptionChange}
@@ -247,17 +229,28 @@ export const MealView: MealViewComponent = () => {
 
         <For each={dishes()}>
           {(item, index) => (
-            <NutritionItem
-              caption={item.caption}
-              portion={item.portion}
-              identifier={index()}
-              proteins={item.proteins}
-              fats={item.fats}
-              carbs={item.carbs}
-              energy={item.energy}
-              mass={item.mass}
-              onRemove={!targetMeal() ? removeDish : undefined}
-            />
+            <>
+              <Switch>
+                <Match when={isDishProduct(item)}>
+                  <ProductListItem
+                    caption={item.target.name}
+                    identifier={index()}
+                    mass={(item as DataModel.Dish<DataModel.Product>).mass}
+                    product={(item as DataModel.Dish<DataModel.Product>).target}
+                    onRemove={!targetMeal() ? removeDish : undefined}
+                  />
+                </Match>
+                <Match when={isDishRecipe(item)}>
+                  <RecipeListItem
+                    caption={item.target.name}
+                    identifier={index()}
+                    portion={(item as DataModel.Dish<DataModel.Recipe>).portion}
+                    recipe={(item as DataModel.Dish<DataModel.Recipe>).target}
+                    onRemove={!targetMeal() ? removeDish : undefined}
+                  />
+                </Match>
+              </Switch>
+            </>
           )}
         </For>
       </Container>
