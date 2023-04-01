@@ -43,11 +43,6 @@ module.exports = merge(config, {
           src: path.join(rootDir, 'src/icons/icon_monochrome.png'),
           size: [96, 128, 192, 256],
           purpose: 'monochrome'
-        },
-        {
-          src: path.join(rootDir, 'src/icons/icon_maskable.png'),
-          size: [96, 128, 192, 256, 384, 512, 1024],
-          purpose: 'maskable'
         }
       ]
     }),
