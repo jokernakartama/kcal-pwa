@@ -1,8 +1,9 @@
 @use "../../../styles/basic/breakpoints"
 @use "../../../styles/basic/variables" as vars
+@use "../../../styles/common/view"
 
 .wrapper
-  animation: slide .3s 1
+  @include view.dialog-wrapper
 
 .inputs
   padding-bottom: 0
@@ -27,11 +28,3 @@
 .list
   height: 100%
   padding: 0 (vars.$grid-gutter * 2)
-
-@keyframes slide
-  0%
-    opacity: 0
-    transform: translateY(200px)
-  100%
-    opacity: 1
-    transform: translateY(0px)
