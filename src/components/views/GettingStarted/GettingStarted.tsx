@@ -78,7 +78,7 @@ export const GettingStarted: Component = () => {
       <GettingStartedFormFields />
 
       <ButtonPanel>
-        <Button color="accent" type="submit">
+        <Button half block color="accent" type="submit">
           {t('button.start')}!
         </Button>
       </ButtonPanel>
