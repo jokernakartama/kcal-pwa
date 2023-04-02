@@ -7,6 +7,7 @@ import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
 import { useProfile } from '../../../store'
 import { ProductForm, ProductFormValues } from '../../forms/ProductForm'
+import { Container } from '../../layout/Grid'
 import { Button } from '../../ui/Button'
 import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import { Dialog } from '../../ui/Dialog'
@@ -86,9 +87,9 @@ export const ProductView: Component = () => {
           </>
         }
       >
-        <div class={styles.fields}>
+        <Container>
           <ProductForm />
-        </div>
+        </Container>
       </Dialog>
     </Form>
   )

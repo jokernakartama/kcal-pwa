@@ -1,35 +1,18 @@
 import { useParams } from '@solidjs/router'
-import classNames from 'classnames'
-import {
-  Component,
-  createMemo,
-  createResource,
-  createSignal,
-  Match,
-  Show,
-  Switch
-} from 'solid-js'
+import { Component, createResource } from 'solid-js'
 import { getProduct, getRecipe } from '../../../api'
-import { emoji } from '../../../constants/emoji'
 import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
 import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
 import { useStore } from '../../../store'
-import {
-  calculateProductNutrition,
-  calculateRecipeNutrition,
-  getDishFromAnything,
-  isRecipe
-} from '../../../utils/data'
-import { DishNutrition } from '../../informers/DishNutrition'
+import { getDishFromAnything } from '../../../utils/data'
+import { DishForm, DishFormValues } from '../../forms/DishForm'
 import { Container } from '../../layout/Grid'
 import { Button } from '../../ui/Button'
 import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import { Dialog } from '../../ui/Dialog'
 import { Form, getFormValues } from '../../ui/Form'
 import { FormSubmitEvent } from '../../ui/Form/types'
-import { TextInput } from '../../ui/TextInput'
-import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
 
 /**
@@ -40,40 +23,9 @@ export const DishView: Component = () => {
   const params = useParams<{ type: 'product' | 'recipe', id: string }>()
   const [, setStore] = useStore()
   const rewind = createRewindNavigator()
-  const [mass, setMass] = createSignal<number>(100)
-  const [portion, setPortion] = createSignal<number>(1)
   const [dish] = createResource<
   DataModel.Product | DataModel.Recipe | undefined
   >(fetchDish)
-  const dishNutrition = createMemo<DataModel.Nutrition | undefined >(() => {
-    const target = dish()
-    if (!target) return undefined
-
-    if (isRecipe(target)) {
-      return calculateRecipeNutrition(target, portion())
-    }
-    return calculateProductNutrition(target, mass() ?? 0)
-
-  })
-  const dishBasicNutrition = createMemo<DataModel.Nutrition | undefined >(() => {
-    const target = dish()
-    if (!target) return undefined
-
-    if (isRecipe(target)) {
-      return calculateRecipeNutrition(target, 1)
-    }
-
-    return calculateProductNutrition(target, 100)
-
-  })
-
-  function handleMassInput(e: TextInputChangeEvent) {
-    setMass(+e.currentTarget.value)
-  }
-
-  function handlePortionInput(e: TextInputChangeEvent) {
-    setPortion(+e.currentTarget.value)
-  }
 
   function goNext() {
     rewind(route.NEW_MEAL, -2)
@@ -100,7 +52,7 @@ export const DishView: Component = () => {
   function handleSubmit(e: FormSubmitEvent) {
     e.preventDefault()
 
-    const values = getFormValues<{ amount: number }>(
+    const values = getFormValues<DishFormValues>(
       e.currentTarget
     )
 
@@ -147,89 +99,7 @@ export const DishView: Component = () => {
         }
       >
         <Container>
-          <Show when={dish()}>
-            <h2 class="m-mb-1">{dish()!.name}</h2>
-
-            <div class={classNames(styles['basic-nutrients'], 'm-mb-2')}>
-              {t(`dialog.dish.${params.type === 'recipe'
-                ? 'per_portion'
-                : 'per_100g'
-              }`)}:
-              <span class={styles['basic-values']}>
-                <span>
-                  {emoji.highVoltage.html}{' '}
-                  <b>
-                    {Math.round(dishBasicNutrition()!.energy)}
-                  </b> {t('unit.kcal')}
-                </span>
-                <span>
-                  {emoji.poultryLeg.html}{' '}
-                  <b>
-                    {Math.round(dishBasicNutrition()!.proteins)}
-                  </b> {t('unit.gram')}
-                </span>
-                <span>
-                  {emoji.avocado.html}{' '}
-                  <b>
-                    {Math.round(dishBasicNutrition()!.fats)}
-                  </b> {t('unit.gram')}
-                </span>
-                <span>
-                  {emoji.cookedRice.html}{' '}
-                  <b>
-                    {Math.round(dishBasicNutrition()!.carbs)}
-                  </b> {t('unit.gram')}
-                </span>
-              </span>
-            </div>
-          </Show>
-
-          <Switch>
-            <Match when={params.type === 'product'}>
-              <TextInput
-                required
-                clearable
-                autofocus
-                name="amount"
-                value={mass()}
-                type="number"
-                icon="scales"
-                class="m-mb-3"
-                min="1"
-                step="1"
-                max="5000"
-                maxlength="4"
-                placeholder={`${t('nutrients.mass')}, ${t('unit.gram')}`}
-                onInput={handleMassInput}
-              />
-            </Match>
-
-            <Match when={params.type === 'recipe'}>
-              <TextInput
-                required
-                clearable
-                autofocus
-                name="amount"
-                value={portion()}
-                type="number"
-                icon="forkAndKnife"
-                class="m-mb-3"
-                min="1"
-                max="5"
-                step="1"
-                placeholder={t('nutrients.portion')}
-                onInput={handlePortionInput}
-              />
-            </Match>
-          </Switch>
-
-          <Show when={!!dish()}>
-            <DishNutrition
-              class="m-mb-2"
-              {...dishNutrition()!}
-            />
-          </Show>
-
+          <DishForm type={params.type} target={dish()} />
         </Container>
       </Dialog>
     </Form>
