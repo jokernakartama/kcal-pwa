@@ -11,8 +11,8 @@ module.exports = {
   },
   output: {
     filename: process.env.NODE_ENV === 'development'
-      ? '[name].js'
-      : '[name].[contenthash].js',
+      ? 'assets/js/[name].js'
+      : 'assets/js/[name].[contenthash].js',
     path: buildPath
   },
   resolve: {

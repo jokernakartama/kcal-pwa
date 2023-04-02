@@ -22,7 +22,7 @@ module.exports = merge(config, {
       ]
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[chunkhash].css'
+      filename: 'assets/css/[name].[chunkhash].css'
     }),
     new WebpackPwaManifest({
       publicPath: '.',
@@ -30,18 +30,20 @@ module.exports = merge(config, {
       name: 'MaPoop',
       short_name: 'MaPoop',
       description: 'An app that helps you to track your daily nutrients consumption',
-      background_color: '#31363B',
+      background_color: '#FEFEFE',
       display: 'standalone',
-      theme_color: '#31363B',
+      theme_color: '#FEFEFE',
       orientation: 'portrait',
       icons: [
         {
           src: path.join(rootDir, 'src/icons/icon.png'),
-          sizes: [96, 128, 192, 256, 384, 512, 1024]
+          sizes: [96, 128, 192, 256, 384, 512, 1024],
+          destination: 'assets/icons'
         },
         {
           src: path.join(rootDir, 'src/icons/icon_monochrome.png'),
           size: [96, 128, 192, 256],
+          destination: 'assets/icons',
           purpose: 'monochrome'
         }
       ]
@@ -51,7 +53,6 @@ module.exports = merge(config, {
       // and not allow any straggling "old" SWs to hang around
       clientsClaim: true,
       skipWaiting: true
-
     })
   ],
 
