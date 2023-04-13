@@ -87,6 +87,10 @@ export const Dashboard: DashboardComponent = () => {
     navigate(route.NEW_MEAL)
   }
 
+  function showGoalsDialog() {
+    navigate(route.GOALS)
+  }
+
   createEffect(on(date, () => {
     Promise.resolve()
       .then(() => {
@@ -102,11 +106,14 @@ export const Dashboard: DashboardComponent = () => {
         <UserBrief class="m-mb-2" />
 
         {/* Day's nutrition goals */}
-        <GoalsSummary
-          current={totals()}
-          target={store.goals!}
-          loading={!store.goals}
-        />
+        <div class={styles.goals}>
+          <GoalsSummary
+            current={totals()}
+            target={store.goals!}
+            loading={!store.goals}
+            onClick={showGoalsDialog}
+          />
+        </div>
 
         {/* Date selector */}
         <CurrentDate class={styles.date} value={date()} onChange={handleDateChange} />
