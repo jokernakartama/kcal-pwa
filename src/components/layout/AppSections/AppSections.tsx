@@ -1,6 +1,6 @@
 import { Outlet } from '@solidjs/router'
 import { Component, createEffect, createSignal, Show } from 'solid-js'
-import { getJournal, getUserGoals } from '../../../api'
+import { getJournal, getUserGoals, getUserInfo } from '../../../api'
 import { useStore } from '../../../store'
 import { normalizeDate } from '../../../utils/format'
 import { AppLoading } from '../../views/AppLoading'
@@ -32,11 +32,21 @@ export const AppSections: Component = () => {
       })
   }
 
+  function fetchUserInfo(userId: UserModel.User['id']) {
+    return getUserInfo(userId)
+      .then(info => {
+        if (info !== undefined) {
+          setStore({ info })
+        }
+      })
+  }
+
   createEffect(() => {
     if (store.user !== undefined) {
       Promise.all([
         fetchUserGoals(store.user.id),
-        fetchJournalRecord(store.user.id)
+        fetchUserInfo(store.user.id),
+        fetchJournalRecord(store.user.id),
       ])
         .then(() => {
           setIsReady(true)
