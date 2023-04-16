@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import { Match, Switch, Component, createSignal, Show, createMemo } from 'solid-js'
 import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import { calculateProductNutrition, calculateRecipeNutrition, isRecipe } from '../../../utils/data'
 import { DishNutrition } from '../../informers/DishNutrition'
 import { TextInput } from '../../ui/TextInput'
-import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
 
 export interface DishFormValues { amount: number }
@@ -46,11 +46,11 @@ export const DishForm: DishFormComponent = props => {
 
   })
 
-  function handleMassInput(e: TextInputChangeEvent) {
+  function handleMassInput(e: InputChangeEvent) {
     setMass(+e.currentTarget.value)
   }
 
-  function handlePortionInput(e: TextInputChangeEvent) {
+  function handlePortionInput(e: InputChangeEvent) {
     setPortion(+e.currentTarget.value)
   }
 

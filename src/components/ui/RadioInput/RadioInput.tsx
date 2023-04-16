@@ -7,6 +7,7 @@ import {
   JSX,
   splitProps
 } from 'solid-js'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import styles from './styles.sass'
 
 type RadioInputComponent = Component<
@@ -33,9 +34,7 @@ export const RadioInput: RadioInputComponent = props => {
   const [selected, setSelected] = createSignal(local.value)
   const isSelected = createSelector(selected)
 
-  function handleChange(
-    e: InputEvent & { currentTarget: HTMLInputElement; target: Element }
-  ) {
+  function handleChange(e: InputChangeEvent) {
 
     setSelected(e.currentTarget.value)
     if (typeof local.onChange === 'function') {

@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { For, Component, JSX, splitProps, createSignal, createSelector } from 'solid-js'
 import { emoji } from '../../../constants/emoji'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import styles from './styles.sass'
 
 type CardRadioInputComponent = Component<
@@ -28,9 +29,7 @@ export const CardRadioInput: CardRadioInputComponent = props => {
   const [selected, setSelected] = createSignal(local.value)
   const isSelected = createSelector(selected)
 
-  function handleChange(
-    e: InputEvent & { currentTarget: HTMLInputElement; target: Element }
-  ) {
+  function handleChange(e: InputChangeEvent) {
 
     setSelected(e.currentTarget.value)
     if (typeof local.onChange === 'function') {

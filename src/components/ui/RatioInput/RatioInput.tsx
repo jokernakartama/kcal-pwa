@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { Component, createEffect, createMemo, Index, JSX, on, splitProps } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import { RatioInputPart } from './RatioInputPart'
 import styles from './styles.sass'
 import { RatioOption } from './types'
@@ -53,9 +54,7 @@ export const RatioInput: RatioInputComponent = props => {
     return Math.max(Math.min(value, maxValue), minValue)
   }
 
-  function handleChange(
-    e: InputEvent & { currentTarget: HTMLInputElement; target: Element }
-  ) {
+  function handleChange(e: InputChangeEvent) {
     if (typeof local.onChange === 'function') {
       local.onChange(e)
     }
