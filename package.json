@@ -21,7 +21,7 @@
   "homepage": "https://github.com/jokernakartama/kcal-pwa#readme",
   "dependencies": {
     "@solid-primitives/event-bus": "^1.0.5",
-    "@solidjs/router": "^0.7.0",
+    "@solidjs/router": "^0.8.2",
     "classnames": "^2.3.1",
     "core-js": "^3.8.1",
     "dexie": "^3.2.1",
