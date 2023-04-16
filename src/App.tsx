@@ -1,6 +1,6 @@
 import { ParentComponent } from 'solid-js'
-import { KeepAliveProvider } from 'solid-keep-alive'
 import { Layout } from './components/layout/Layout'
+import { EventBusProvider } from './components/providers/EventBus'
 import { I18nProvider } from './i18n'
 import { StoreProvider } from './store'
 import './styles/style.sass'
@@ -8,11 +8,11 @@ import './styles/style.sass'
 export const App: ParentComponent = () => {
   return (
     <I18nProvider>
-      <KeepAliveProvider maxElements={1}>
+      <EventBusProvider>
         <StoreProvider>
           <Layout />
         </StoreProvider>
-      </KeepAliveProvider>
+      </EventBusProvider>
     </I18nProvider>
   )
 }
