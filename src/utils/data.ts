@@ -13,6 +13,41 @@ export function isRecipe(
 }
 
 /**
+ * Creates a recipe-based dish object
+ * @param {DataModel.Recipe} recipe
+ * @param {number} portion
+ * @returns {DataModel.Dish<DataModel.BasicRecipe>}
+ */
+export function getDishFromRecipe(
+  recipe: DataModel.BasicRecipe,
+  portion: number
+): DataModel.Dish<DataModel.BasicRecipe> {
+  return {
+    type: 'recipe' as const,
+    target: recipe,
+    portion
+  }
+}
+
+/**
+ * Creates a product-based dish object
+ * @param {DataModel.Product} product
+ * @param {number} mass
+ * @returns {DataModel.Dish<DataModel.BasicProduct>}
+ */
+export function getDishFromProduct(
+  product: DataModel.BasicProduct,
+  mass: number
+): DataModel.Dish<DataModel.BasicProduct> {
+  return {
+    type: 'product' as const,
+    target:product,
+    mass
+  }
+
+}
+
+/**
  * Creates a dish record from anything
  * @param {(DataModel.Product | DataModel.Recipe)} target
  * @param {number} amount
@@ -23,19 +58,10 @@ export function getDishFromAnything(
   amount: number
 ): DataModel.Dish {
   if (isRecipe(target)) {
-    return {
-      type: 'recipe',
-      target,
-      portion: amount
-    }
+    return getDishFromRecipe(target, amount)
   }
 
-  return {
-    type: 'product',
-    target: target as DataModel.Product,
-    mass: amount
-  }
-
+  return getDishFromProduct(target as DataModel.BasicProduct, amount)
 }
 
 /**
