@@ -20,3 +20,5 @@ export type ExtractPaginationDataType<R> =
   R extends PaginationResponse<infer T>
     ? T
     : unknown
+
+export type ListItem<A extends unknown[]> = A extends Array<infer T> ? T : never
