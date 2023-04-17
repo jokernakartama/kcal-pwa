@@ -19,26 +19,29 @@ declare namespace DataModel {
   /**
    * Nutrition of 100 grams of the product
    */
-  export interface Product extends Nutrition {
+  export interface BasicProduct extends Nutrition {
     id: ID
-    /**  Bound user's id */
-    userId: UserModel.User['id']
     /**  The name of the product */
     name: string
   }
 
   /**
+   * Nutrition of 100 grams of the product
+   */
+  export interface Product extends BasicProduct {
+    userId: UserModel.User['id']
+  }
+
+  /**
    * A set of products with defined mass
    */
-  export interface Recipe {
+  export interface BasicRecipe {
     id: ID
-    /**  Bound user's id */
-    userId: UserModel.User['id']
     /**  The name of the recipe */
     name: string
     /**  Bound products */
     products: Array<
-    Omit<Product, 'userId'> &
+    BasicProduct &
     {
       /** The mass of the product */
       mass: Mass
@@ -50,7 +53,17 @@ declare namespace DataModel {
     description?: string
   }
 
-  export interface BasicDish<T extends (Product | Recipe) = Product | Recipe> {
+  /**
+   * A set of products with defined mass
+   */
+  export interface Recipe extends BasicRecipe {
+    /**  Bound user's id */
+    userId: UserModel.User['id']
+  }
+
+  export interface BasicDish<
+    T extends (BasicProduct | BasicRecipe) = BasicProduct | BasicRecipe
+  > {
     /** Dish type either a product or recipe */
     readonly type: DishType
     /** Save target entity instance */
@@ -60,14 +73,14 @@ declare namespace DataModel {
   }
 
   export type Dish<
-    T extends (Omit<Product | Recipe, 'userId'>) = Product | Recipe
-  > = T extends Omit<Product, 'userId'>
-    ? BasicDish<Product> & {
+    T extends (BasicProduct | BasicRecipe) = BasicProduct | BasicRecipe
+  > = T extends BasicProduct
+    ? BasicDish<BasicProduct> & {
       readonly type: 'product'
       mass: Mass
     }
-    : T extends Omit<Recipe, 'userId'>
-      ? BasicDish<Recipe> & {
+    : T extends BasicRecipe
+      ? BasicDish<BasicRecipe> & {
         readonly type: 'recipe'
         /** Portion value for easier calculations  */
         portion: number
