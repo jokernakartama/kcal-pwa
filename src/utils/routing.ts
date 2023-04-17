@@ -10,7 +10,7 @@ import { RouteParams, inject } from 'regexparam'
 export function substractSegments(pathname: string, ...segments: string[]) {
   try {
     return segments.reduce((result, segment) => {
-      if (pathname.endsWith(segment)) {
+      if (result.endsWith(segment)) {
         return result.slice(0, -(segment.length + 1))
       }
 
