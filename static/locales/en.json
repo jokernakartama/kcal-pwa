@@ -85,6 +85,8 @@
       "add": "Add the dish",
       "add_product": "Add this product",
       "add_recipe": "Add this dish",
+      "change_product": "Change the mass",
+      "change_recipe": "Change the portion",
       "select": {
         "product": "Select a product",
         "recipe": "Select a recipe"
