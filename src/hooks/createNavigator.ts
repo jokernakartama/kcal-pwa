@@ -1,5 +1,14 @@
-import { NavigateOptions, useLocation, useNavigate } from '@solidjs/router'
-import { inject } from 'regexparam'
+import {
+  NavigateOptions,
+  SetParams,
+  useLocation,
+  useNavigate
+} from '@solidjs/router'
+import { injectParams, mergeSearchString } from '../utils/routing'
+
+export type NavigateOptionsWithQuery = Partial<
+NavigateOptions & { query: SetParams }
+>
 
 /**
  * An advanced hook of navigation that adds features to navigate backwards
@@ -16,7 +25,7 @@ export function createNavigator() {
    * @param {string} to - Relative or absolute path
    * @param {Object} [options]
    */
-  function goTo(to: string, options?: Partial<NavigateOptions>): void
+  function goTo(to: string, options?: NavigateOptionsWithQuery): void
   /**
    * Navigates back and forth
    * @param {string} to - Relative or absolute path
@@ -26,12 +35,12 @@ export function createNavigator() {
   function goTo(
     to: string,
     delta?: number,
-    options?: Partial<NavigateOptions>
+    options?: NavigateOptionsWithQuery
   ): void
   function goTo(
     to: string,
-    param1?: number | Partial<NavigateOptions>,
-    param2?: Partial<NavigateOptions>
+    param1?: number | NavigateOptionsWithQuery,
+    param2?: NavigateOptionsWithQuery
   ) {
     let route: string = to
     const delta = (
@@ -39,16 +48,17 @@ export function createNavigator() {
       !isNaN(param1) &&
       isFinite(param1)
     ) ? param1 : 0
-    const options: Partial<NavigateOptions> =
-      (typeof param1 === 'number' || param2 ? param2 : param1) || {}
+    const options: NavigateOptionsWithQuery = (
+      typeof param1 === 'number' || param2 ? param2 : param1
+    ) || {}
 
     if (options.resolve) {
       const parentPath = routeLocation.pathname
 
-      route = inject(
+      route = injectParams(
       // Remove a trailing slash
         `${parentPath.endsWith('/') ? parentPath.slice(0, -1) : parentPath}/*`,
-        { wild: to.startsWith('/') ? to.slice(1) : to }
+        { wild: to }
       )
     }
 
@@ -58,7 +68,15 @@ export function createNavigator() {
       options.replace = true
     }
 
-    navigate(route, options)
+    if (options.query) {
+      route += mergeSearchString(routeLocation.search, options.query)
+    }
+
+    // Use timeout to immediately change the route after goin back and cut off
+    // the navigation history
+    window.setTimeout(() => {
+      navigate(route + routeLocation.hash, options)
+    }, 10)
   }
 
   return goTo

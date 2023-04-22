@@ -1,3 +1,4 @@
+import { SetParams } from '@solidjs/router'
 import { RouteParams, inject } from 'regexparam'
 
 /**
@@ -36,4 +37,20 @@ export function injectParams<T extends string>(route: T, values: RouteParams<T>)
   }
 
   return pathname
+}
+
+/**
+ * @see https://github.com/solidjs/solid-router/blob/main/src/utils.ts#L152
+ */
+export function mergeSearchString(search: string, params: SetParams) {
+  const merged = new URLSearchParams(search)
+  Object.entries(params).forEach(([key, value]) => {
+    if (value == null || value === '') {
+      merged.delete(key)
+    } else {
+      merged.set(key, String(value))
+    }
+  })
+  const s = merged.toString()
+  return s ? `?${s}` : ''
 }
