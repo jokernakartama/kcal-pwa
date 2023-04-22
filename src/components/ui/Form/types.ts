@@ -16,4 +16,6 @@ export type FormContextData<T extends object> = {
   }
 }
 
-export type FormContextType<T extends FormValues<T> = FormValues<object>> = FormContextData<T>
+export type FormContextType<
+  T extends FormValues<T> = FormValues<object>
+> = FormContextData<T>

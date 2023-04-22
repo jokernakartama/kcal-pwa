@@ -22,3 +22,11 @@ export type ExtractPaginationDataType<R> =
     : unknown
 
 export type ListItem<A extends unknown[]> = A extends Array<infer T> ? T : never
+
+export type Indexed<T extends object> = {
+  [K in keyof T]: T[K]
+}
+
+export type QueryParams<T extends object> = {
+  [K in keyof T]: string
+}

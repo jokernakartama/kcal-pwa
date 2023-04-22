@@ -1,15 +1,21 @@
 import classNames from 'classnames'
-import { Context, useContext, Component, JSX, onMount, splitProps, createContext } from 'solid-js'
+import { Context, useContext, JSX, onMount, splitProps, createContext, ParentProps } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { getFormValidity, getFormValues } from './helpers'
 import styles from './styles.sass'
 import { FormContextType, FormValues } from './types'
+import { Indexed } from '../../../types/utils'
 
 export const FormContext = createContext<FormContextType<FormValues<object>>>({})
 
-type FormComponent = Component<
-  JSX.IntrinsicElements['form'] & { disabled?: boolean }
->
+type FormComponent = <
+T extends object = Record<string, unknown>
+>(
+  props: ParentProps<JSX.IntrinsicElements['form'] & {
+    disabled?: boolean
+    defaults?: Indexed<T>
+  }>
+) => JSX.Element
 
 /**
  * Renders a form
@@ -32,15 +38,21 @@ export const Form: FormComponent = props => {
     }
   }
 
-  function getFormContext(form: HTMLFormElement) {
+  function getFormContext(
+    form: HTMLFormElement,
+    defaults?: typeof props.defaults
+  ) {
     const values = getFormValues(form)
     const validity = getFormValidity(form)
 
     return Object.entries(values)
       .reduce<typeof state>((result, [fieldName, fieldValue]) => {
         const fieldValidity = validity[fieldName as keyof typeof validity] as ValidityState
+        const defaultValue = (
+          defaults as { [key: string]: unknown } | undefined
+        )?.[fieldName]
         const fieldData = {
-          value: fieldValue,
+          value: defaultValue ?? fieldValue,
           validity: {
             badInput: fieldValidity.badInput,
             customError: fieldValidity.customError,
@@ -82,7 +94,7 @@ export const Form: FormComponent = props => {
   }
 
   onMount(() => {
-    setState(s => ({ ...s, ...getFormContext(formElement) }))
+    setState(s => ({ ...s, ...getFormContext(formElement, props.defaults) }))
   })
 
   return (
