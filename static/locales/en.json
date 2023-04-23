@@ -70,7 +70,8 @@
     "search": "Search",
     "add": "Add",
     "save_add": "Save and add",
-    "save_as_recipe": "Save as a recipe"
+    "save_as_recipe": "Save as a recipe",
+    "change": "Change"
   },
   "label": {
     "and_more": "and {{count}} more"
