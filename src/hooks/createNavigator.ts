@@ -72,11 +72,16 @@ export function createNavigator() {
       route += mergeSearchString(routeLocation.search, options.query)
     }
 
-    // Use timeout to immediately change the route after goin back and cut off
-    // the navigation history
-    window.setTimeout(() => {
+    function handleHashChange() {
       navigate(route + routeLocation.hash, options)
-    }, 10)
+      window.removeEventListener('hashchange', handleHashChange)
+    }
+
+    if (delta && delta < 0) {
+      window.addEventListener('hashchange', handleHashChange)
+    } else {
+      navigate(route + routeLocation.hash, options)
+    }
   }
 
   return goTo
