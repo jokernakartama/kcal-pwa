@@ -44,6 +44,31 @@ function getBooleanValue(input: HTMLInputElement) {
 }
 
 /**
+ * Sets value for an input or RadioNodesList. It safe to use any object.
+ * @param {(Element | RadioNodeList)} input
+ * @param {(string | number | boolean)} value
+ */
+export function setInputValue<T = string | number | boolean>(
+  /** It is safe to use any element till it has `value` field */
+  input: HTMLInputElement,
+  value: T
+) {
+  if (input.type === 'checkbox') {
+    input.checked = !!value
+  } else if (input.type === 'hidden') {
+    try {
+      input.value = JSON.stringify(value)
+    } catch (error) {
+      if (typeof error === 'object') {
+        // do nothing
+      }
+    }
+  } else {
+    input.value = value as string
+  }
+}
+
+/**
  * Parses regular input value according its "type" attribute
  * @param {HTMLInputElement} input
  * @returns {*}

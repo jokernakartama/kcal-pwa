@@ -1,10 +1,12 @@
 import classNames from 'classnames'
-import { Context, useContext, JSX, onMount, splitProps, createContext, ParentProps } from 'solid-js'
+import { Context, useContext, JSX, onMount, splitProps, createContext, ParentProps, createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import { getFormValidity, getFormValues } from './helpers'
+import { getFormValidity, getFormValues, setInputValue } from './helpers'
 import styles from './styles.sass'
 import { FormContextType, FormValues } from './types'
 import { Indexed } from '../../../types/utils'
+import { parseInputInputValue } from './helpers'
+import { parseSelectInputValue } from './helpers'
 
 export const FormContext = createContext<FormContextType<FormValues<object>>>({})
 
@@ -93,9 +95,23 @@ export const Form: FormComponent = props => {
     }
   }
 
-  onMount(() => {
+  function updateFields (values: Record<string, unknown> | undefined) {
+    if (!values) return
+    const elements = formElement.elements
+
+    Object.entries(values).forEach(([ key, value ]) => {
+      const node = elements.namedItem(key)
+      if (node) {
+        setInputValue<typeof value>(node as HTMLInputElement, value)
+      }
+    })
+  }
+
+  createEffect(() => {
+    updateFields(props.defaults)
     setState(s => ({ ...s, ...getFormContext(formElement, props.defaults) }))
   })
+
 
   return (
     <form
