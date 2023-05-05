@@ -10,6 +10,7 @@ import { createNavigator } from '../../../hooks/createNavigator'
 import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
 import { useStore } from '../../../store'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import { WithOptional } from '../../../types/utils'
 import { calculateMealNutrition } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
@@ -91,12 +92,9 @@ export const Dashboard: DashboardComponent = () => {
     navigate(route.GOALS)
   }
 
-  function showRecipes() {
-    navigate(route.RECIPES)
-  }
-
-  function showProducts() {
-    navigate(route.PRODUCTS)
+  function goToList(e: InputChangeEvent<HTMLSelectElement>) {
+    navigate(e.currentTarget.value)
+    e.currentTarget.value = ''
   }
 
   createEffect(on(date, () => {
@@ -136,21 +134,20 @@ export const Dashboard: DashboardComponent = () => {
         <Button
           class={styles['options-button']}
           outline
-          color="warning"
+          color="primary"
           type="button"
-          onClick={showProducts}
         >
-          Products
+          ...
+          <select onInput={goToList}>
+            <option value={route.PRODUCTS}>
+              {t('products.products')}
+            </option>
+            <option value={route.RECIPES}>
+              {t('recipes.recipes')}
+            </option>
+          </select>
         </Button>
-        <Button
-          class={styles['options-button']}
-          outline
-          color="danger"
-          type="button"
-          onClick={showRecipes}
-        >
-          Recipes
-        </Button>
+
         <Button half block color="primary" type="button" onClick={showAddMealDialog}>
           {t('button.yum')}!
         </Button>

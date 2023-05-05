@@ -118,9 +118,11 @@
     }
   },
   "products": {
+    "products": "Products",
     "empty": "No products found"
   },
   "recipes": {
+    "recipes": "Recipes",
     "empty": "No recipes found"
   },
   "meals": {
