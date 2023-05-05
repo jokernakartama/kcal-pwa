@@ -4,6 +4,7 @@ import { useT } from '../../../i18n'
 import { BasicViewNavigation } from '../../../routes/types'
 import { InputChangeEvent } from '../../../types/inputEvents'
 import { isRecipe } from '../../../utils/data'
+import { Container } from '../../layout/Grid'
 import { ProductList } from '../../lists/ProductList'
 import { RecipeList } from '../../lists/RecipeList'
 import { Button } from '../../ui/Button'
@@ -104,24 +105,26 @@ export const DishesSearchView: DishesSearchViewComponent = props => {
         }
       >
 
-        <Switch>
-          <Match when={tab() === 'product'}>
-            <ProductList
-              class={styles.list}
-              search={search()}
-              onProductClick={changeDishAmount}
-            />
-          </Match>
+        <Container class={styles['list-wrapper']}>
+          <Switch>
+            <Match when={tab() === 'product'}>
+              <ProductList
+                class={styles.list}
+                search={search()}
+                onProductClick={changeDishAmount}
+              />
+            </Match>
 
-          <Match when={tab() === 'recipe'}>
-            <RecipeList
-              detailed
-              class={styles.list}
-              search={search()}
-              onRecipeClick={changeDishAmount}
-            />
-          </Match>
-        </Switch>
+            <Match when={tab() === 'recipe'}>
+              <RecipeList
+                detailed
+                class={styles.list}
+                search={search()}
+                onRecipeClick={changeDishAmount}
+              />
+            </Match>
+          </Switch>
+        </Container>
       </Dialog>
 
       <Outlet />

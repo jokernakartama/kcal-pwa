@@ -25,6 +25,18 @@
   overflow: hidden
   text-overflow: ellipsis
 
-.list
+.list-wrapper
+  display: flex
+  flex-direction: column
   height: 100%
-  padding: 0 (vars.$grid-gutter * 2)
+
+  @include breakpoints.breakpoint-desktop
+    display: block
+
+.list
+  max-height: 100%
+  margin-top: auto
+
+  @include breakpoints.breakpoint-desktop
+    height: 100%
+
