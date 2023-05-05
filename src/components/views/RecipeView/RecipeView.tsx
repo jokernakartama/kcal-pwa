@@ -4,7 +4,6 @@ import { getRecipe, setRecipe } from '../../../api'
 import { useT } from '../../../i18n'
 import { BasicViewNavigation } from '../../../routes/types'
 import { useProfile } from '../../../store'
-import { InputChangeEvent } from '../../../types/inputEvents'
 import { ListItem } from '../../../types/utils'
 import { PlusIcon } from '../../icons/PlusIcon'
 import { Container } from '../../layout/Grid'
@@ -31,33 +30,26 @@ type RecipeViewComponent = Component<{
 
 /**
  * Shows a dialog to create/update a recipe
- * @todo Make possible to edit an existing reciipe
  */
 export const RecipeView: RecipeViewComponent = props => {
   const eventBus = useEventBus()
-  const params = useParams<{ id?: string }>()
+  const params = useParams<{ rid?: string }>()
   const user = useProfile()
   const go = useRouteData<RecipeViewNavigation>()
   const t = useT()
-  const [recipeName, setRecipeName] = createSignal<string>('')
-  const [recipeDescription, setRecipeDescripton] = createSignal<string>('')
+  const [fields, setFields] = createSignal<
+  { name: string, description: string } | undefined
+  >()
   const isReadonly = createMemo<boolean>(() => {
-    return (!!params.id && !!props.withTarget)
+    return (!!params.rid && !!props.withTarget)
+  })
+  const isToEdit = createMemo<boolean>(() => {
+    return (!!params.rid && !props.withTarget)
   })
   const [targetRecipe] = createResource<DataModel.Recipe | undefined, string>(
-    params?.id, fetchRecipe
+    params?.rid, fetchRecipe
   )
   const [products, setProducts] = createSignal<DataModel.Recipe['products']>([])
-
-  function handleRecipeNameChange(e: InputChangeEvent) {
-    setRecipeName(e.target.value)
-  }
-
-  function handleRecipeDescriptionChange(
-    e: InputChangeEvent<HTMLTextAreaElement>
-  ) {
-    setRecipeDescripton(e.target.value)
-  }
 
   function mergeProduct(
     prev: ListItem<ReturnType<typeof products>>,
@@ -97,8 +89,8 @@ export const RecipeView: RecipeViewComponent = props => {
   }
 
   function fetchRecipe() {
-    if (params.id) {
-      return getRecipe(+params.id)
+    if (params.rid) {
+      return getRecipe(+params.rid)
     }
 
     return Promise.resolve(undefined)
@@ -113,6 +105,7 @@ export const RecipeView: RecipeViewComponent = props => {
 
     setRecipe({
       ...values,
+      id: params.rid ? +params.rid : undefined,
       userId: user.id,
       products: products()
     })
@@ -126,8 +119,10 @@ export const RecipeView: RecipeViewComponent = props => {
     const recipe = targetRecipe()
     if (recipe) {
       batch(() => {
-        setRecipeName(recipe.name)
-        setRecipeDescripton(recipe.description ?? '')
+        setFields({
+          name: recipe.name,
+          description: recipe.description ?? ''
+        })
         setProducts(recipe.products)
       })
     }
@@ -140,16 +135,23 @@ export const RecipeView: RecipeViewComponent = props => {
 
   return (
     <>
-      <Form autocomplete="off" onSubmit={handleSubmit}>
+      <Form autocomplete="off" defaults={fields()} onSubmit={handleSubmit}>
         <Dialog
           class={styles.wrapper}
           onClose={go.quit}
           onBack={go.back}
-          header={<h2>{t('dialog.recipe.add')}</h2>}
+          header={
+            <h2>{t(`dialog.recipe.${isToEdit() ? 'change' : 'add'}`)}</h2>
+          }
           footer={
             <>
               <ButtonPanel>
-                <Button type="button" disabled={false} color="secondary" onClick={go.back}>
+                <Button
+                  type="button"
+                  disabled={false}
+                  color="secondary"
+                  onClick={go.back}
+                >
                   {t('button.back')}
                 </Button>
                 <Button
@@ -159,7 +161,11 @@ export const RecipeView: RecipeViewComponent = props => {
                   loading={false}
                   type="submit"
                 >
-                  {t(`button.${props.withTarget ? 'save_add' : 'add'}`)}
+                  {t(`button.${
+                    isToEdit()
+                      ? 'change'
+                      : props.withTarget ? 'save_add' : 'add'}`)
+                  }
                 </Button>
                 <Button type="button" color="primary" onClick={go.toProducts}>
                   <PlusIcon />
@@ -171,22 +177,20 @@ export const RecipeView: RecipeViewComponent = props => {
           <Container>
             <TextInput
               readOnly={isReadonly()}
+              required
               name="name"
               class="m-mb-2"
               type="text"
               icon="forkAndKnife"
               placeholder={t('recipe.name')}
-              value={recipeName()}
-              onInput={handleRecipeNameChange}
             />
 
             <Textarea
               readOnly={isReadonly()}
+              required
               name="description"
               class="m-mb-2"
               placeholder={t('recipe.description')}
-              value={recipeDescription()}
-              onInput={handleRecipeDescriptionChange}
             />
 
             <For each={products()}>

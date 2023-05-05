@@ -1,8 +1,8 @@
 import { Component, createSignal } from 'solid-js'
 import { setUserGoals, setUserInfo } from '../../../api'
-import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
+import { createNavigator } from '../../../hooks/createNavigator'
 import { useT } from '../../../i18n'
-import { route } from '../../../routes/constants'
+import { endpoint } from '../../../routes/constants'
 import { useProfile, useStore } from '../../../store'
 import { Container } from '../../layout/Grid'
 import { Button } from '../../ui/Button'
@@ -22,10 +22,10 @@ export const GoalsView: Component = () => {
   const [isLoading, setIsLoading] = createSignal<boolean>(false)
   const t = useT()
   const user = useProfile()
-  const rewind = createRewindNavigator()
+  const navigate = createNavigator()
 
   function closeDialog() {
-    rewind(route.HOME, -1)
+    navigate(endpoint.HOME, -1)
   }
 
   function saveGoals(

@@ -101,7 +101,7 @@ export function isDishRecipe(
  * @returns {Object} Nutrition values
  */
 export function calculateProductNutrition(
-  product: WithOptional<DataModel.Product, 'userId' | 'id'>,
+  product: WithOptional<DataModel.BasicProduct, 'id'>,
   mass: DataModel.Mass
 ): DataModel.Nutrition {
   const result: DataModel.Nutrition = {
@@ -126,7 +126,7 @@ export function calculateProductNutrition(
  * @returns
  */
 export function calculateRecipeNutrition(
-  recipe: WithOptional<DataModel.Recipe, 'userId' | 'id'>,
+  recipe: WithOptional<DataModel.BasicRecipe, 'id'>,
   portion = 1
 ): DataModel.Nutrition {
   const result: DataModel.Nutrition = {

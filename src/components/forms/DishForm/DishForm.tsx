@@ -1,10 +1,24 @@
 import classNames from 'classnames'
-import { Match, Switch, Component, createSignal, Show, createMemo } from 'solid-js'
+import {
+  Match,
+  Switch,
+  Component,
+  createSignal,
+  Show,
+  createMemo,
+  onMount,
+  batch
+} from 'solid-js'
 import { emoji } from '../../../constants/emoji'
 import { useT } from '../../../i18n'
 import { InputChangeEvent } from '../../../types/inputEvents'
-import { calculateProductNutrition, calculateRecipeNutrition, isRecipe } from '../../../utils/data'
+import {
+  calculateProductNutrition,
+  calculateRecipeNutrition,
+  isRecipe
+} from '../../../utils/data'
 import { DishNutrition } from '../../informers/DishNutrition'
+import { useForm } from '../../ui/Form'
 import { TextInput } from '../../ui/TextInput'
 import styles from './styles.sass'
 
@@ -12,7 +26,7 @@ export interface DishFormValues { amount: number }
 
 type DishFormComponent = Component<{
   type: DataModel.DishType
-  target?: DataModel.Product | DataModel.Recipe
+  target?: DataModel.BasicProduct | DataModel.BasicRecipe
 }>
 
 /**
@@ -21,6 +35,7 @@ type DishFormComponent = Component<{
  */
 export const DishForm: DishFormComponent = props => {
   const t = useT()
+  const { fields } = useForm<DishFormValues>()
   const [mass, setMass] = createSignal<number>(100)
   const [portion, setPortion] = createSignal<number>(1)
   const dishNutrition = createMemo<DataModel.Nutrition | undefined >(() => {
@@ -30,8 +45,11 @@ export const DishForm: DishFormComponent = props => {
     if (isRecipe(target)) {
       return calculateRecipeNutrition(target, portion())
     }
-    return calculateProductNutrition(target, mass() ?? 0)
 
+    return calculateProductNutrition(
+      target as DataModel.BasicProduct,
+      mass() ?? 0
+    )
   })
 
   const dishBasicNutrition = createMemo<DataModel.Nutrition | undefined >(() => {
@@ -42,17 +60,27 @@ export const DishForm: DishFormComponent = props => {
       return calculateRecipeNutrition(target, 1)
     }
 
-    return calculateProductNutrition(target, 100)
+    return calculateProductNutrition(target as DataModel.BasicProduct, 100)
 
   })
 
   function handleMassInput(e: InputChangeEvent) {
-    setMass(+e.currentTarget.value)
+    setMass(+e.target.value)
   }
 
   function handlePortionInput(e: InputChangeEvent) {
-    setPortion(+e.currentTarget.value)
+    setPortion(+e.target.value)
   }
+
+  onMount (() => {
+    const amount = fields.amount?.value
+    if (typeof amount !== 'undefined') {
+      batch(() => {
+        setMass(amount)
+        setPortion(amount)
+      })
+    }
+  })
 
   return (
     <>

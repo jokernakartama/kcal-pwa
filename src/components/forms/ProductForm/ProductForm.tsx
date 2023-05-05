@@ -5,13 +5,15 @@ import { TextInput } from '../../ui/TextInput'
 
 export type ProductFormValues = Omit<DataModel.Product, 'id' | 'userId'>
 
-type ProductFormComponent = Component
+type ProductFormComponent = Component<{
+  isReadonly?: boolean
+}>
 
 /**
  * Doesn't render a <Form />
  * Renders product form fields.
  */
-export const ProductForm: ProductFormComponent = () => {
+export const ProductForm: ProductFormComponent = props => {
   const t = useT()
 
   return (
@@ -19,6 +21,7 @@ export const ProductForm: ProductFormComponent = () => {
       <Row>
         <Col desktop="8" class="m-mb-2">
           <TextInput
+            readOnly={props.isReadonly}
             required
             type="text"
             icon="forkAndKnife"
@@ -29,6 +32,7 @@ export const ProductForm: ProductFormComponent = () => {
         </Col>
         <Col desktop="4" class="m-mb-2">
           <TextInput
+            readOnly={props.isReadonly}
             required
             type="number"
             icon="highVoltage"
@@ -39,6 +43,8 @@ export const ProductForm: ProductFormComponent = () => {
         </Col>
         <Col desktop="4" class="m-mb-2">
           <TextInput
+            readOnly={props.isReadonly}
+            required
             type="number"
             icon="poultryLeg"
             placeholder={`${t('nutrients.proteins')}, ${t('unit.gram')}`}
@@ -48,6 +54,7 @@ export const ProductForm: ProductFormComponent = () => {
         </Col>
         <Col desktop="4" class="m-mb-2">
           <TextInput
+            readOnly={props.isReadonly}
             required
             type="number"
             icon="avocado"
@@ -58,6 +65,8 @@ export const ProductForm: ProductFormComponent = () => {
         </Col>
         <Col desktop="4" class="m-mb-2">
           <TextInput
+            readOnly={props.isReadonly}
+            required
             type="number"
             icon="cookedRice"
             placeholder={`${t('nutrients.carbs')}, ${t('unit.gram')}`}
