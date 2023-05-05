@@ -70,7 +70,8 @@
     "search": "Search",
     "add": "Add",
     "save_add": "Save and add",
-    "save_as_recipe": "Save as a recipe"
+    "save_as_recipe": "Save as a recipe",
+    "change": "Change"
   },
   "label": {
     "and_more": "and {{count}} more"
@@ -85,6 +86,8 @@
       "add": "Add the dish",
       "add_product": "Add this product",
       "add_recipe": "Add this dish",
+      "change_product": "Change the mass",
+      "change_recipe": "Change the portion",
       "select": {
         "product": "Select a product",
         "recipe": "Select a recipe"
@@ -115,9 +118,11 @@
     }
   },
   "products": {
+    "products": "Products",
     "empty": "No products found"
   },
   "recipes": {
+    "recipes": "Recipes",
     "empty": "No recipes found"
   },
   "meals": {

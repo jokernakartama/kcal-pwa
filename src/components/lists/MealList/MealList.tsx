@@ -1,15 +1,15 @@
-import { useNavigate } from '@solidjs/router'
 import classNames from 'classnames'
-import { inject } from 'regexparam'
 import { createMemo, createSelector, For, Show } from 'solid-js'
 import { produce } from 'solid-js/store'
 import { removeMeal } from '../../../api'
 import { emoji } from '../../../constants/emoji'
+import { createNavigator } from '../../../hooks/createNavigator'
 import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
 import { useStore } from '../../../store'
 import { calculateMealNutrition } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
+import { injectParams } from '../../../utils/routing'
 import { timeToEmoji } from '../../../utils/timeToEmoji'
 import { ListItem } from '../ListItem'
 import styles from './styles.sass'
@@ -19,7 +19,7 @@ import styles from './styles.sass'
  */
 export const MealList = () => {
   const t = useT()
-  const navigate = useNavigate()
+  const navigate = createNavigator()
   const [store, setStore] = useStore()
   const isRemoveable = createSelector(() => normalizeDate(new Date()))
   const mealNutrition = createMemo<Array<DataModel.Meal & DataModel.Nutrition>>(
@@ -33,11 +33,12 @@ export const MealList = () => {
     }
   )
 
-  function goToMeal(id: DataModel.Meal['id']) {
-    const pathname = inject(
+  function goToMeal(mid: DataModel.Meal['id']) {
+    const pathname = injectParams(
       route.MEAL,
-      { id }
+      { mid }
     )
+
     navigate(pathname)
   }
 

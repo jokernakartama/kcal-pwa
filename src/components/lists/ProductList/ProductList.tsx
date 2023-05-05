@@ -1,8 +1,9 @@
-import { JSX, Component, For, splitProps, createSignal, createEffect, on, createMemo } from 'solid-js'
+import { JSX, Component, For, splitProps, createSignal, createEffect, on, createMemo, onMount } from 'solid-js'
 import { getProducts, removeProduct } from '../../../api'
 import { useT } from '../../../i18n'
 import { useProfile } from '../../../store'
 import { PaginationParams, SortingDirection } from '../../../types/pagination'
+import { useEventBus } from '../../providers/EventBus'
 import { PageScroll } from '../../ui/PageScroll/PageScroll'
 import { ProductListItem } from './ProductListItem'
 
@@ -21,6 +22,7 @@ JSX.IntrinsicElements['div'] & {
  * Renders scrollable paginated products list
  */
 export const ProductList: ProductListComponent = props => {
+  const eventBus = useEventBus()
   const t = useT()
   const user = useProfile()
   const [local, rest] = splitProps(props, [
@@ -56,9 +58,19 @@ export const ProductList: ProductListComponent = props => {
     }
   }
 
+  function updateProducts() {
+    // This action will update the list because of internal mechanism
+    // of `PageScroll`
+    setProducts([])
+  }
+
   createEffect(on(searchString, () => {
     setProducts(undefined)
   }))
+
+  onMount(() => {
+    eventBus.on('update-products', updateProducts)
+  })
 
   return (
     <PageScroll<DataModel.Product>

@@ -1,9 +1,10 @@
 import classNames from 'classnames'
 import { Component, JSX, Show, splitProps } from 'solid-js'
 import { emoji } from '../../../constants/emoji'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import { CrossIcon } from '../../icons/CrossIcon'
 import styles from './styles.sass'
-import { TextInputChangeEvent, TextInputTypeValue } from './types'
+import { TextInputTypeValue } from './types'
 
 type TextInputComponent = Component<
 JSX.IntrinsicElements['input'] & {
@@ -45,7 +46,7 @@ export const TextInput: TextInputComponent = props => {
 
         inputElement.dispatchEvent(evt)
 
-        props.onInput(evt as TextInputChangeEvent)
+        props.onInput(evt as InputChangeEvent)
       }
     }
   }

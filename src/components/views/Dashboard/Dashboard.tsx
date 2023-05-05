@@ -1,4 +1,3 @@
-import { useNavigate } from '@solidjs/router'
 import {
   Component,
   createEffect,
@@ -7,9 +6,11 @@ import {
   on
 } from 'solid-js'
 import { getJournal, getMeals } from '../../../api'
+import { createNavigator } from '../../../hooks/createNavigator'
 import { useT } from '../../../i18n'
 import { route } from '../../../routes/constants'
 import { useStore } from '../../../store'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import { WithOptional } from '../../../types/utils'
 import { calculateMealNutrition } from '../../../utils/data'
 import { normalizeDate } from '../../../utils/format'
@@ -31,7 +32,7 @@ export const Dashboard: DashboardComponent = () => {
   const t = useT()
   const [store, setStore] = useStore()
   const [date, setDate] = createSignal(normalizeDate(new Date()))
-  const navigate = useNavigate()
+  const navigate = createNavigator()
 
   const defaultJournalRecord = createMemo<
   WithOptional<DataModel.JournalRecord, 'id' | 'userId'>
@@ -91,6 +92,11 @@ export const Dashboard: DashboardComponent = () => {
     navigate(route.GOALS)
   }
 
+  function goToList(e: InputChangeEvent<HTMLSelectElement>) {
+    navigate(e.currentTarget.value)
+    e.currentTarget.value = ''
+  }
+
   createEffect(on(date, () => {
     Promise.resolve()
       .then(() => {
@@ -125,14 +131,23 @@ export const Dashboard: DashboardComponent = () => {
       </Container>
 
       <ButtonPanel>
-        {/* <Button
+        <Button
           class={styles['options-button']}
           outline
           color="primary"
           type="button"
         >
           ...
-        </Button> */}
+          <select onInput={goToList}>
+            <option value={route.PRODUCTS}>
+              {t('products.products')}
+            </option>
+            <option value={route.RECIPES}>
+              {t('recipes.recipes')}
+            </option>
+          </select>
+        </Button>
+
         <Button half block color="primary" type="button" onClick={showAddMealDialog}>
           {t('button.yum')}!
         </Button>

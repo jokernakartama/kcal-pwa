@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import { Component, JSX, splitProps } from 'solid-js'
+import { InputChangeEvent } from '../../../types/inputEvents'
 import { addDaysToDate } from '../../../utils/date'
 import { normalizeDate } from '../../../utils/format'
 import { BackIcon } from '../../icons/BackIcon'
 import { ForthIcon } from '../../icons/ForthIcon'
 import { TextInput } from '../../ui/TextInput'
-import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
 
 type CurrentDateComponent = Component<
@@ -19,7 +19,7 @@ export const CurrentDate: CurrentDateComponent = props => {
   const [local, rest] = splitProps(props, ['onChange', 'class', 'value'])
   const maxDate = normalizeDate(new Date())
 
-  function handleChange(e: TextInputChangeEvent) {
+  function handleChange(e: InputChangeEvent) {
     const nextDate = e.target.value
     if (!nextDate) {
       e.target.value = props.value

@@ -1,9 +1,10 @@
-import { useNavigate, useRouteData } from '@solidjs/router'
-import { inject } from 'regexparam'
+import { Outlet, useRouteData } from '@solidjs/router'
 import { Component, createSignal, Match, Show, Switch } from 'solid-js'
-import { createRewindNavigator } from '../../../hooks/createRewindNavigator'
 import { useT } from '../../../i18n'
-import { route } from '../../../routes/constants'
+import { BasicViewNavigation } from '../../../routes/types'
+import { InputChangeEvent } from '../../../types/inputEvents'
+import { isRecipe } from '../../../utils/data'
+import { Container } from '../../layout/Grid'
 import { ProductList } from '../../lists/ProductList'
 import { RecipeList } from '../../lists/RecipeList'
 import { Button } from '../../ui/Button'
@@ -11,126 +12,122 @@ import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import { Dialog } from '../../ui/Dialog'
 import { RadioInput } from '../../ui/RadioInput'
 import { TextInput } from '../../ui/TextInput'
-import { TextInputChangeEvent } from '../../ui/TextInput/types'
 import styles from './styles.sass'
 
-type DishesSearchViewComponent = Component
+export interface DishesSearchViewNavigation extends BasicViewNavigation {
+  toCreate: (type: DataModel.DishType) => void
+  toDish: (id: DataModel.ID, type: DataModel.DishType) => void
+}
+
+type DishesSearchViewComponent = Component<{
+  only?: DataModel.DishType
+}>
 
 /**
  * Displays list of products/recipes
  */
-export const DishesSearchView: DishesSearchViewComponent = () => {
-  const routeData = useRouteData<{ only?: DataModel.DishType } | undefined>()
-  const [tab, setTab] = createSignal<DataModel.DishType>(routeData?.only ?? 'product')
+export const DishesSearchView: DishesSearchViewComponent = props => {
+  const go = useRouteData<DishesSearchViewNavigation>()
+  const [tab, setTab] = createSignal<DataModel.DishType>(
+    props?.only ?? 'product'
+  )
   const [search, setSearch] = createSignal<string>('')
   const t = useT()
-  const navigate = useNavigate()
-  const rewind = createRewindNavigator()
 
-  function changeTab(
-    e: InputEvent & { currentTarget: HTMLInputElement; target: Element }
-  ) {
+  function changeTab(e: InputChangeEvent) {
     setTab(e.currentTarget.value as ReturnType<typeof tab>)
   }
 
   function createDish() {
-    const path = tab() === 'recipe'
-      ? `${route.NEW_RECIPE}?next=${route.ADD_DISH}`
-      : `${route.NEW_PRODUCT}?next=${route.ADD_DISH}`
-
-    navigate(
-      inject(path, { type: tab() }),
-      { replace: false }
-    )
+    go.toCreate(tab())
   }
 
-  function addDish(dish: DataModel.Product | DataModel.Recipe) {
-    navigate(
-      inject(route.ADD_DISH, { type: tab(), id: dish.id }),
-      { replace: false }
-    )
+  function changeDishAmount(dish: DataModel.Product | DataModel.Recipe) {
+    const type: DataModel.DishType = isRecipe(dish) ? 'recipe' : 'product'
+    go.toDish(dish.id, type)
   }
 
-  function goBack() {
-    rewind(route.NEW_MEAL, -1)
-  }
-
-  function closeDialog() {
-    rewind(route.HOME, -2)
-  }
-
-  function handleSearch(e: TextInputChangeEvent) {
+  function handleSearch(e: InputChangeEvent) {
     const searchString = e.target.value
     setSearch(searchString)
   }
 
   return (
-    <Dialog
-      class={styles.wrapper}
-      onClose={closeDialog}
-      onBack={goBack}
-      header={<h2>{t(`dialog.dish.select.${tab()}`)}</h2>}
-      footer={
-        <>
-          <ButtonPanel justify="center" class={styles.inputs}>
-            <TextInput
-              clearable
-              autofocus
-              icon="magnifyingGlass"
-              class={styles.search}
-              type="search"
-              placeholder={t('button.search')}
-              onInput={handleSearch}
-            />
+    <>
+      <Dialog
+        class={styles.wrapper}
+        onClose={go.quit}
+        onBack={go.back}
+        header={<h2>{t(`dialog.dish.select.${tab()}`)}</h2>}
+        footer={
+          <>
+            <ButtonPanel justify="center" class={styles.inputs}>
+              <TextInput
+                clearable
+                autofocus
+                icon="magnifyingGlass"
+                class={styles.search}
+                type="search"
+                placeholder={t('button.search')}
+                onInput={handleSearch}
+              />
 
-            <Show when={!routeData?.only}>
-              <div class={styles['radio-wrapper']}>
-                <RadioInput
-                  class={styles.radio}
-                  value={tab()}
-                  options={[
-                    { value: 'product', label: t('dialog.dish.products') },
-                    { value: 'recipe', label: t('dialog.dish.recipes') },
-                  ]}
-                  onChange={changeTab}
-                />
-              </div>
-            </Show>
-          </ButtonPanel>
+              <Show when={!props?.only}>
+                <div class={styles['radio-wrapper']}>
+                  <RadioInput
+                    class={styles.radio}
+                    value={tab()}
+                    options={[
+                      { value: 'product', label: t('dialog.dish.products') },
+                      { value: 'recipe', label: t('dialog.dish.recipes') },
+                    ]}
+                    onChange={changeTab}
+                  />
+                </div>
+              </Show>
+            </ButtonPanel>
 
-          <ButtonPanel justify={tab() === 'recipe' ? 'start' : 'end'}>
-            <Button color="secondary" onClick={goBack}>
-              {t('button.back')}
-            </Button>
+            <ButtonPanel justify={tab() === 'recipe' ? 'start' : 'end'}>
+              <Button type="button" color="secondary" onClick={go.back}>
+                {t('button.back')}
+              </Button>
 
-            <Show when={tab() === 'product'}>
-              <Button half block color="accent" type="button" onClick={createDish}>
+              <Button
+                half block
+                color="accent"
+                type="button"
+                onClick={createDish}
+              >
                 {t(`dialog.${tab()}.add`)}
               </Button>
-            </Show>
-          </ButtonPanel>
-        </>
-      }
-    >
+            </ButtonPanel>
+          </>
+        }
+      >
 
-      <Switch>
-        <Match when={tab() === 'product'}>
-          <ProductList
-            class={styles.list}
-            search={search()}
-            onProductClick={addDish}
-          />
-        </Match>
+        <Container class={styles['list-wrapper']}>
+          <Switch>
+            <Match when={tab() === 'product'}>
+              <ProductList
+                class={styles.list}
+                search={search()}
+                onProductClick={changeDishAmount}
+              />
+            </Match>
 
-        <Match when={tab() === 'recipe'}>
-          <RecipeList
-            detailed
-            class={styles.list}
-            search={search()}
-            onRecipeClick={addDish}
-          />
-        </Match>
-      </Switch>
-    </Dialog>
+            <Match when={tab() === 'recipe'}>
+              <RecipeList
+                detailed
+                class={styles.list}
+                search={search()}
+                onRecipeClick={changeDishAmount}
+              />
+            </Match>
+          </Switch>
+        </Container>
+      </Dialog>
+
+      <Outlet />
+    </>
   )
 }
