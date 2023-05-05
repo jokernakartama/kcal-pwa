@@ -1,4 +1,5 @@
 import { RouteDefinition } from '@solidjs/router'
+import { useEventBus } from '../../components/providers/EventBus'
 import { DishesSearchView, DishesSearchViewNavigation } from '../../components/views/DishesSearchView'
 import { DishView, DishViewNavigation } from '../../components/views/DishView'
 import { ProductView, ProductViewNavigation } from '../../components/views/ProductView'
@@ -37,6 +38,7 @@ export const recipesPath: RouteDefinition = {
       data: (
         { location: { pathname }, params: { rid } }
       ): RecipeViewNavigation => {
+        const eventBus = useEventBus()
         const navigate = createNavigator()
         const currentPath = rid
           ? injectParams(route.RECIPE, { rid })
@@ -56,7 +58,10 @@ export const recipesPath: RouteDefinition = {
             )
           },
           // Trigger update somehow
-          toTarget: toList
+          toTarget: () => {
+            toList()
+            eventBus.emit('update-recipes', null)
+          }
         }
 
         return navigation

@@ -1,4 +1,5 @@
 import { RouteDefinition } from '@solidjs/router'
+import { useEventBus } from '../../components/providers/EventBus'
 import { DishesSearchView, DishesSearchViewNavigation } from '../../components/views/DishesSearchView'
 import { ProductView, ProductViewNavigation } from '../../components/views/ProductView'
 import { createNavigator } from '../../hooks/createNavigator'
@@ -34,6 +35,7 @@ export const productsPath: RouteDefinition = {
       data: (
         { location: { pathname }, params: { pid } }
       ): ProductViewNavigation => {
+        const eventBus = useEventBus()
         const navigate = createNavigator()
         const currentPath = pid
           ? injectParams(route.PRODUCT, { pid })
@@ -44,7 +46,10 @@ export const productsPath: RouteDefinition = {
         const navigation: ProductViewNavigation = {
           back: toList,
           quit: () => navigate(endpoint.HOME, -2),
-          toTarget: toList
+          toTarget: () => {
+            toList()
+            eventBus.emit('update-products', null)
+          }
         }
 
         return navigation

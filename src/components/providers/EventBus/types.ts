@@ -7,4 +7,6 @@ export interface EventBusEvent {
   'recipe-product-add': ListItem<DataModel.Recipe['products']>
   'recipe-product-change': ListItem<DataModel.Recipe['products']>
   'recipe-product-delete': ListItem<DataModel.Recipe['products']>
+  'update-products': null
+  'update-recipes': null
 }

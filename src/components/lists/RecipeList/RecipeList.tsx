@@ -6,12 +6,14 @@ import {
   createSignal,
   createEffect,
   on,
-  createMemo
+  createMemo,
+  onMount
 } from 'solid-js'
 import { getRecipes, removeRecipe } from '../../../api'
 import { useT } from '../../../i18n'
 import { useProfile } from '../../../store'
 import { PaginationParams, SortingDirection } from '../../../types/pagination'
+import { useEventBus } from '../../providers/EventBus'
 import { PageScroll } from '../../ui/PageScroll/PageScroll'
 import { RecipeListItem } from './RecipeListItem'
 
@@ -31,6 +33,7 @@ JSX.IntrinsicElements['div'] & {
  * Renders scrollable paginated recipes list
  */
 export const RecipeList: RecipeListComponent = props => {
+  const eventBus = useEventBus()
   const t = useT()
   const user = useProfile()
   const [local, rest] = splitProps(props, [
@@ -66,9 +69,19 @@ export const RecipeList: RecipeListComponent = props => {
     }
   }
 
+  function updateRecipes() {
+    // This action will update the list because of internal mechanism
+    // of `PageScroll`
+    setRecipes([])
+  }
+
   createEffect(on(searchString, () => {
     setRecipes(undefined)
   }))
+
+  onMount(() => {
+    eventBus.on('update-recipes', updateRecipes)
+  })
 
   return (
     <PageScroll<DataModel.Recipe>
