@@ -51,7 +51,8 @@ export const ProductListItem: ProductListItemComponent = props => {
             {t('nutrients.P')}:
           </div>
           <div class={styles['nutrient-value']}>
-            {Math.round(local.product.proteins)} {' '}
+            {Math.round(local.product.proteins * (local.mass ?? 100) / 100)}
+            {' '}
             <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
         </div>
@@ -61,7 +62,8 @@ export const ProductListItem: ProductListItemComponent = props => {
             {t('nutrients.F')}:
           </div>
           <div class={styles['nutrient-value']}>
-            {Math.round(local.product.fats)} {' '}
+            {Math.round(local.product.fats * (local.mass ?? 100) / 100)}
+            {' '}
             <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
         </div>
@@ -71,7 +73,8 @@ export const ProductListItem: ProductListItemComponent = props => {
             {t('nutrients.C')}:
           </div>
           <div class={styles['nutrient-value']}>
-            {Math.round(local.product.carbs)} {' '}
+            {Math.round(local.product.carbs * (local.mass ?? 100) / 100)}
+            {' '}
             <span class={styles.unit}>{t('unit.gram')}</span>
           </div>
         </div>
@@ -81,7 +84,8 @@ export const ProductListItem: ProductListItemComponent = props => {
             {emoji.highVoltage.html}
           </div>
           <div class={styles['nutrient-value']}>
-            {Math.round(local.product.energy)} {' '}
+            {Math.round(local.product.energy * (local.mass ?? 100) / 100)}
+            {' '}
             <span class={styles.unit}>{t('unit.kcal')}</span>
           </div>
         </div>
