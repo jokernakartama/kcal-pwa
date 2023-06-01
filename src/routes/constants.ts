@@ -15,7 +15,7 @@ export const route = {
 }
 
 export const endpoint = {
-  HOME: route.HOME,
+  HOME: ['', route.HOME].join('/'),
   PROFILE: [route.HOME, route.PROFILE].join('/'),
   GOALS: [route.HOME, route.GOALS].join('/'),
   MEAL: [route.HOME, route.MEAL].join('/'),

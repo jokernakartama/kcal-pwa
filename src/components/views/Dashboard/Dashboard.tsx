@@ -3,7 +3,8 @@ import {
   createEffect,
   createMemo,
   createSignal,
-  on
+  on,
+  onMount
 } from 'solid-js'
 import { getJournal, getMeals } from '../../../api'
 import { createNavigator } from '../../../hooks/createNavigator'
@@ -33,6 +34,7 @@ export const Dashboard: DashboardComponent = () => {
   const [store, setStore] = useStore()
   const [date, setDate] = createSignal(normalizeDate(new Date()))
   const navigate = createNavigator()
+  let selectElement: HTMLSelectElement
 
   const defaultJournalRecord = createMemo<
   WithOptional<DataModel.JournalRecord, 'id' | 'userId'>
@@ -105,6 +107,12 @@ export const Dashboard: DashboardComponent = () => {
       .catch(console.error)
   }))
 
+  onMount(() => {
+    if (selectElement) {
+      selectElement.value = ''
+    }
+  })
+
   return (
     <>
       <Container class={styles.informers}>
@@ -138,7 +146,7 @@ export const Dashboard: DashboardComponent = () => {
           type="button"
         >
           ...
-          <select onInput={goToList}>
+          <select ref={el => { selectElement = el }} onInput={goToList}>
             <option value={route.PRODUCTS}>
               {t('products.products')}
             </option>
