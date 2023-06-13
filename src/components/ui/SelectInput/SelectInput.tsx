@@ -39,7 +39,10 @@ export const SelectInput: SelectInputComponent = props => {
   const selected = createMemo(() => local.value)
   const isSelected = createSelector(selected)
   const options = createMemo(
-    () => local.options.map(o => ({ ...o, value: JSON.stringify(o.value) }))
+    () => local.options.map(o => ({
+      ...o,
+      value: local.type !== 'text' ? JSON.stringify(o.value) : o.value
+    }))
   )
 
   return (
