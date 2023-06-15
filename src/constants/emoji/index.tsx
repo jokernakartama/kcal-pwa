@@ -105,6 +105,30 @@ export const emoji = {
     string: '\uD83D\uDCDD',
     html: <>&#x1F4DD;</>
   },
+  hatchingChick: {
+    string: '\uD83D\uDC23',
+    html: <>&#x1F423;</>
+  },
+  friedEgg: {
+    string: '\uD83C\uDF73',
+    html: <>&#x1F373;</>
+  },
+  sandwich: {
+    string: '\uD83E\uDD6A',
+    html: <>&#x1F96A;</>
+  },
+  bento: {
+    string: '\uD83C\uDF71',
+    html: <>&#x1F371;</>
+  },
+  panOfFood: {
+    string: '\uD83E\uDD58',
+    html: <>&#x1F958;</>
+  },
+  pretzel: {
+    string: '\uD83E\uDD68',
+    html: <>&#x1F968;</>
+  },
 
   ...clockEmoji
 }

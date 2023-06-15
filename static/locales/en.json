@@ -24,6 +24,13 @@
     "header": "Your goals",
     "energy": "Energy (kcal)"
   },
+  "mealLabel": {
+    "breakfast": "Breakfast",
+    "brunch": "Brunch",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack"
+  },
   "nutrients": {
     "mass": "Mass",
     "portion": "Portion",
@@ -79,7 +86,9 @@
   "dialog": {
     "meal": {
       "add": "Add a meal",
-      "change": "Change the meal"
+      "change": "Change the meal",
+      "time": "Meal time",
+      "label": "Label"
     },
     "dish": {
       "choose": "Choose a dish",

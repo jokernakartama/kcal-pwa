@@ -2,6 +2,7 @@ declare namespace DataModel {
   export type ID = number
   export type Mass = number
   export type DishType = 'product' | 'recipe'
+  export type MealLabel = 'breakfast' | 'brunch' | 'lunch' | 'dinner' | 'snack'
   /**
    * Base type for nutrition
    */
@@ -94,6 +95,8 @@ declare namespace DataModel {
     id: ID
     /** Bound user's id */
     userId: UserModel.User['id']
+    /** Related meal time */
+    label: MealLabel
     /** Bound journal record */
     recordId: DataModel.JournalRecord['id']
     /** Datetime stamp */

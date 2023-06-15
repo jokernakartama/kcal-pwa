@@ -203,7 +203,7 @@ export function getRecipes(
  * @returns {Promise<DataModel.Meal>}
  */
 export function addMeal(
-  meal: Omit<DataModel.Meal, 'id' | 'recordId' | 'time'>
+  meal: Omit<DataModel.Meal, 'id' | 'recordId'>
 ): Promise<DataModel.Meal> {
   return DBWorkerClient
     .dispatch('PUT meals/{meal}', meal)
