@@ -217,7 +217,7 @@ export const MealView: MealViewComponent = () => {
               }
             >
               <ButtonPanel>
-                <Button type="button" color="secondary" onClick={go.back}>
+                <Button color="secondary" onClick={go.back}>
                   {t('button.cancel')}
                 </Button>
 
@@ -231,7 +231,7 @@ export const MealView: MealViewComponent = () => {
                   {t('button.save')}
                 </Button>
 
-                <Button type="button" color="primary" onClick={go.toDishes}>
+                <Button color="primary" onClick={go.toDishes}>
                   <PlusIcon />
                 </Button>
               </ButtonPanel>

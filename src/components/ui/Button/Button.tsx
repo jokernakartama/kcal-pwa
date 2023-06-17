@@ -39,6 +39,7 @@ export const Button: ButtonComponent = props => {
         }
       )}
       disabled={rest.disabled ?? local.loading}
+      type={rest.type || 'button'}
       {...rest}
     >
       {local.children}

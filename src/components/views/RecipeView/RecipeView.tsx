@@ -147,7 +147,6 @@ export const RecipeView: RecipeViewComponent = props => {
             <>
               <ButtonPanel>
                 <Button
-                  type="button"
                   disabled={false}
                   color="secondary"
                   onClick={go.back}
@@ -167,7 +166,7 @@ export const RecipeView: RecipeViewComponent = props => {
                       : props.withTarget ? 'save_add' : 'add'}`)
                   }
                 </Button>
-                <Button type="button" color="primary" onClick={go.toProducts}>
+                <Button color="primary" onClick={go.toProducts}>
                   <PlusIcon />
                 </Button>
               </ButtonPanel>

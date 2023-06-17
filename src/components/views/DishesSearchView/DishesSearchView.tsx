@@ -88,16 +88,11 @@ export const DishesSearchView: DishesSearchViewComponent = props => {
             </ButtonPanel>
 
             <ButtonPanel justify={tab() === 'recipe' ? 'start' : 'end'}>
-              <Button type="button" color="secondary" onClick={go.back}>
+              <Button color="secondary" onClick={go.back}>
                 {t('button.back')}
               </Button>
 
-              <Button
-                half block
-                color="accent"
-                type="button"
-                onClick={createDish}
-              >
+              <Button half block color="accent" onClick={createDish}>
                 {t(`dialog.${tab()}.add`)}
               </Button>
             </ButtonPanel>

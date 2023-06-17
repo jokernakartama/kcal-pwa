@@ -143,7 +143,6 @@ export const Dashboard: DashboardComponent = () => {
           class={styles['options-button']}
           outline
           color="primary"
-          type="button"
         >
           ...
           <select ref={el => { selectElement = el }} onInput={goToList}>
@@ -156,7 +155,7 @@ export const Dashboard: DashboardComponent = () => {
           </select>
         </Button>
 
-        <Button half block color="primary" type="button" onClick={showAddMealDialog}>
+        <Button half block color="primary" onClick={showAddMealDialog}>
           {t('button.yum')}!
         </Button>
       </ButtonPanel>
