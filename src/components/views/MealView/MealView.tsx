@@ -15,8 +15,12 @@ import { useT } from '../../../i18n'
 import { BasicViewNavigation } from '../../../routes/types'
 import { useProfile, useStore } from '../../../store'
 import { ListItem } from '../../../types/utils'
-import { isDishProduct, isDishRecipe } from '../../../utils/data'
-import { normalizeDate } from '../../../utils/format'
+import {
+  getMealLabelFromDate,
+  isDishProduct,
+  isDishRecipe
+} from '../../../utils/data'
+import { normalizeDate, normalizeTime } from '../../../utils/format'
 import { PlusIcon } from '../../icons/PlusIcon'
 import { Container } from '../../layout/Grid'
 import { ProductListItem } from '../../lists/ProductList'
@@ -25,7 +29,11 @@ import { useEventBus } from '../../providers/EventBus'
 import { Button } from '../../ui/Button'
 import { ButtonPanel } from '../../ui/ButtonPanel/ButtonPanel'
 import { Dialog } from '../../ui/Dialog'
+import { Form, getFormValues } from '../../ui/Form'
+import { FormSubmitEvent } from '../../ui/Form/types'
+import { MealViewFormFields } from './MealViewFormFields'
 import styles from './styles.sass'
+import { MealViewFormValues } from './types'
 
 export interface MealViewNavigation extends BasicViewNavigation {
   toDishes: () => void
@@ -50,6 +58,17 @@ export const MealView: MealViewComponent = () => {
     }
     return undefined
   })
+  const dialogHeader = createMemo(() => {
+    const mealObject = targetMeal()
+    if (!mealObject) return t('dialog.meal.add')
+
+    const mealLabel = mealObject.label
+      ? mealObject.label
+      : getMealLabelFromDate(mealObject.time)
+
+    return `${normalizeTime(mealObject.time)}, ${
+      t(`mealLabel.${mealLabel}`)}`
+  })
   const [dishes, setDishes] = createSignal<DataModel.Dish[]>(
     targetMeal() ? targetMeal()!.dishes : []
   )
@@ -72,11 +91,13 @@ export const MealView: MealViewComponent = () => {
     )
   }
 
-  function createMeal() {
+  function createMeal(time: Date, label: DataModel.MealLabel) {
     if (!isSaveable()) return
 
     addMeal({
       userId: user.id,
+      time,
+      label,
       dishes: dishes()
     })
       .then((meal) => {
@@ -141,6 +162,18 @@ export const MealView: MealViewComponent = () => {
     go.toDish(dish.target.id, dish.type, amount)
   }
 
+  function handleSubmit(e: FormSubmitEvent) {
+    e.preventDefault()
+
+    const values = getFormValues<MealViewFormValues>(e.currentTarget)
+    const [hours, minutes] = values.time.split(':')
+    const time = new Date()
+    time.setHours(+hours)
+    time.setMinutes(+minutes)
+
+    createMeal(time, values.label)
+  }
+
   onMount(() => {
     eventBus.on('meal-dish-add', addDish)
     eventBus.on('meal-dish-change', updateDish)
@@ -148,26 +181,31 @@ export const MealView: MealViewComponent = () => {
 
   return (
     <>
-      <Dialog
-        class={styles.wrapper}
-        onClose={go.quit}
-        onBack={go.back}
-        header={
-          <h2>{targetMeal()
-            ? `${targetMeal()!.time.toLocaleString()}`
-            : t('dialog.meal.add')}
-          </h2>
-        }
-        footer={
-          <Show
-            when={!targetMeal()}
-            fallback={
-              <ButtonPanel justify={isConvertableToRecipe() ? 'start' : 'start'}>
-                <Button color="secondary" onClick={go.back}>
-                  {t('button.back')}
-                </Button>
+      <Form<MealViewFormValues>
+        autocomplete="off"
+        onSubmit={handleSubmit}
+        defaults={{
+          time: normalizeTime(new Date()),
+          label: getMealLabelFromDate()
+        }}
+      >
+        <Dialog
+          class={styles.wrapper}
+          onClose={go.quit}
+          onBack={go.back}
+          header={
+            <h2>{dialogHeader()}</h2>
+          }
+          footer={
+            <Show
+              when={!targetMeal()}
+              fallback={
+                <ButtonPanel justify={isConvertableToRecipe() ? 'start' : 'start'}>
+                  <Button color="secondary" onClick={go.back}>
+                    {t('button.back')}
+                  </Button>
 
-                {/* <Show when={isConvertableToRecipe()}>
+                  {/* <Show when={isConvertableToRecipe()}>
                   <Button
                     half block
                     outline color="primary"
@@ -175,71 +213,77 @@ export const MealView: MealViewComponent = () => {
                     {t('button.save_as_recipe')}
                   </Button>
                 </Show> */}
+                </ButtonPanel>
+              }
+            >
+              <ButtonPanel>
+                <Button type="button" color="secondary" onClick={go.back}>
+                  {t('button.cancel')}
+                </Button>
+
+                <Button
+                  half block
+                  type="submit"
+                  color="accent"
+                  disabled={!isSaveable()}
+                  // onClick={createMeal}
+                >
+                  {t('button.save')}
+                </Button>
+
+                <Button type="button" color="primary" onClick={go.toDishes}>
+                  <PlusIcon />
+                </Button>
               </ButtonPanel>
-            }
-          >
-            <ButtonPanel>
-              <Button type="button" color="secondary" onClick={go.back}>
-                {t('button.cancel')}
-              </Button>
+            </Show>
+          }
+        >
+          <Container>
+            <Show when={!targetMeal()}>
+              <MealViewFormFields />
+            </Show>
 
-              <Button
-                half block
-                type="button"
-                color="accent"
-                disabled={!isSaveable()}
-                onClick={createMeal}
-              >
-                {t('button.save')}
-              </Button>
+            <For each={dishes()}>
+              {(item, index) => (
+                <Switch>
+                  <Match when={isDishProduct(item)}>
+                    <ProductListItem
+                      caption={item.target.name}
+                      identifier={index()}
+                      mass={(item as DataModel.Dish<DataModel.BasicProduct>).mass}
+                      product={(item as DataModel.Dish<DataModel.BasicProduct>).target}
+                      onClick={
+                        () => changeDishAmount(
+                          item,
+                          (item as DataModel.Dish<DataModel.BasicProduct>).mass
+                        )
+                      }
+                      onRemove={!targetMeal() ? removeDish : undefined}
+                    />
+                  </Match>
+                  <Match when={isDishRecipe(item)}>
+                    <RecipeListItem
+                      detailed
+                      caption={item.target.name}
+                      identifier={index()}
+                      portion={(item as DataModel.Dish<DataModel.BasicRecipe>).portion}
+                      recipe={(item as DataModel.Dish<DataModel.BasicRecipe>).target}
+                      onClick={
+                        () => changeDishAmount(
+                          item,
+                          (item as DataModel.Dish<DataModel.BasicRecipe>).portion
+                        )
+                      }
+                      onRemove={!targetMeal() ? removeDish : undefined}
+                    />
+                  </Match>
+                </Switch>
+              )}
+            </For>
+          </Container>
+        </Dialog>
 
-              <Button type="button" color="primary" onClick={go.toDishes}>
-                <PlusIcon />
-              </Button>
-            </ButtonPanel>
-          </Show>
-        }
-      >
-        <Container>
-          <For each={dishes()}>
-            {(item, index) => (
-              <Switch>
-                <Match when={isDishProduct(item)}>
-                  <ProductListItem
-                    caption={item.target.name}
-                    identifier={index()}
-                    mass={(item as DataModel.Dish<DataModel.BasicProduct>).mass}
-                    product={(item as DataModel.Dish<DataModel.BasicProduct>).target}
-                    onClick={
-                      () => changeDishAmount(
-                        item,
-                        (item as DataModel.Dish<DataModel.BasicProduct>).mass
-                      )
-                    }
-                    onRemove={!targetMeal() ? removeDish : undefined}
-                  />
-                </Match>
-                <Match when={isDishRecipe(item)}>
-                  <RecipeListItem
-                    detailed
-                    caption={item.target.name}
-                    identifier={index()}
-                    portion={(item as DataModel.Dish<DataModel.BasicRecipe>).portion}
-                    recipe={(item as DataModel.Dish<DataModel.BasicRecipe>).target}
-                    onClick={
-                      () => changeDishAmount(
-                        item,
-                        (item as DataModel.Dish<DataModel.BasicRecipe>).portion
-                      )
-                    }
-                    onRemove={!targetMeal() ? removeDish : undefined}
-                  />
-                </Match>
-              </Switch>
-            )}
-          </For>
-        </Container>
-      </Dialog>
+      </Form>
 
       <Outlet />
     </>
