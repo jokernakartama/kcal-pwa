@@ -1,3 +1,5 @@
+import { JSX } from 'solid-js'
+import { emoji } from '../constants/emoji'
 import { WithOptional } from '../types/utils'
 import { getNutrientAmount } from './calculations'
 
@@ -202,4 +204,43 @@ export function cloneDish(dish: DataModel.Dish): DataModel.Dish {
   }
 
   return ({ ...dish, target: { ...dish.target } })
+}
+
+/**
+ * Calculates approximate label
+ * @param {Date} [date]
+ * @returns {DataModel.MealLabel}
+ */
+export function getMealLabelFromDate(date = new Date()): DataModel.MealLabel {
+  const hours = date.getHours()
+
+  if (hours > 4 && hours < 12) {
+    return 'breakfast'
+  }
+
+  if (hours > 11 && hours < 17) {
+    return 'lunch'
+  }
+
+  if (hours > 17 && hours < 23) {
+    return 'dinner'
+  }
+
+  return 'snack'
+}
+
+export function getMealEmojiFromLabel(
+  label: DataModel.MealLabel
+): { string: string; html: JSX.Element } {
+  const mealLabelEmojiMap: Record<
+  DataModel.MealLabel, { string: string; html: JSX.Element }
+  > = {
+    breakfast: emoji.friedEgg,
+    brunch: emoji.sandwich,
+    lunch: emoji.bento,
+    dinner: emoji.panOfFood,
+    snack: emoji.pretzel
+  }
+
+  return mealLabelEmojiMap[label]
 }

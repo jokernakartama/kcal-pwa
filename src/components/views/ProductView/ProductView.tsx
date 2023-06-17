@@ -101,7 +101,7 @@ export const ProductView: ProductViewComponent = props => {
         footer={
           <>
             <ButtonPanel>
-              <Button type="button" disabled={isLoading()} color="secondary" onClick={go.back}>
+              <Button disabled={isLoading()} color="secondary" onClick={go.back}>
                 {t('button.back')}
               </Button>
               <Button

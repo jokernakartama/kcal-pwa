@@ -66,9 +66,15 @@ export const journalActions = {
    * @returns {Promise<(number | undefined)>}
    */
   'PUT meals/{meal}': async (
-    meal: WithOptional<DataModel.Meal, 'id' | 'time' | 'recordId'>
+    meal: WithOptional<DataModel.Meal, 'id' | 'recordId'>
   ) => {
     const time = new Date()
+
+    if (meal.time) {
+      time.setHours(meal.time.getHours())
+      time.setMinutes(meal.time.getMinutes())
+    }
+
     const date = normalizeDate(time)
     const record = await DB.journal
       .where({ userId: meal.userId, date })

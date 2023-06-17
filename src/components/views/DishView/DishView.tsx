@@ -117,7 +117,7 @@ export const DishView: DishViewComponent = props => {
         footer={
           <>
             <ButtonPanel>
-              <Button type="button" color="secondary" onClick={go.back}>
+              <Button color="secondary" onClick={go.back}>
                 {t('button.back')}
               </Button>
               <Button half block disabled={!dish()} type="submit" color="primary">

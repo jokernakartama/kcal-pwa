@@ -4,13 +4,23 @@
   display: block
 
 .item
+  position: relative
   display: flex
   height: 100%
-  gap: (vars.$grid-gutter * 2)
+  gap: (vars.$grid-gutter)
+
+.label
+  font-size: vars.$font-size-16
+  margin-bottom: .5em
+
+  & > b
+    opacity: .7
 
 .clock
+  padding-right: vars.$grid-gutter
   font-size: vars.$font-size-24
   align-self: center
+  text-align: center
 
   .time
     margin-top: .5em

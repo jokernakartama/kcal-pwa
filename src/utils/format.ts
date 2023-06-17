@@ -21,6 +21,18 @@ export function normalizeDate(date: Date) {
 }
 
 /**
+ * Converts a date to HH:mm string
+ * @param {Date} date
+ * @returns {string}
+ */
+export function normalizeTime(date: Date) {
+  const HH = date.getHours()
+  const mm = date.getMinutes()
+
+  return `${HH < 10 ? `0${HH}` : HH}:${mm < 10 ? `0${mm}` : mm}`
+}
+
+/**
  * Converts the number like Number.toFixed but without changing the type
  * @param {number} value
  * @param {number} [fractionDigits] - Number of digits after the decimal point
