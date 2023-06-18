@@ -3,3 +3,15 @@
   height: 100%
   align-items: center
   justify-content: center
+
+  h1
+    animation: swirl .7s ease-in-out infinite
+    font-size:  80px
+    line-height: 1em
+    transform-origin: center .625em
+
+@keyframes swirl
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)

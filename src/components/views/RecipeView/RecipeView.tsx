@@ -196,6 +196,7 @@ export const RecipeView: RecipeViewComponent = props => {
               {(item, index) => (
                 <ProductListItem
                   caption={item.name}
+                  archieved={item.isArchieved}
                   identifier={index()}
                   mass={item.mass}
                   product={item}

@@ -21,8 +21,12 @@ export const recipesActions = {
    * @returns {Promise<number>}
    */
   'PUT recipes/{recipe}': async (recipe: WithOptional<DataModel.Recipe, 'id'>) => {
+    const extended: WithOptional<DBExtended.Recipe, 'id'> = {
+      _productsIds: recipe.products.map(({ id }) => id),
+      ...recipe
+    }
     const id = await DB.recipes
-      .put(recipe as DataModel.Recipe)
+      .put(extended as DBExtended.Recipe)
     const result: DataModel.Recipe = { ...recipe, id }
 
     return result
@@ -102,7 +106,7 @@ export const recipesActions = {
         .delete(recipeId)
 
       await DB.meals
-        .where({ 'dishes.type': 'recipe', 'dishes.target.id': recipeId })
+        .where({ '_dishesTypes': 'recipe', '_dishesTargetIds': recipeId })
         .modify((value, ref) => {
           ref.value = {
             ...value,

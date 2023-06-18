@@ -249,6 +249,7 @@ export const MealView: MealViewComponent = () => {
                   <Match when={isDishProduct(item)}>
                     <ProductListItem
                       caption={item.target.name}
+                      archieved={item.isArchieved}
                       identifier={index()}
                       mass={(item as DataModel.Dish<DataModel.BasicProduct>).mass}
                       product={(item as DataModel.Dish<DataModel.BasicProduct>).target}
@@ -265,6 +266,7 @@ export const MealView: MealViewComponent = () => {
                     <RecipeListItem
                       detailed
                       caption={item.target.name}
+                      archieved={item.isArchieved}
                       identifier={index()}
                       portion={(item as DataModel.Dish<DataModel.BasicRecipe>).portion}
                       recipe={(item as DataModel.Dish<DataModel.BasicRecipe>).target}

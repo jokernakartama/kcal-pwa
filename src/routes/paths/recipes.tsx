@@ -74,7 +74,6 @@ export const recipesPath: RouteDefinition = {
           path: route.DISH,
           component: () => <DishView target="recipe" action="change" />,
           data: ({ location: { pathname }, params }): DishViewNavigation => {
-            console.info(params)
             const navigate = createNavigator()
             const toRecipe = () => navigate(
               substractSegments(
