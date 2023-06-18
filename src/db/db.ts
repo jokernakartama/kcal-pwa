@@ -2,18 +2,6 @@ import Dexie from 'dexie'
 
 export const DB_NAME = 'ma_poop_data'
 
-export const DB_STORES = {
-  users: '++id',
-  info: 'userId',
-  goals: 'userId',
-  journal: '++id, [userId+date]',
-  // Unfortunately, seems like there is no way
-  // to use multy-entry compound index, like "*[dishes.type+dihes.target.id]"
-  meals: '++id, recordId, userId, *dishes.type, *dishes.target.id',
-  recipes: '++id, userId, name, *products.id',
-  products: '++id, userId, name, proteins, fats, carbs, energy'
-}
-
 class AppDB extends Dexie {
   users!: Dexie.Table<UserModel.User, number>
 
@@ -23,15 +11,47 @@ class AppDB extends Dexie {
 
   journal!: Dexie.Table<DataModel.JournalRecord, number>
 
-  meals!: Dexie.Table<DataModel.Meal, number>
+  meals!: Dexie.Table<DBExtended.Meal, number>
 
-  recipes!: Dexie.Table<DataModel.Recipe, number>
+  recipes!: Dexie.Table<DBExtended.Recipe, number>
 
   products!: Dexie.Table<DataModel.Product, number>
 
   constructor() {
     super(DB_NAME)
-    this.version(1).stores(DB_STORES)
+
+    this.version(2).stores({
+      users: '++id',
+      info: 'userId',
+      goals: 'userId',
+      journal: '++id, [userId+date]',
+      meals: '++id, recordId, userId, *_dishesTypes, *_dishesTargetIds',
+      recipes: '++id, userId, name, *_productsIds',
+      products: '++id, userId, name, proteins, fats, carbs, energy'
+    })
+      .upgrade (tx => {
+        return tx.table<DBExtended.Meal, number>('meals')
+          .toCollection().modify(meal => {
+            meal._dishesTargetIds = meal.dishes.map(({ target }) => target.id )
+            meal._dishesTypes = meal.dishes.map(({ type }) => type)
+          })
+      })
+      .upgrade (tx => {
+        return tx.table<DBExtended.Recipe, number>('recipes')
+          .toCollection().modify(recipe => {
+            recipe._productsIds = recipe.products.map(({ id }) => id )
+          })
+      })
+
+    this.version(1).stores({
+      users: '++id',
+      info: 'userId',
+      goals: 'userId',
+      journal: '++id, [userId+date]',
+      meals: '++id, recordId, userId',
+      recipes: '++id, userId, name',
+      products: '++id, userId, name, proteins, fats, carbs, energy'
+    })
   }
 }
 

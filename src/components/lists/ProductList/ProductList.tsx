@@ -1,7 +1,7 @@
 import { JSX, Component, For, splitProps, createSignal, createEffect, on, createMemo, onMount } from 'solid-js'
 import { getProducts, removeProduct } from '../../../api'
 import { useT } from '../../../i18n'
-import { useProfile } from '../../../store'
+import { useProfile, useStore } from '../../../store'
 import { PaginationParams, SortingDirection } from '../../../types/pagination'
 import { useEventBus } from '../../providers/EventBus'
 import { PageScroll } from '../../ui/PageScroll/PageScroll'
@@ -24,6 +24,7 @@ JSX.IntrinsicElements['div'] & {
 export const ProductList: ProductListComponent = props => {
   const eventBus = useEventBus()
   const t = useT()
+  const [, setStore] = useStore()
   const user = useProfile()
   const [local, rest] = splitProps(props, [
     'class', 'products', 'search', 'sort', 'dir', 'onProductClick'
@@ -46,10 +47,31 @@ export const ProductList: ProductListComponent = props => {
     removeProduct(id)
       .then(() => {
         setProducts(v => v!.filter(product => product.id !== id))
+        markProductInStore(id)
       })
       .catch(e => {
         console.error(e)
       })
+  }
+
+  function markProductInStore(id: DataModel.Product['id']) {
+    setStore(
+      'meals',
+      meal => meal.dishes.some(
+        dish => dish.type === 'product' && dish.target.id === id
+      ),
+      'dishes',
+      dishes => dishes.map(dish => {
+        if (dish.type === 'product' && dish.target.id === id) {
+          return {
+            isArchieved: true,
+            ...dish,
+          }
+        }
+
+        return dish
+      })
+    )
   }
 
   function handleProductClick(product: DataModel.Product) {

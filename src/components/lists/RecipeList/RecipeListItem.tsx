@@ -9,6 +9,7 @@ import styles from './styles.sass'
 type RecipeListItemComponent = ListItemComponent<{
   caption: JSX.Element
   recipe: Omit<DataModel.Recipe, 'userId'>
+  archieved?: boolean
   portion?: number
   detailed?: boolean
 }>
@@ -23,6 +24,7 @@ export const RecipeListItem: RecipeListItemComponent = props => {
     'identifier',
     'portion',
     'recipe',
+    'archieved',
     'class',
     'detailed',
     'children',
@@ -44,13 +46,18 @@ export const RecipeListItem: RecipeListItemComponent = props => {
   return (
     <ListItem
       identifier={local.identifier}
-      class={classNames(local.class)}
+      class={classNames(local.class, { [styles.archieved]: local.archieved })}
       onRemove={local.onRemove}
       {...rest}
     >
       <div class={styles.header}>
         <div class={styles.caption}>
-          <div class={styles['caption-text']}>{local.caption}</div>
+          <div class={styles['caption-text']}>
+            {local.caption}
+            <Show when={local.archieved}>
+              {' '}<b>({t('label.archieved')})</b>
+            </Show>
+          </div>
           <Show when={local.portion}>
             <span class={styles.portion}>
                 &times; {local.portion!.toLocaleString()}

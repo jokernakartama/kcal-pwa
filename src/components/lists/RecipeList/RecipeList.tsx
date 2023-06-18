@@ -11,7 +11,7 @@ import {
 } from 'solid-js'
 import { getRecipes, removeRecipe } from '../../../api'
 import { useT } from '../../../i18n'
-import { useProfile } from '../../../store'
+import { useProfile, useStore } from '../../../store'
 import { PaginationParams, SortingDirection } from '../../../types/pagination'
 import { useEventBus } from '../../providers/EventBus'
 import { PageScroll } from '../../ui/PageScroll/PageScroll'
@@ -35,6 +35,7 @@ JSX.IntrinsicElements['div'] & {
 export const RecipeList: RecipeListComponent = props => {
   const eventBus = useEventBus()
   const t = useT()
+  const [, setStore] = useStore()
   const user = useProfile()
   const [local, rest] = splitProps(props, [
     'class', 'recipes', 'search', 'sort', 'dir', 'onRecipeClick'
@@ -57,10 +58,31 @@ export const RecipeList: RecipeListComponent = props => {
     removeRecipe(id)
       .then(() => {
         setRecipes(v => v!.filter(recipe => recipe.id !== id))
+        markRecipeInStore(id)
       })
       .catch(e => {
         console.error(e)
       })
+  }
+
+  function markRecipeInStore(id: DataModel.Recipe['id']) {
+    setStore(
+      'meals',
+      meal => meal.dishes.some(
+        dish => dish.type === 'recipe' && dish.target.id === id
+      ),
+      'dishes',
+      dishes => dishes.map(dish => {
+        if (dish.type === 'recipe' && dish.target.id === id) {
+          return {
+            isArchieved: true,
+            ...dish,
+          }
+        }
+
+        return dish
+      })
+    )
   }
 
   function handleRecipeClick(recipe: DataModel.Recipe) {

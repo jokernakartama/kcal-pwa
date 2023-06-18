@@ -115,3 +115,13 @@ declare namespace DataModel {
     goals: Omit<UserModel.Goals, 'userId'>
   }
 }
+
+declare namespace DBExtended {
+  export interface Meal extends DataModel.Meal {
+    _dishesTypes: DataModel.DishType[]
+    _dishesTargetIds: DataModel.ID[]
+  }
+  export interface Recipe extends DataModel.Recipe {
+    _productsIds: DataModel.ID[]
+  }
+}

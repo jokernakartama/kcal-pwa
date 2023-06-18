@@ -89,17 +89,17 @@ export const productsActions = {
         .delete(productId)
 
       await DB.recipes
-        .where('products.id')
+        .where('_productsIds')
         .equals(productId)
         .modify(recipe => {
           recipe.products = recipe.products.map(product => ({
             ...product,
-            isArchived: product.id === productId
+            isArchieved: product.id === productId
           }))
         })
 
       await DB.meals
-        .where({ 'dishes.type': 'product', 'dishes.target.id': productId })
+        .where({ '_dishesTypes': 'product', '_dishesTargetIds': productId })
         .modify((value, ref) => {
           ref.value = {
             ...value,

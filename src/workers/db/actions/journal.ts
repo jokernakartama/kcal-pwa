@@ -91,8 +91,15 @@ export const journalActions = {
     }
 
     if (recordId !== undefined) {
+      const extended: WithOptional<DBExtended.Meal, 'id'> = {
+        ...meal,
+        recordId,
+        time,
+        _dishesTargetIds: meal.dishes.map(({ target }) => target.id),
+        _dishesTypes: meal.dishes.map(({ type }) => type)
+      }
       const id = await DB.meals
-        .put({ ...meal, recordId, time } as const as DataModel.Meal)
+        .put(extended as DBExtended.Meal)
       const result: DataModel.Meal = { ...meal, id, recordId, time }
 
       return result

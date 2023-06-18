@@ -81,7 +81,8 @@
     "change": "Change"
   },
   "label": {
-    "and_more": "and {{count}} more"
+    "and_more": "and {{count}} more",
+    "archieved": "deleted"
   },
   "dialog": {
     "meal": {

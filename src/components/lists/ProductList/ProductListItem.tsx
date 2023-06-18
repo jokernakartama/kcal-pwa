@@ -8,6 +8,7 @@ import styles from './styles.sass'
 type ProductListItemComponent = ListItemComponent<{
   product: Omit<DataModel.Product, 'userId'>
   caption: JSX.Element
+  archieved?: boolean
   mass?: DataModel.Mass
 }>
 
@@ -20,6 +21,7 @@ export const ProductListItem: ProductListItemComponent = props => {
     'caption',
     'identifier',
     'product',
+    'archieved',
     'mass',
     'class',
     'onRemove'
@@ -28,13 +30,18 @@ export const ProductListItem: ProductListItemComponent = props => {
   return (
     <ListItem
       identifier={local.identifier}
-      class={classNames(local.class)}
+      class={classNames(local.class, { [styles.archieved]: local.archieved })}
       onRemove={local.onRemove}
       {...rest}
     >
       <div class={styles.header}>
         <div class={styles.caption}>
-          <div class={styles['caption-text']}>{local.caption}</div>
+          <div class={styles['caption-text']}>
+            {local.caption}
+            <Show when={local.archieved}>
+              {' '}<b>({t('label.archieved')})</b>
+            </Show>
+          </div>
         </div>
 
         <Show when={local.mass}>

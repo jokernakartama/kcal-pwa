@@ -81,7 +81,8 @@
     "change": "Изменить"
   },
   "label": {
-    "and_more": "и ещё {{count}}"
+    "and_more": "и ещё {{count}}",
+    "archieved": "удалено"
   },
   "dialog": {
     "meal": {
