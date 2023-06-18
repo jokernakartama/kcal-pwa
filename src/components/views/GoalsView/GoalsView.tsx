@@ -86,7 +86,6 @@ export const GoalsView: Component = () => {
           <>
             <ButtonPanel>
               <Button
-                type="button"
                 disabled={isLoading()}
                 color="secondary"
                 onClick={closeDialog}
