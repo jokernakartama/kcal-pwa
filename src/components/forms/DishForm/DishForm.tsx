@@ -152,7 +152,7 @@ export const DishForm: DishFormComponent = props => {
             icon="forkAndKnife"
             class="m-mb-3"
             min="1"
-            max="5"
+            max="10"
             step="1"
             placeholder={t('nutrients.portion')}
             onInput={handlePortionInput}

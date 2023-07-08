@@ -167,7 +167,7 @@ export function calculateMealNutrition(
 
   meal.dishes.forEach(dish => {
     if (isDishRecipe(dish)) {
-      const recipeNutrition = calculateRecipeNutrition(dish.target)
+      const recipeNutrition = calculateRecipeNutrition(dish.target, dish.portion)
 
       result.energy += recipeNutrition.energy
       result.proteins += recipeNutrition.proteins
